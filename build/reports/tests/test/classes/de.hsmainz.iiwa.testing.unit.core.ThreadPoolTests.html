@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class de.hsmainz.iiwa.testing.unit.core.ThreadPoolTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class de.hsmainz.iiwa.testing.unit.core.ThreadPoolTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/de.hsmainz.iiwa.testing.unit.core.html">de.hsmainz.iiwa.testing.unit.core</a> &gt; ThreadPoolTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">7</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">7.055s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">LiteTest</td>
+<td class="success">1.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">basic</td>
+<td class="success">1.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">factories_test</td>
+<td class="success">1.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">finished_test</td>
+<td class="success">1.003s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">post_before_start</td>
+<td class="success">1.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">should_exit_test</td>
+<td class="success">1.027s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">thread_chain</td>
+<td class="success">1.004s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>12:10:20.020 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 1
+12:10:20.031 [pool-11-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:20.032 [pool-11-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 2
+12:10:20.051 [pool-11-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1309262925
+12:10:21.034 [pool-11-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1309262925
+12:10:21.034 [pool-11-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:21.035 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 3
+12:10:21.036 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 4
+12:10:21.036 [pool-12-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:21.036 [pool-12-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:21.037 [pool-12-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+12:10:21.037 [pool-12-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 5
+12:10:21.037 [pool-12-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+hello there
+12:10:21.037 [pool-12-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 2024278878
+12:10:21.037 [pool-12-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:22.038 [pool-12-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 2024278878
+12:10:22.038 [pool-12-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:22.039 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 6
+12:10:22.039 [pool-13-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:22.039 [pool-13-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 7
+12:10:22.039 [pool-13-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:22.039 [pool-13-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+hello there
+12:10:22.039 [pool-13-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -2093614780
+12:10:22.040 [pool-13-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+12:10:22.040 [pool-13-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:22.040 [pool-13-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1687815480
+12:10:22.040 [pool-13-thread-4] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 8
+12:10:22.040 [pool-13-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -2093614780
+12:10:22.041 [pool-13-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 2104546963
+12:10:22.041 [pool-13-thread-6] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 9
+12:10:22.041 [pool-13-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 2104546963
+12:10:22.041 [pool-13-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -547082670
+12:10:22.041 [pool-13-thread-7] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 10
+12:10:22.041 [pool-13-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -547082670
+12:10:22.042 [pool-13-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1165799919
+12:10:22.050 [pool-13-thread-8] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 11
+12:10:22.050 [pool-13-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1165799919
+12:10:22.050 [pool-13-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -693857176
+12:10:22.050 [pool-13-thread-2] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 12
+12:10:22.051 [pool-13-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -693857176
+12:10:22.051 [pool-13-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -701892591
+12:10:22.052 [pool-13-thread-3] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 13
+12:10:22.052 [pool-13-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -701892591
+12:10:22.052 [pool-13-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 429140980
+12:10:22.052 [pool-13-thread-4] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 14
+12:10:22.052 [pool-13-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -499540745
+12:10:22.052 [pool-13-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 429140980
+12:10:22.052 [pool-13-thread-6] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 15
+12:10:22.053 [pool-13-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -499540745
+12:10:22.053 [pool-13-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1550431996
+12:10:22.053 [pool-13-thread-7] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 16
+12:10:22.053 [pool-13-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 2123895970
+12:10:22.053 [pool-13-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 2123895970
+12:10:22.053 [pool-13-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1550431996
+12:10:23.040 [pool-13-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:23.040 [pool-13-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1687815480
+12:10:23.043 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 17
+12:10:23.043 [pool-14-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:23.043 [pool-14-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:23.043 [pool-14-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1600146692
+12:10:23.044 [pool-14-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+Hello! 
+12:10:23.044 [pool-14-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -2093614780
+12:10:23.043 [pool-14-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+hello there
+12:10:23.044 [pool-14-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 18
+12:10:23.044 [pool-14-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -2093614780
+12:10:23.044 [pool-14-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:23.045 [pool-14-thread-5] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 19
+12:10:23.045 [pool-14-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -474733182
+12:10:23.045 [pool-14-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1600146692
+12:10:23.046 [pool-14-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 501239862
+12:10:23.046 [pool-14-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 501239862
+12:10:24.046 [pool-14-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -474733182
+Event Loop returned
+12:10:24.046 [pool-14-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:24.048 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 20
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 21
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 22
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 23
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 24
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 25
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 26
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 27
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 28
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 29
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 30
+12:10:24.049 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 31
+12:10:24.050 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 32
+12:10:24.050 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 33
+12:10:24.050 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 34
+12:10:24.050 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 35
+12:10:24.050 [pool-15-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:24.050 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:24.050 [pool-15-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 36
+12:10:24.051 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1600146692
+12:10:24.051 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1809979965
+Hello! 
+12:10:24.051 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1079351955
+12:10:24.051 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -208565402
+12:10:24.051 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+12:10:24.050 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+hello there
+12:10:24.050 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -2093614780
+12:10:24.051 [pool-15-thread-5] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 37
+12:10:24.051 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1870098838
+12:10:24.051 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:24.051 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -2093614780
+12:10:24.051 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1600146692
+12:10:24.051 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1701591602
+12:10:24.051 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1827685432
+12:10:24.051 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 700314363
+12:10:24.160 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1827685432
+12:10:24.160 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1259554064
+12:10:24.179 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1809979965
+12:10:24.179 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 213159794
+12:10:24.210 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1701591602
+12:10:24.210 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1784048195
+12:10:24.220 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1870098838
+12:10:24.220 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -150442615
+12:10:24.224 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1079351955
+12:10:24.224 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -281427020
+12:10:24.227 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -208565402
+12:10:24.227 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1737637457
+12:10:24.239 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 700314363
+12:10:24.239 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1632114238
+12:10:24.341 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 213159794
+12:10:24.341 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1879439262
+12:10:24.355 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1259554064
+12:10:24.355 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 976479572
+12:10:24.359 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1737637457
+12:10:24.359 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1648797853
+12:10:24.362 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -281427020
+12:10:24.362 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -113517233
+12:10:24.362 [pool-15-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -113517233
+12:10:24.364 [pool-15-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1632114238
+12:10:24.372 [pool-15-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -150442615
+12:10:24.398 [pool-15-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1784048195
+12:10:24.462 [pool-15-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1879439262
+12:10:24.500 [pool-15-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 976479572
+12:10:25.052 [pool-15-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:25.052 [pool-15-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1648797853
+12:10:25.054 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 38
+12:10:25.055 [pool-16-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:25.055 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -2093614780
+12:10:25.055 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:25.055 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+hello there
+12:10:25.055 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1809979965
+12:10:25.055 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1600146692
+12:10:25.055 [pool-16-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 39
+Hello! 
+12:10:25.055 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -2093614780
+12:10:25.055 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+12:10:25.055 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -208565402
+12:10:25.055 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1079351955
+12:10:25.055 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:25.055 [pool-16-thread-5] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 40
+12:10:25.055 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1870098838
+12:10:25.055 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1701591602
+12:10:25.056 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1827685432
+12:10:25.056 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1600146692
+12:10:25.056 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 700314363
+12:10:25.164 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1827685432
+12:10:25.165 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1259554064
+12:10:25.184 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1809979965
+12:10:25.184 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 213159794
+12:10:25.215 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1701591602
+12:10:25.215 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1784048195
+12:10:25.225 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1870098838
+12:10:25.225 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -150442615
+12:10:25.229 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1079351955
+12:10:25.229 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -281427020
+12:10:25.231 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -208565402
+12:10:25.231 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1737637457
+12:10:25.243 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 700314363
+12:10:25.243 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1632114238
+12:10:25.346 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 213159794
+12:10:25.346 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1879439262
+12:10:25.360 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1259554064
+12:10:25.360 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 976479572
+12:10:25.363 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1737637457
+12:10:25.363 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 369784211
+12:10:25.363 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 369784211
+12:10:25.363 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1571205144
+12:10:25.367 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -281427020
+12:10:25.367 [pool-16-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1632114238
+12:10:25.367 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 2063424647
+12:10:25.367 [pool-16-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 2063424647
+12:10:25.376 [pool-16-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -150442615
+12:10:25.403 [pool-16-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1784048195
+12:10:25.467 [pool-16-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1879439262
+12:10:25.506 [pool-16-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 976479572
+12:10:26.056 [pool-16-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1571205144
+12:10:26.056 [pool-16-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:26.058 [Test worker] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 41
+12:10:26.059 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1527038594
+12:10:26.059 [pool-17-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 490592630
+12:10:26.059 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 256133458
+12:10:26.059 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1527038594
+hello there
+12:10:26.059 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1600146692
+Hello! 
+12:10:26.059 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -2093614780
+12:10:26.059 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1079351955
+12:10:26.059 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -208565402
+12:10:26.059 [pool-17-thread-1] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 42
+12:10:26.059 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1809979965
+12:10:26.059 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 256133458
+12:10:26.059 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1870098838
+12:10:26.059 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -2093614780
+12:10:26.059 [pool-17-thread-5] DEBUG de.hsmainz.iiwa.core.threads.ThreadPool - New Thread registered, num: 43
+12:10:26.060 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1701591602
+12:10:26.060 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1827685432
+12:10:26.060 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1600146692
+12:10:26.060 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 700314363
+12:10:26.167 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1827685432
+12:10:26.167 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1259554064
+12:10:26.188 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1809979965
+12:10:26.188 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 213159794
+12:10:26.218 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1701591602
+12:10:26.218 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1784048195
+12:10:26.228 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1870098838
+12:10:26.228 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -150442615
+12:10:26.231 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1079351955
+12:10:26.231 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -281427020
+12:10:26.234 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -208565402
+12:10:26.234 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1737637457
+12:10:26.246 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 700314363
+12:10:26.246 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1632114238
+12:10:26.349 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 213159794
+12:10:26.349 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 1879439262
+12:10:26.363 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1259554064
+12:10:26.363 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 976479572
+12:10:26.367 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1737637457
+12:10:26.367 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: 369784211
+12:10:26.367 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 369784211
+12:10:26.367 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -1086497140
+12:10:26.370 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -281427020
+12:10:26.370 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -425503210
+12:10:26.371 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1632114238
+12:10:26.371 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob started, id: -136254981
+12:10:26.371 [pool-17-thread-5] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -136254981
+12:10:26.380 [pool-17-thread-2] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -150442615
+12:10:26.406 [pool-17-thread-3] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1784048195
+12:10:26.467 [pool-17-thread-6] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -1086497140
+12:10:26.469 [pool-17-thread-7] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 1879439262
+12:10:26.508 [pool-17-thread-4] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 976479572
+12:10:27.061 [pool-17-thread-1] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: 490592630
+12:10:27.061 [pool-17-thread-8] INFO de.hsmainz.iiwa.core.threads.ThreadPool - ThreadPoolJob finished, id: -425503210
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 4.10.2</a> at 22.11.2018 12:10:31</p>
+</div>
+</div>
+</body>
+</html>

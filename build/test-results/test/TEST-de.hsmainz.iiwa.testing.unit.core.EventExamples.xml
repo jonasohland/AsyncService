@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="de.hsmainz.iiwa.testing.unit.core.EventExamples" tests="9" skipped="0" failures="0" errors="0" timestamp="2018-11-22T11:10:17" hostname="clt-xr-wa-03" time="2.339">
+  <properties/>
+  <testcase name="schedule_many_test" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.96"/>
+  <testcase name="asyncupdater_test" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.002"/>
+  <testcase name="interval_test" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="1.002"/>
+  <testcase name="basicPostToLoop" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.008"/>
+  <testcase name="listeners" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.004"/>
+  <testcase name="postMany" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.209"/>
+  <testcase name="eventTypes" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.002"/>
+  <testcase name="postMany_andMore" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.048"/>
+  <testcase name="schedule_test" classname="de.hsmainz.iiwa.testing.unit.core.EventExamples" time="0.101"/>
+  <system-out><![CDATA[basic post ran
+posting took: 174 ms
+exec took: 34 ms
+posting took: 0 ms
+exec took: 47 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="de.hsmainz.iiwa.testing.unit.core.ProfiledEventTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-11-22T11:10:19" hostname="clt-xr-wa-03" time="0.014">
+  <properties/>
+  <testcase name="perform" classname="de.hsmainz.iiwa.testing.unit.core.ProfiledEventTest" time="0.014"/>
+  <system-out><![CDATA[result: 9
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
