@@ -73,8 +73,12 @@ publishing {
 
     repositories {
         maven {
+            credetials {
+                
+            }
             name = "gitlab-maven"
             url = "https://gitlab.rlp.net/api/v4/projects/2220/packages/maven"
+
         }
     }
 }

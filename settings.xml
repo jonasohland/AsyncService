@@ -6,7 +6,7 @@
                 <httpHeaders>
                     <property>
                         <name>Job-Token</name>
-                        <value>${env.CI_JOB_TOKEN}</value>
+                        <value>cs6ByAsTyXxYytcityUX</value>
                     </property>
                 </httpHeaders>
             </configuration>
