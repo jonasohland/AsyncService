@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.hsmainz.iiwa.core.events.AsyncService;
-import de.hsmainz.iiwa.core.events.ProfiledEvent;
+import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.events.ProfiledEvent;
 
 public class ProfiledEventTest {
 	

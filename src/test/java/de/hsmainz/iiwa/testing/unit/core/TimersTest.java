@@ -1,11 +1,11 @@
 package de.hsmainz.iiwa.testing.unit.core;
 
-import de.hsmainz.iiwa.core.events.*;
+import de.hsmainz.iiwa.AsyncService.events.*;
 import org.junit.Test;
 
-import de.hsmainz.iiwa.core.events.AsyncService;
-import de.hsmainz.iiwa.core.future.DualListenableFuture;
-import de.hsmainz.iiwa.core.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.future.DualListenableFuture;
+import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
 
 import static org.junit.Assert.*;
 

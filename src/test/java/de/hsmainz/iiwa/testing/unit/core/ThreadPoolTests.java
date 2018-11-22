@@ -1,9 +1,8 @@
 package de.hsmainz.iiwa.testing.unit.core;
 
-import de.hsmainz.iiwa.core.events.AsyncService;
-import de.hsmainz.iiwa.core.threads.Executable;
-import de.hsmainz.iiwa.core.threads.ThreadPoolJob;
-import de.hsmainz.iiwa.core.threads.ThreadPoolJobLite;
+import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJob;
+import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJobLite;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

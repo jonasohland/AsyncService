@@ -8,7 +8,7 @@
 plugins {
     id 'java-library'
     id "me.tatarka.retrolambda" version "3.7.0"
-    id 'maven'
+    id 'maven-publish'
 }
 
 repositories {
@@ -16,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+
+group = 'de.hsmainz.iiwa'
+// artifactId is taken by default, from folder name
+version = '0.1-SNAPSHOT'
 
 dependencies {
     testImplementation  'junit:junit:4.12'
@@ -37,4 +41,40 @@ test {
     maxHeapSize = "512m"
 
     maxParallelForks = 1
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            artifactId = 'AsyncService'
+
+            from components.java
+            pom {
+
+                name = 'AsyncService'
+                description = 'Async execution for iiwa robots'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'jonaohland'
+                        name = 'Jonas Ohland'
+                        email = 'jonas.ohland@hs-mainz.de'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "gitlab-maven"
+            url = "https://gitlab.rlp.net/api/v4/projects/2220/packages/maven"
+        }
+    }
 }

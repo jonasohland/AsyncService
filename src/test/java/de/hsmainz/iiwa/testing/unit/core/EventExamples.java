@@ -3,12 +3,12 @@ package de.hsmainz.iiwa.testing.unit.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import de.hsmainz.iiwa.core.events.*;
+import de.hsmainz.iiwa.AsyncService.events.*;
 import org.junit.Test;
 
-import de.hsmainz.iiwa.core.events.AsyncService;
-import de.hsmainz.iiwa.core.future.ListenableFuture;
-import de.hsmainz.iiwa.core.utils.AsyncUpdater;
+import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.utils.AsyncUpdater;
 
 public class EventExamples {
 	private boolean success = false;
