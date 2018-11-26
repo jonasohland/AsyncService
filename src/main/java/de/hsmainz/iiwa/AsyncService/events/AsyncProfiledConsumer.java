@@ -1,12 +1,10 @@
 package de.hsmainz.iiwa.AsyncService.events;
 
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
-public class ProfiledEvent<T> implements Event {
+public class AsyncProfiledConsumer<T> implements AsyncTask {
 
-	private EventTimer tm;
+	private AsyncTimer tm;
 	
 	private ListenableFuture<Long> future;
 	private Consumer<T> function;
@@ -15,11 +13,11 @@ public class ProfiledEvent<T> implements Event {
 	long start_time;
 	long end_time;
 	
-	public ProfiledEvent(Consumer<T> __func){
+	public AsyncProfiledConsumer(Consumer<T> __func){
 		function = __func;
 	}
 	
-	public ProfiledEvent(T in, Consumer<T> __func){
+	public AsyncProfiledConsumer(T in, Consumer<T> __func){
 		function = __func;
 		input = in;
 	}
@@ -46,12 +44,12 @@ public class ProfiledEvent<T> implements Event {
 	}
 
 	@Override
-	public Event copy() {
+	public AsyncTask copy() {
 		return null;
 	}
 
 	@Override
-	public void attachTimer(EventTimer t) {
+	public void attachTimer(AsyncTimer t) {
 		tm = t;
 		
 	}
@@ -62,19 +60,24 @@ public class ProfiledEvent<T> implements Event {
 	}
 
 	@Override
-	public EventTimer getTimer() {
+	public AsyncTimer getTimer() {
 		return tm;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K> void setArg(K arg) {
+	public <K> void __set__arg_(K arg) {
 		input = (T) arg;
 		
 	}
 
 	@Override
-	public <L> void setSecondArg(L arg) {
+	public <L> void __set__sec__arg_(L arg) {
+	}
+
+	@Override
+	public LazyAllocatedListenableFuture<Long> getFutureLazy() {
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

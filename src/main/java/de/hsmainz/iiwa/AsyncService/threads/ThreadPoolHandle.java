@@ -6,10 +6,10 @@ import java.nio.ByteBuffer;
 public class ThreadPoolHandle {
 
     private long timeout;
-    Executable job;
+    private Executable job;
     private UUID id;
 
-    public ThreadPoolHandle(Executable ex) {
+    ThreadPoolHandle(Executable ex) {
         long thread_num = ThreadPool.registerNewThread();
         id = UUID.nameUUIDFromBytes(longToBytes(thread_num));
         job = ex;

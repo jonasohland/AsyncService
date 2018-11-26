@@ -1,14 +1,11 @@
-package de.hsmainz.iiwa.AsyncService.future;
+package de.hsmainz.iiwa.AsyncService.events;
 
 import java.util.TimerTask;
 import java.util.UUID;
 
-import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.events.Event;
-
-public class EventTimer extends TimerTask
+public class AsyncTimer extends TimerTask
 {
-	private Event eventToRun;
+	private AsyncTask asyncTaskToRun;
 	private boolean repeat;
 	
 	private static void debug(String g) {
@@ -17,12 +14,12 @@ public class EventTimer extends TimerTask
 	
 	private UUID uuid;
 	
-	public EventTimer(Event event, boolean rep)
+	public AsyncTimer(AsyncTask asyncTask, boolean rep)
 	{
 		uuid = UUID.randomUUID();
-		eventToRun = event;
+		asyncTaskToRun = asyncTask;
 		repeat = rep;
-		event.attachTimer(this);
+		asyncTask.attachTimer(this);
 	}
 	
 	public int getId()
@@ -57,8 +54,8 @@ public class EventTimer extends TimerTask
 
 		}
 
-		AsyncService.post(eventToRun);
-		debug("Event posted to Loop");
+		AsyncService.post(asyncTaskToRun);
+		debug("AsyncTask posted to Loop");
 
 	}
 }

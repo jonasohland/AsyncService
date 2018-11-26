@@ -1,11 +1,11 @@
-package de.hsmainz.iiwa.testing.unit.core;
+package de.hsmainz.iiwa.AsyncService.test;
 
 import de.hsmainz.iiwa.AsyncService.events.*;
 import org.junit.Test;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.future.DualListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.events.DualListenableFuture;
+import de.hsmainz.iiwa.AsyncService.events.ListenableFuture;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ public class TimersTest {
 		
 		AsyncService.init();
 		
-		RunnableEvent e = new RunnableEvent( () -> success_count++);
+		AsyncRunnable e = new AsyncRunnable( () -> success_count++);
 		
 		//schedule for periodical execution
 		AsyncService.scheduleInterval(e, 50);
@@ -42,11 +42,11 @@ public class TimersTest {
 		
 		dual_future.addListener((k, x) -> test_failed = true);
 		
-		dual_future.setTimeout(5);
+		dual_future.setTimeout(1);
 
 
 		
-		AsyncService.post(Events.makeEvent(() -> {
+		AsyncService.post(Async.makeAsync(() -> {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class TimersTest {
 			}
 		}));
 
-		AsyncService.post(Events.makeEvent(() -> {
+		AsyncService.post(Async.makeAsync(() -> {
 			dual_future.fireListeners("k", 18);
 		}));
 		
@@ -77,7 +77,7 @@ public class TimersTest {
 	{
 		AsyncService.init();
 		
-		BiFunctionEvent<Integer, Integer, Integer> event = new BiFunctionEvent<Integer, Integer, Integer>((g,h) -> { 
+		AsyncBiFunction<Integer, Integer, Integer> event = new AsyncBiFunction<Integer, Integer, Integer>((g, h) -> {
 			success = false;
 			return g; 
 		});
@@ -86,7 +86,7 @@ public class TimersTest {
 		
 		AsyncService.schedule(event, 100000);
 		
-		AsyncService.schedule(Events.makeEvent(() -> {
+		AsyncService.schedule(Async.makeAsync(() -> {
 			dual_cancel_future.cancel();
 			System.out.println("it happened");
 		}), 20);
@@ -105,21 +105,20 @@ public class TimersTest {
 		AsyncService.init();
 		
 
-		Event wait = Events.makeEvent(() -> {
+		AsyncTask wait = Async.makeAsync(() -> {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		});
 
-		Event event = Events.makeEvent(() -> { fail_1 = true; });
+		AsyncTask asyncTask = Async.makeAsync(() -> { fail_1 = true; });
 		
 
 		AsyncService.post(wait);
 
-		AsyncService.schedule(event, 200);
-		event.getFuture().setTimeout(100);
+		AsyncService.schedule(asyncTask, 200);
+		asyncTask.getFuture().setTimeout(100);
 		
 		AsyncService.run();
 		AsyncService.exit();

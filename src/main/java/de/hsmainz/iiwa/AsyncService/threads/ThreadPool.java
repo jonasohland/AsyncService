@@ -101,7 +101,7 @@ public class ThreadPool {
         try {
             executor.awaitTermination(5000, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("--- forced shutdown of threadpool ---");
         }
 
         executor = null;

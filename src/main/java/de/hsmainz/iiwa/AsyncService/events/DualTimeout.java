@@ -1,10 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.events;
 
-import de.hsmainz.iiwa.AsyncService.future.DualListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
-
-public class DualTimeout implements Event {
+public class DualTimeout implements AsyncTask {
 	
 	DualListenableFuture<?,?> future;
 	
@@ -13,12 +9,12 @@ public class DualTimeout implements Event {
 	}
 
 	@Override
-	public void attachTimer(EventTimer arg0) {
+	public void attachTimer(AsyncTimer arg0) {
 		
 	}
 
 	@Override
-	public Event copy() {
+	public AsyncTask copy() {
 		return new DualTimeout(future);
 	}
 
@@ -39,7 +35,12 @@ public class DualTimeout implements Event {
 	}
 
 	@Override
-	public EventTimer getTimer() {
+	public <T> LazyAllocatedListenableFuture<T> getFutureLazy() {
+		throw new NullPointerException();
+	}
+
+	@Override
+	public AsyncTimer getTimer() {
 		return null;
 	}
 
@@ -49,12 +50,12 @@ public class DualTimeout implements Event {
 	}
 
 	@Override
-	public <K> void setArg(K arg0) {
+	public <K> void __set__arg_(K arg0) {
 		
 	}
 
 	@Override
-	public <L> void setSecondArg(L arg0) {
+	public <L> void __set__sec__arg_(L arg0) {
 		
 	}
 

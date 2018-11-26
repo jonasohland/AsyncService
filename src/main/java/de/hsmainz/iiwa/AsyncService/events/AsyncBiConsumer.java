@@ -2,29 +2,28 @@ package de.hsmainz.iiwa.AsyncService.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
-
-public class BiConsumerEvent<Tin1, Tin2> implements Event{
+public class AsyncBiConsumer<Tin1, Tin2> implements AsyncTask {
 
 	private BiConsumer<Tin1, Tin2> function;
-	private ListenableFuture<Void> future;
+	private LazyAllocatedListenableFuture<Void> future = new LazyAllocatedListenableFuture<>();
 	
-	private EventTimer timer;
+	private AsyncTimer timer;
 	
 	private Tin1 arg1;
 	private Tin2 arg2;
 	
-	public BiConsumerEvent(Tin1 __in1, Tin2 __in2, BiConsumer<Tin1, Tin2> __function)
+	public AsyncBiConsumer(Tin1 __in1, Tin2 __in2, BiConsumer<Tin1, Tin2> __function)
 	{
 		function = __function;
 		arg1 = __in1;
 		arg2 = __in2;
+		future.prepare(this);
 	}
 	
-	public BiConsumerEvent(BiConsumer<Tin1, Tin2> __function)
+	public AsyncBiConsumer(BiConsumer<Tin1, Tin2> __function)
 	{
 		function = __function;
+		future.prepare(this);
 	}
 	
 	@Override
@@ -35,51 +34,47 @@ public class BiConsumerEvent<Tin1, Tin2> implements Event{
 
 	@Override
 	public ListenableFuture<Void> getFuture() {
-		if(future != null) {
-			return future;
-		} else {
-			future = new ListenableFuture<>(this);
-			return future;
-		}
+		return future.get();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K> void setArg(K arg) {
+	public <K> void __set__arg_(K arg) {
 		arg1 = (Tin1) arg;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <L> void setSecondArg(L arg) {
+	public <L> void __set__sec__arg_(L arg) {
 		arg2 = (Tin2) arg;
+	}
+
+	@Override
+	public LazyAllocatedListenableFuture<Void> getFutureLazy() {
+		return future;
 	}
 
 	@Override
 	public void fire() {
 		AsyncService.post(this);
-		if(future != null){
-			future.fire();
-		}
+		future.fire();
 	}
 	
 	public void fire(Tin1 __arg1, Tin2 __arg2) {
 		arg1 = __arg1;
 		arg2 = __arg2;
 		AsyncService.post(this);
-		if(future != null){
-			future.fire();
-		}
+		future.fire();
 	}
 
 	@Override
-	public Event copy() {
-		return new BiConsumerEvent<Tin1, Tin2>(arg1, arg2, function);
+	public AsyncTask copy() {
+		return new AsyncBiConsumer<Tin1, Tin2>(arg1, arg2, function);
 	}
 
 
 	@Override
-	public void attachTimer(EventTimer t) {
+	public void attachTimer(AsyncTimer t) {
 		timer = t;
 	}
 
@@ -89,7 +84,7 @@ public class BiConsumerEvent<Tin1, Tin2> implements Event{
 	}
 
 	@Override
-	public EventTimer getTimer() {
+	public AsyncTimer getTimer() {
 		return timer;
 	}
 }

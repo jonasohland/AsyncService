@@ -1,4 +1,4 @@
-package de.hsmainz.iiwa.testing.unit.core;
+package de.hsmainz.iiwa.AsyncService.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,10 +7,9 @@ import de.hsmainz.iiwa.AsyncService.events.*;
 import org.junit.Test;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
 import de.hsmainz.iiwa.AsyncService.utils.AsyncUpdater;
 
-public class EventExamples {
+public class AsyncTaskExamples {
 	private boolean success = false;
 	
 	@Test
@@ -20,7 +19,7 @@ public class EventExamples {
 		
 		success = false;
 		
-		Event e = Events.makeEvent(() -> success = true);
+		AsyncTask e = Async.makeAsync(() -> success = true);
 		
 		AsyncService.post(e);
 		AsyncService.run();
@@ -39,29 +38,29 @@ public class EventExamples {
 	{
 		AsyncService.init();
 		
-		RunnableEvent runnableEvent = new RunnableEvent(() -> event_counter++);
+		AsyncRunnable asyncRunnable = new AsyncRunnable(() -> event_counter++);
 		
-		runnableEvent.fire();
+		asyncRunnable.fire();
 		
-		ConsumerEvent<Integer> consumerEvent = new ConsumerEvent<Integer>((i) -> event_counter+=i);
+		AsyncConsumer<Integer> asyncConsumer = new AsyncConsumer<Integer>((i) -> event_counter+=i);
 		
-		consumerEvent.fire(1);
+		asyncConsumer.fire(1);
 		
-		SupplierEvent<Integer> supplierEvent = new SupplierEvent<Integer>(() -> { event_counter++; return 0; });
+		AsyncSupplier<Integer> asyncSupplier = new AsyncSupplier<Integer>(() -> { event_counter++; return 0; });
 		
-		supplierEvent.fire();
+		asyncSupplier.fire();
 		
-		FunctionEvent<Integer, Integer> functionEvent = new FunctionEvent<Integer, Integer>((x) -> { event_counter+=x ; return 0; });
+		AsyncFunction<Integer, Integer> asyncFunction = new AsyncFunction<Integer, Integer>((x) -> { event_counter+=x ; return 0; });
 		
-		functionEvent.fire(1);
+		asyncFunction.fire(1);
 		
-		BiConsumerEvent<Integer, Integer> biConsumerEvent = new BiConsumerEvent<Integer, Integer>((j,k) -> event_counter+=j-k);
+		AsyncBiConsumer<Integer, Integer> asyncBiConsumer = new AsyncBiConsumer<Integer, Integer>((j, k) -> event_counter+=j-k);
 		
-		biConsumerEvent.fire(2, 1);
+		asyncBiConsumer.fire(2, 1);
 		
-		BiFunctionEvent<Integer,Integer,Integer> biFunctionEvent = new BiFunctionEvent<Integer,Integer,Integer>((y, z) -> { event_counter+= y - z; return 6; });
+		AsyncBiFunction<Integer,Integer,Integer> asyncBiFunction = new AsyncBiFunction<Integer,Integer,Integer>((y, z) -> { event_counter+= y - z; return 6; });
 		
-		biFunctionEvent.fire(2, 1);
+		asyncBiFunction.fire(2, 1);
 		
 		AsyncService.run();
 
@@ -80,7 +79,7 @@ public class EventExamples {
 	{
 		AsyncService.init();
 		
-		SupplierEvent<Integer> sup = new SupplierEvent<Integer>(() -> { return 5; });
+		AsyncSupplier<Integer> sup = new AsyncSupplier<Integer>(() -> { return 5; });
 		
 		sup.getFuture().addNextListener((i) -> { listener_check = i; return i+1; } ).addListener((t) -> listener_check_2 = t);
 		
@@ -101,7 +100,7 @@ public class EventExamples {
 	{
 		AsyncService.init();
 		
-		RunnableEvent runnable = new RunnableEvent(() ->  done_event = true);
+		AsyncRunnable runnable = new AsyncRunnable(() ->  done_event = true);
 		
 		runnable.getFuture().addListener(() -> done_listener = true);
 		
@@ -127,7 +126,7 @@ public class EventExamples {
 
 			int wait_time = (int) ( Math.random() * 1000 );
 
-			RunnableEvent runnable = new RunnableEvent(() -> {
+			AsyncRunnable runnable = new AsyncRunnable(() -> {
 				exec_count++;
 			});
 
@@ -141,7 +140,7 @@ public class EventExamples {
 		assertEquals(20, exec_count);
 	}
 	
-	private ListenableFuture<Object> repeating_future;
+	private LazyAllocatedListenableFuture<Object> repeating_future;
 	private int repeat_counter = 0;
 	
 	@Test
@@ -149,7 +148,7 @@ public class EventExamples {
 	{
 		AsyncService.init();
 		
-		RunnableEvent runnable = new RunnableEvent(() -> repeat_counter++);
+		AsyncRunnable runnable = new AsyncRunnable(() -> repeat_counter++);
 		
 		repeating_future  = AsyncService.scheduleInterval(runnable, 100);
 		

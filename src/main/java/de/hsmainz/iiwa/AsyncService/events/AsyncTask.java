@@ -1,9 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.events;
 
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
-
-public interface Event {
+public interface AsyncTask {
 	
 	/**
 	 * Executes the event immediately. This should only be called by the AsyncService.
@@ -16,17 +13,17 @@ public interface Event {
 	public void fire();
 	
 	/**
-	 * Returns a separate copy of this Event. 
-	 * @return the new Event
+	 * Returns a separate copy of this AsyncTask.
+	 * @return the new AsyncTask
 	 */
-	public Event copy();
+	public AsyncTask copy() throws CloneNotSupportedException;
 	
 	/**
-	 * Attaches a Timer to the Event to schedule the Event.
-	 * @param t EventTimer to attach. 
-	 * @see EventTimer
+	 * Attaches a Timer to the AsyncTask to schedule the AsyncTask.
+	 * @param t AsyncTimer to attach.
+	 * @see AsyncTimer
 	 */
-	public void attachTimer(EventTimer t);
+	public void attachTimer(AsyncTimer t);
 	
 	/**
 	 * Checks if a Timer exist. 
@@ -36,23 +33,23 @@ public interface Event {
 	
 	/**
 	 * Get the attached Timer. 
-	 * @return Returns the EventTimer.
+	 * @return Returns the AsyncTimer.
 	 */
-	public EventTimer getTimer();
+	public AsyncTimer getTimer();
 	
 	/**
 	 * DO NOT USE THIS METHOD. FOR INTERNAL USE ONLY
 	 * @param <K> Argument Type
 	 * @param arg Argument to set
 	 */
-	public <K> void setArg(K arg);
+	public <K> void __set__arg_(K arg);
 	
 	/**
 	 * DO NOT USE THIS METHOD. FOR INTERNAL USE ONLY
 	 * @param <L> Argument Type
 	 * @param arg Argument to set
 	 */
-	public <L> void setSecondArg(L arg);
+	public <L> void __set__sec__arg_(L arg);
 	
 	/**
 	 * Returns the generic ListenableFuture 
@@ -61,6 +58,8 @@ public interface Event {
 	 * @see ListenableFuture
 	 */
 	public <T> ListenableFuture<T> getFuture();
+
+	public <T> LazyAllocatedListenableFuture<T> getFutureLazy();
 	
 	public int hashCode();
 	

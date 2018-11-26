@@ -1,13 +1,13 @@
-package de.hsmainz.iiwa.testing.unit.core;
+package de.hsmainz.iiwa.AsyncService.test;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.events.ProfiledEvent;
+import de.hsmainz.iiwa.AsyncService.events.AsyncProfiledConsumer;
 
-public class ProfiledEventTest {
+public class AsyncProfiledConsumerTest {
 	
 	private long profile_result;
 	
@@ -16,7 +16,7 @@ public class ProfiledEventTest {
 		
 		AsyncService.init();
 
-		ProfiledEvent<Integer> event = new ProfiledEvent<>((i) -> {
+		AsyncProfiledConsumer<Integer> event = new AsyncProfiledConsumer<>((i) -> {
 			try {
 				// System.out.println("Hello!");
 				Thread.sleep(i);

@@ -44,9 +44,7 @@ test {
 }
 
 publishing {
-
     publications {
-
         mavenJava(MavenPublication) {
 
             artifactId = 'AsyncService'
