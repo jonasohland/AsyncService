@@ -1,7 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.events.Events;
+import de.hsmainz.iiwa.AsyncService.events.Async;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
 /**
@@ -26,7 +26,7 @@ public abstract class AsyncUpdater<T> {
 	 */
 	public void triggerUpdate(T input)
 	{
-		AsyncService.post(Events.makeEvent(input, new Consumer<T>() {
+		AsyncService.post(Async.makeAsync(input, new Consumer<T>() {
 			@Override
 			public void accept(T __input) {
 				AsyncUpdater.this.handleUpdate(__input);

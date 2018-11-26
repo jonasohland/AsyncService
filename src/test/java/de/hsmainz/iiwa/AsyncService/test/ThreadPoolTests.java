@@ -1,8 +1,10 @@
-package de.hsmainz.iiwa.testing.unit.core;
+package de.hsmainz.iiwa.AsyncService.test;
 
+import de.hsmainz.iiwa.AsyncService.events.Async;
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
 import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJob;
 import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJobLite;
+import de.hsmainz.iiwa.AsyncService.utils.AsyncUpdater;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -70,7 +72,7 @@ class MainThread extends ThreadPoolJob<Void> {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+
         }
 
         assertTrue(c.isActive());
@@ -88,6 +90,41 @@ class MainThread extends ThreadPoolJob<Void> {
         return null;
     }
 }
+
+
+class Updateble extends AsyncUpdater<Integer>{
+
+    private volatile Integer sync_int = 0;
+
+    @Override
+    public void handleUpdate(Integer input) {
+        sync_int = input;
+    }
+
+    public int sync(){ return sync_int; }
+}
+
+class UpdatedThreadPoolJob extends ThreadPoolJob<Void> {
+
+    private Updateble uppi = new Updateble();
+
+    @Override
+    public Void perform() {
+        System.out.println("start yield");
+        while(!(uppi.sync() == 44)){
+            Thread.yield();
+        }
+        System.out.println("stop yield");
+
+        return null;
+    }
+
+    Updateble getUppi() {
+        return uppi;
+    }
+}
+
+
 
 public class ThreadPoolTests {
 
@@ -189,7 +226,7 @@ public class ThreadPoolTests {
         job.start();
 
         AsyncService.run();
-        System.out.println("Event Loop returned");
+        System.out.println("AsyncTask Loop returned");
         AsyncService.exit();
 
         assertEquals(44, inner_job_return);
@@ -239,6 +276,26 @@ public class ThreadPoolTests {
         assertTrue(job_lite.isFinished());
 
         assertEquals((int) job.get(), 15);
+
+    }
+
+    @Test
+    public void updatable_test() {
+
+        AsyncService.init();
+
+        UpdatedThreadPoolJob job = new UpdatedThreadPoolJob();
+
+        job.start();
+
+        AsyncService.schedule(Async.makeAsync(() -> {
+            System.out.println("posting update");
+            job.getUppi().triggerUpdate(44);
+        }), 500);
+
+        AsyncService.run();
+        AsyncService.exit();
+
 
     }
 

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AsyncService.iml" filepath="$PROJECT_DIR$/AsyncService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AsyncService.iml" filepath="$PROJECT_DIR$/.idea/modules/AsyncService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AsyncService_main.iml" filepath="$PROJECT_DIR$/.idea/modules/AsyncService_main.iml" group="AsyncService" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AsyncService_test.iml" filepath="$PROJECT_DIR$/.idea/modules/AsyncService_test.iml" group="AsyncService" />
     </modules>

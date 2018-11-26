@@ -6,15 +6,13 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.hsmainz.iiwa.AsyncService.functional.*;
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
 import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
 
 
 /**
  * <p>
  * The AsyncService is the central executor for any asynchronous operation in the program. Asynchronous operations can be
- * queued by calling the post() method with a lambda or an Event. The async service will execute the given operation some
+ * queued by calling the post() method with a lambda or an AsyncTask. The async service will execute the given operation some
  * time in the future inside the AsyncService.run() method.
  *</p><p>
  * The AsyncService.run() method must be used to perform the async operations and should be used to execute almost all parts of the program.
@@ -34,24 +32,26 @@ import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
 public class AsyncService {
 
 	/**
-	 * The Event Queue
+	 * The AsyncTask Queue
 	 */
-	public static LinkedBlockingDeque<Event> queue = new LinkedBlockingDeque<Event>();
+	public static LinkedBlockingDeque<AsyncTask> queue = new LinkedBlockingDeque<AsyncTask>();
 	
 	/**
 	 * The Map where the active timers are stored
 	 */
-	public static ConcurrentHashMap<Integer, EventTimer> timer_map = new ConcurrentHashMap<Integer, EventTimer>(5);
+	static ConcurrentHashMap<Integer, AsyncTimer> timer_map = new ConcurrentHashMap<Integer, AsyncTimer>(5);
 	
-	public static Timer coreTimer;
+	static Timer coreTimer;
 	
 	private static boolean exit = false;
 
 	private static AtomicBoolean busy = new AtomicBoolean();
 
-	private static volatile boolean running;
+	static volatile boolean running;
+
+	private static Thread service_thread;
 	
-	private static void debug(String g)
+	static void debug(String g)
 	{
 		// System.out.println("CEL: " + g);
 	}
@@ -94,7 +94,7 @@ public class AsyncService {
 	}
 	
 	/**
-	 * Run the Event Loop.
+	 * Run the AsyncTask Loop.
 	 * This function will block until the event Loop exits (no more active Timers/ThreadPool-threads and empty event queue)
 	 */
 	public static void run()
@@ -102,6 +102,8 @@ public class AsyncService {
 		exit = false;
 
 		ThreadPool.startPool();
+
+		service_thread = Thread.currentThread();
 
 		exitCheck();
 
@@ -111,8 +113,8 @@ public class AsyncService {
 
 			busy.set(false);
 
-			Event[] nextEvents = null;
-			Event nextEvent = null;
+			AsyncTask[] nextAsyncTasks = null;
+			AsyncTask nextAsyncTask = null;
 			
 			try {
 
@@ -120,25 +122,25 @@ public class AsyncService {
 
 
 
-					nextEvent = queue.take();
+					nextAsyncTask = queue.take();
 
 					busy.set(true);
 
-					nextEvent.execute();
+					nextAsyncTask.execute();
 
 
 
 				} else {
 
-					Event[] e_arr = new Event[0];
+					AsyncTask[] e_arr = new AsyncTask[0];
 
-					nextEvents = queue.toArray(e_arr);
+					nextAsyncTasks = queue.toArray(e_arr);
 
 					queue.clear();
 
 					busy.set(true);
 
-					for (Event e : nextEvents) {
+					for (AsyncTask e : nextAsyncTasks) {
 
 
 
@@ -148,13 +150,13 @@ public class AsyncService {
 
 				}
 
+				if(Thread.interrupted()){
+					System.out.println("cleared interrupt state");
+				}
+
 			} catch(InterruptedException e) {
 
-				System.out.println("Event Loop was interrupted");
-
-				exit();
-
-				break;
+				System.out.println(" ---  event loop interrupted --- ");
 
 			}
 
@@ -164,7 +166,7 @@ public class AsyncService {
 		running = false;
 		busy.set(false);
 
-		debug("Exit Event Loop... ");
+		debug("Exit AsyncTask Loop... ");
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class AsyncService {
 	 * @param command The Runnable to execute. 
 	 */
 	public void execute(Runnable command) {
-		post(Events.makeEvent(command));
+		post(Async.makeAsync(command));
 	}
 	
 	/**
@@ -194,130 +196,130 @@ public class AsyncService {
 	 * @return The ListenableFuture object.
 	 */
 	public <T> ListenableFuture<T> callAsync(Supplier<T> sup) {
-		SupplierEvent<T> e = new SupplierEvent<T>(sup);
+		AsyncSupplier<T> e = new AsyncSupplier<T>(sup);
 		AsyncService.post(e);
 		return e.getFuture();
 	}
 	
 	/**
 	 * Post event to the EventQueue.
-	 * @param newEvent The Event to add.
+	 * @param newAsyncTask The AsyncTask to add.
 	 */
-	public static void post(Event newEvent)
+	public static void post(AsyncTask newAsyncTask)
 	{
-		queue.add(newEvent);
+		queue.add(newAsyncTask);
 	}
 
 	
 	/**
-	 * Place an Event at the beginning if the EventQueue.
-	 * @param newEvent The Event to add.
+	 * Place an AsyncTask at the beginning if the EventQueue.
+	 * @param newAsyncTask The AsyncTask to add.
 	 */
-	public static void postNext(Event newEvent)
+	public static void postNext(AsyncTask newAsyncTask)
 	{
-		queue.push(newEvent);
+		queue.push(newAsyncTask);
 	}
 
 	/**
-	 * Generate a RunnableEvent and post it to the Queue
+	 * Generate a AsyncRunnable and post it to the Queue
 	 * @param runnable the runnable to perform inside the EventLoop
-	 * @see RunnableEvent
+	 * @see AsyncRunnable
 	 */
 	public static void post(Runnable runnable) {
-		Event r_event = Events.makeEvent(runnable);
-		post(r_event);
+		AsyncTask r_asyncTask = Async.makeAsync(runnable);
+		post(r_asyncTask);
 	}
 
 	/**
-	 * Generate a SupplierEvent and post it to the Queue
+	 * Generate a AsyncSupplier and post it to the Queue
 	 * @param supplier the Supplier to perform inside the EventLoop
-	 * @see SupplierEvent
+	 * @see AsyncSupplier
 	 * @param <T> supplier return type
 	 */
 	public static <T> void post(Supplier<T> supplier) {
-		Event r_event = Events.makeEvent(supplier);
-		post(r_event);
+		AsyncTask r_asyncTask = Async.makeAsync(supplier);
+		post(r_asyncTask);
 	}
 
 	/**
-	 * Generate a ConsumerEvent and post it to the Queue
+	 * Generate a AsyncConsumer and post it to the Queue
 	 * @param consumer the Consumer to perform inside the EventLoop
-	 * @see SupplierEvent
+	 * @see AsyncSupplier
 	 */
 	public static <T> void post(T input, Consumer<T> consumer) {
-		Event r_event = Events.makeEvent(input, consumer);
-		post(r_event);
+		AsyncTask r_asyncTask = Async.makeAsync(input, consumer);
+		post(r_asyncTask);
 	}
 
 
 	/**
-	 * Generate a ConsumerEvent and post it to the Queue
+	 * Generate a AsyncConsumer and post it to the Queue
 	 * @param biconsumer the BiConsumer to perform inside the EventLoop
-	 * @see SupplierEvent
+	 * @see AsyncSupplier
 	 */
 	public static <T,U> void post(T input1, U input2, BiConsumer<T,U> biconsumer) {
-		Event r_event = Events.makeEvent(input1, input2, biconsumer);
-		post(r_event);
+		AsyncTask r_asyncTask = Async.makeAsync(input1, input2, biconsumer);
+		post(r_asyncTask);
 	}
 
 	/**
-	 * Generate a FunctionEvent and post it to the Queue
+	 * Generate a AsyncFunction and post it to the Queue
 	 * @param function the Function to perform inside the EventLoop
 	 * @param <T> function input type
 	 * @param <U> function return type
-	 * @see FunctionEvent
+	 * @see AsyncFunction
 	 */
 	public static <T, U> void post(T input, Function<T,U> function) {
-		Event f_event = Events.makeEvent(input, function);
-		post(f_event);
+		AsyncTask f_asyncTask = Async.makeAsync(input, function);
+		post(f_asyncTask);
 	}
 
 	/**
-	 * Generate a BiFunctionEvent and post it to the Queue
+	 * Generate a AsyncBiFunction and post it to the Queue
 	 * @param bifunction the BiFunction to perform inside the EventLoop
 	 * @param <T> function input type
 	 * @param <U> function input type
 	 * @param <R> function return type
-	 * @see BiFunctionEvent
+	 * @see AsyncBiFunction
 	 */
 	public static <T,U,R> void post(T input1, U input2, BiFunction<T, U, R> bifunction) {
-		Event bf_event = Events.makeEvent(input1, input2, bifunction);
-		post(bf_event);
+		AsyncTask bf_asyncTask = Async.makeAsync(input1, input2, bifunction);
+		post(bf_asyncTask);
 	}
 	
 	/**
-	 * Schedule an Event for later execution with a given delay. 
-	 * @param newEvent The Event to add.
+	 * Schedule an AsyncTask for later execution with a given delay.
+	 * @param newAsyncTask The AsyncTask to add.
 	 * @param delay delay time. 
-	 * @param <T> The return type of the Event if it returns.
-	 * @return The ListenableFuture object associated with the Event.
+	 * @param <T> The return type of the AsyncTask if it returns.
+	 * @return The ListenableFuture object associated with the AsyncTask.
 	 */
-	public static <T> ListenableFuture<T> schedule(Event newEvent, long delay)
+	public static <T> LazyAllocatedListenableFuture<T> schedule(AsyncTask newAsyncTask, long delay)
 	{
-		EventTimer tm_e = new EventTimer(newEvent, false);
+		AsyncTimer tm_e = new AsyncTimer(newAsyncTask, false);
 		
 		timer_map.put(tm_e.getId(), tm_e);
 		
 		coreTimer.schedule(tm_e, delay);
 
-		return newEvent.getFuture();
+		return newAsyncTask.getFutureLazy();
 	}
 	
 	/**
-	 * Schedule an Event for repeated execution with a given interval. 
-	 * @param newEvent The Event to add. 
+	 * Schedule an AsyncTask for repeated execution with a given interval.
+	 * @param newAsyncTask The AsyncTask to add.
 	 * @param interval Interval time. 
-	 * @param <T> The return type of the Event if it returns.
+	 * @param <T> The return type of the AsyncTask if it returns.
 	 * @return The ListenabelFuture object. 
 	 */
-	public static <T> ListenableFuture<T> scheduleInterval(Event newEvent, long interval)
+	public static <T> LazyAllocatedListenableFuture<T> scheduleInterval(AsyncTask newAsyncTask, long interval)
 	{
-		EventTimer tm_e = new EventTimer(newEvent, true);
+		AsyncTimer tm_e = new AsyncTimer(newAsyncTask, true);
 		timer_map.put(tm_e.getId(), tm_e);
 		
 		coreTimer.schedule(tm_e, 0, interval);
 		
-		return newEvent.getFuture();
+		return newAsyncTask.getFutureLazy();
 	}
 
 
@@ -327,7 +329,18 @@ public class AsyncService {
 	 * set the exit flag to exit the EventLoop after the next Iteration
 	 * @param __exit should exit
 	 */
-	public static synchronized void setExit(boolean __exit) {
+	public static synchronized void __set__exit(boolean __exit) {
 		exit = __exit;
+	}
+
+	private static AsyncRunnable dummyEvent = new AsyncRunnable(() -> {});
+
+	public static void iterate_loop_if_waiting() {
+		/* if(isWaiting()){
+			post(dummyEvent);
+		} */
+
+		service_thread.interrupt();
+
 	}
 }

@@ -49,9 +49,7 @@ public class ThreadPoolJobLite implements Executable {
 
             set_finished(true);
 
-            if(AsyncService.isWaiting()) {
-                AsyncService.post(()->{});
-            }
+            AsyncService.iterate_loop_if_waiting();
 
             ThreadPool.thread_log.info("ThreadPoolJob finished, id: " + handle.getId());
         };

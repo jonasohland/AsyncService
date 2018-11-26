@@ -1,7 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.events.Events;
+import de.hsmainz.iiwa.AsyncService.events.Async;
 import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 
 /**
@@ -28,7 +28,7 @@ public abstract class DualAsyncUpdater<T, U> {
 	 */
 	public void triggerUpdate(T __input0, U __input1)
 	{
-		AsyncService.post(Events.makeEvent(__input0, __input1, new BiConsumer<T, U>() {
+		AsyncService.post(Async.makeAsync(__input0, __input1, new BiConsumer<T, U>() {
 			public void accept(T __input0, U __input1) {
 				DualAsyncUpdater.this.handleUpdate(__input0, __input1);
 			}

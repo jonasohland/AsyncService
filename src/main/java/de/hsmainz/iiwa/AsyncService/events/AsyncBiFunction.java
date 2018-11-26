@@ -2,35 +2,34 @@ package de.hsmainz.iiwa.AsyncService.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.BiFunction;
 
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
-
-public class BiFunctionEvent<Tin1, Tin2, Tout> implements Event {
+public class AsyncBiFunction<Tin1, Tin2, Tout> implements AsyncTask {
 	
 	private Tin1 arg1;
 	private Tin2 arg2;
 	
-	private ListenableFuture<Tout> future;
+	private LazyAllocatedListenableFuture<Tout> future = new LazyAllocatedListenableFuture<>();
 
 	public BiFunction<Tin1,Tin2,Tout> function;
 	
-	private EventTimer timer;
+	private AsyncTimer timer;
 	
-	public BiFunctionEvent(Tin1 __arg1, Tin2 __arg2, BiFunction<Tin1, Tin2, Tout> __func)
+	public AsyncBiFunction(Tin1 __arg1, Tin2 __arg2, BiFunction<Tin1, Tin2, Tout> __func)
 	{
 		arg1 = __arg1;
 		arg2 = __arg2;
 		function = __func;
+		future.prepare(this);
 	}
 	
-	public BiFunctionEvent(BiFunction<Tin1, Tin2, Tout> __func){
+	public AsyncBiFunction(BiFunction<Tin1, Tin2, Tout> __func){
 		function = __func;
+		future.prepare(this);
 	}
 	
-	public BiFunctionEvent(BiFunction<Tin1, Tin2, Tout> __func, ListenableFuture<Tout> __future){
+	public AsyncBiFunction(BiFunction<Tin1, Tin2, Tout> __func, ListenableFuture<Tout> __future){
 		function = __func;
-		future = __future;
-		future.setEvent(this);
+		future.attach_if_alloc(__future);
+		future.prepare(this);
 	}
 
 
@@ -45,20 +44,14 @@ public class BiFunctionEvent<Tin1, Tin2, Tout> implements Event {
 	@SuppressWarnings("unchecked")
 	@Override
 	public ListenableFuture<Tout> getFuture() {
-		if(future != null) {
-			return future;
-		}
-		else {
-			future = new ListenableFuture<>(this);
-			return future;
-		}
+		return future.get();
 	}
 
 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K> void setArg(K arg) {
+	public <K> void __set__arg_(K arg) {
 		arg1 = (Tin1) arg;
 	}
 
@@ -66,8 +59,13 @@ public class BiFunctionEvent<Tin1, Tin2, Tout> implements Event {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <L> void setSecondArg(L arg) {
+	public <L> void __set__sec__arg_(L arg) {
 		arg2 = (Tin2) arg;
+	}
+
+	@Override
+	public LazyAllocatedListenableFuture<Tout> getFutureLazy() {
+		return future;
 	}
 
 
@@ -78,20 +76,20 @@ public class BiFunctionEvent<Tin1, Tin2, Tout> implements Event {
 	
 	public void fire(Tin1 in1, Tin2 in2) {
 		
-		setArg(in1);
-		setSecondArg(in2);
+		__set__arg_(in1);
+		__set__sec__arg_(in2);
 		
 		AsyncService.post(this);
 		
 	}
 	
 	@Override
-	public Event copy() {
-		return new BiFunctionEvent<Tin1, Tin2, Tout>(arg1, arg2, function);
+	public AsyncTask copy() {
+		return new AsyncBiFunction<Tin1, Tin2, Tout>(arg1, arg2, function);
 	}
 
 	@Override
-	public void attachTimer(EventTimer t) {
+	public void attachTimer(AsyncTimer t) {
 		timer = t;
 	}
 
@@ -101,7 +99,7 @@ public class BiFunctionEvent<Tin1, Tin2, Tout> implements Event {
 	}
 
 	@Override
-	public EventTimer getTimer() {
+	public AsyncTimer getTimer() {
 		return timer;
 	}
 

@@ -1,11 +1,9 @@
-package de.hsmainz.iiwa.AsyncService.future;
+package de.hsmainz.iiwa.AsyncService.events;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import de.hsmainz.iiwa.AsyncService.events.*;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 import de.hsmainz.iiwa.AsyncService.functional.Function;
-import de.hsmainz.iiwa.AsyncService.events.AsyncService;
 
 /**
  *  
@@ -15,16 +13,16 @@ import de.hsmainz.iiwa.AsyncService.events.AsyncService;
  */
 public class ListenableFuture<T>{
 	
-	private Event event;
-	private LinkedBlockingQueue<Event> listeners = new LinkedBlockingQueue<Event>();
+	private AsyncTask asyncTask;
+	private LinkedBlockingQueue<AsyncTask> listeners = new LinkedBlockingQueue<AsyncTask>();
 	private T result;
 	
 	/**
-	 * Adds the event to the Listenable which calls all listeners.
-	 * @param e Adds an event to the ListanableFuture object.
+	 * Adds the asyncTask to the Listenable which calls all listeners.
+	 * @param e Adds an asyncTask to the ListanableFuture object.
 	 */
-	public void setEvent(Event e) {
-		event = e;
+	public void setAsyncTask(AsyncTask e) {
+		asyncTask = e;
 	}
 	
 	/**
@@ -42,11 +40,11 @@ public class ListenableFuture<T>{
 	}
 	
 	/**
-	 * Constructor with event. 
-	 * @param e Event to associate with
+	 * Constructor with asyncTask.
+	 * @param e AsyncTask to associate with
 	 */
-	public ListenableFuture(Event e){
-		event = e;
+	public ListenableFuture(AsyncTask e){
+		asyncTask = e;
 	}
 	
 	/**
@@ -63,7 +61,7 @@ public class ListenableFuture<T>{
 	 */
 	public void addListener(Runnable runnable)
 	{
-		listeners.add(Events.makeEvent(runnable));
+		listeners.add(Async.makeAsync(runnable));
 	}
 	
 	/**
@@ -72,14 +70,14 @@ public class ListenableFuture<T>{
 	 */
 	public void addListener(Consumer<T> consumer)
 	{
-		listeners.add(Events.makeEvent(result, consumer));
+		listeners.add(Async.makeAsync(result, consumer));
 	}
 	
 	/**
 	 * Add a listener to the listener queue.
-	 * @param consumer A ConsumerEvent object to add.
+	 * @param consumer A AsyncConsumer object to add.
 	 */
-	public void addListener(ConsumerEvent<T> consumer)
+	public void addListener(AsyncConsumer<T> consumer)
 	{
 		listeners.add(consumer);
 	}
@@ -90,7 +88,7 @@ public class ListenableFuture<T>{
 	 */
 	public void last(Runnable runnable)
 	{
-		listeners.add(Events.makeEvent(runnable));
+		listeners.add(Async.makeAsync(runnable));
 	}
 	
 	/**
@@ -99,14 +97,14 @@ public class ListenableFuture<T>{
 	 */
 	public void last(Consumer<T> consumer)
 	{
-		listeners.add(Events.makeEvent(result, consumer));
+		listeners.add(Async.makeAsync(result, consumer));
 	}
 	
 	/**
 	 * Add a listener to the listener queue.
-	 * @param consumer A ConsumerEvent object to add.
+	 * @param consumer A AsyncConsumer object to add.
 	 */
-	public void last(ConsumerEvent<T> consumer)
+	public void last(AsyncConsumer<T> consumer)
 	{
 		listeners.add(consumer);
 	}
@@ -119,18 +117,18 @@ public class ListenableFuture<T>{
 	 */
 	public <R> ListenableFuture<R> addNextListener(Function<T,R> function)
 	{
-		Event e = Events.makeEvent(result, function);
+		AsyncTask e = Async.makeAsync(result, function);
 		listeners.add(e);
 		return e.getFuture();
 	}
 	
 	/**
 	 * Add a chained listener to the future. 
-	 * @param function A FunctionEvent object to add.
+	 * @param function A AsyncFunction object to add.
 	 * @param <R> Return Type of function.
 	 * @return The ListenableFuture object.
 	 */
-	public <R> ListenableFuture<R> addNextListener(FunctionEvent<T,R> function)
+	public <R> ListenableFuture<R> addNextListener(AsyncFunction<T,R> function)
 	{
 		listeners.add(function);
 		return function.getFuture();
@@ -145,19 +143,19 @@ public class ListenableFuture<T>{
 	 * */
 	public <R> ListenableFuture<R> then(Function<T,R> function)
 	{
-		Event e = Events.makeEvent(result, function);
+		AsyncTask e = Async.makeAsync(result, function);
 		listeners.add(e);
 		return e.getFuture();
 	}
 	
 	/**
 	 * Same as addNextListener function. 
-	 * @param function A FunctionEvent object to add.
+	 * @param function A AsyncFunction object to add.
 	 * @return The ListenableFuture object.
 	 * @param <R> ReturnType of function
 	 * @see #addNextListener(Function)	 
 	 * */
-	public <R> ListenableFuture<R> then(FunctionEvent<T,R> function)
+	public <R> ListenableFuture<R> then(AsyncFunction<T,R> function)
 	{
 		listeners.add(function);
 		return function.getFuture();
@@ -173,12 +171,13 @@ public class ListenableFuture<T>{
 		
 		if(!listeners.isEmpty()) {
 			
-			for(Event element : listeners) {
-				
-				element.setArg(value);
+			for(AsyncTask element : listeners) {
+
+				element.__set__arg_(value);
+
 				AsyncService.post(element);
+
 			}
-			//listeners.clear();
 		}
 	}
 	
@@ -189,7 +188,7 @@ public class ListenableFuture<T>{
 		
 		if(!listeners.isEmpty()) {
 			
-			for(Event element : listeners) {
+			for(AsyncTask element : listeners) {
 				AsyncService.post(element);
 			}
 			//listeners.clear();
@@ -197,68 +196,68 @@ public class ListenableFuture<T>{
 	}
 	
 	/**
-	 * Cancel the timer for this Future and remove its Event from the AsyncService.
+	 * Cancel the timer for this Future and remove its AsyncTask from the AsyncService.
 	 */
 	public void cancel(){
 		
 		debug("Cancelling Future... ");
 		
-		if(event != null) {
+		if(asyncTask != null) {
 			 
-			if(event.hasTimer()) {
+			if(asyncTask.hasTimer()) {
 				
-				debug("Future has Timer " + event.getTimer().getId());
+				debug("Future has Timer " + asyncTask.getTimer().getId());
 				
-				if(AsyncService.timer_map.containsKey(event.getTimer().getId())){
-					debug("Timer Event was found in Map");
+				if(AsyncService.timer_map.containsKey(asyncTask.getTimer().getId())){
+					debug("Timer AsyncTask was found in Map");
 				} else {
-					debug("Timer Event was not found in Map");
+					debug("Timer AsyncTask was not found in Map");
 				}
 				
-				AsyncService.timer_map.remove(event.getTimer().getId());
+				AsyncService.timer_map.remove(asyncTask.getTimer().getId());
 				
-				AsyncService.queue.remove(event);
+				AsyncService.queue.remove(asyncTask);
 				
 				debug("removing Timer... ");
 				
-				if(event.getTimer().cancel()) {
+				if(asyncTask.getTimer().cancel()) {
 					debug("successful");
 				} else {
 					debug("failed");
 				}
 			}
 			else {
-				AsyncService.queue.remove(event);
+				AsyncService.queue.remove(asyncTask);
 			}
 		} 
 		
 		if(!listeners.isEmpty()) {
-			for(Event listener : listeners) {
+			for(AsyncTask listener : listeners) {
 				AsyncService.queue.remove(listener);
 			}
 		}
 
-		if(AsyncService.isWaiting()){
-			AsyncService.post(()->{});
-		}
+		AsyncService.iterate_loop_if_waiting();
 	}
 	
 	/**
 	 * Returns a Timeout object that can be used to cancel this Future.
 	 * @return A timeout object associated to this Future. 
-	 * @see AsyncService#schedule(Event, long)
+	 * @see AsyncService#schedule(AsyncTask, long)
 	 */
 	public Timeout getTimeout(){
-		return new Timeout(this);
+		LazyAllocatedListenableFuture<T> lazy_f = new LazyAllocatedListenableFuture<T>();
+		lazy_f.attach(this);
+		return new Timeout(lazy_f);
 	}
 	
 	/**
-	 * Set a timeout Timeout for Event. After the Timeout Period, the Event will be atomically removed from the queue. 
+	 * Set a timeout Timeout for AsyncTask. After the Timeout Period, the AsyncTask will be atomically removed from the queue.
 	 * @param delay Timeout time
-	 * @return EventCancelTask - A TimerTask that can be canceled to cancel the Timeout
+	 * @return AsyncTaskCancelTimerTask - A TimerTask that can be canceled to cancel the Timeout
 	 */
-	public EventCancelTask setTimeout(long delay) {
-		EventCancelTask ct = new EventCancelTask(event, listeners, null);
+	public AsyncTaskCancelTimerTask setTimeout(long delay) {
+		AsyncTaskCancelTimerTask ct = new AsyncTaskCancelTimerTask(asyncTask, listeners, null);
 		AsyncService.coreTimer.schedule(ct, delay);
 		return ct;
 	}

@@ -1,29 +1,26 @@
 package de.hsmainz.iiwa.AsyncService.events;
 
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.future.EventTimer;
-
-public class Timeout implements Event {
+public class Timeout implements AsyncTask {
 	
-	ListenableFuture<?> future;
+	LazyAllocatedListenableFuture<?> future;
 	
-	public <T> Timeout(ListenableFuture<T> __future){
+	public <T> Timeout(LazyAllocatedListenableFuture<T> __future){
 		future = __future;
 	}
 
 	@Override
-	public void attachTimer(EventTimer arg0) {
+	public void attachTimer(AsyncTimer arg0) {
 		
 	}
 
 	@Override
-	public Event copy() {
+	public AsyncTask copy() {
 		return new Timeout(future);
 	}
 
 	@Override
 	public void execute() {
-		future.cancel();
+		future.get().cancel();
 	}
 
 	@Override
@@ -38,7 +35,12 @@ public class Timeout implements Event {
 	}
 
 	@Override
-	public EventTimer getTimer() {
+	public <T> LazyAllocatedListenableFuture<T> getFutureLazy() {
+		return null;
+	}
+
+	@Override
+	public AsyncTimer getTimer() {
 		return null;
 	}
 
@@ -48,12 +50,12 @@ public class Timeout implements Event {
 	}
 
 	@Override
-	public <K> void setArg(K arg0) {
+	public <K> void __set__arg_(K arg0) {
 		
 	}
 
 	@Override
-	public <L> void setSecondArg(L arg0) {
+	public <L> void __set__sec__arg_(L arg0) {
 		
 	}
 

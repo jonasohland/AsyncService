@@ -2,7 +2,7 @@ package de.hsmainz.iiwa.AsyncService.threads;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
-import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.events.ListenableFuture;
 
 public abstract class ThreadPoolJob<T> implements Executable {
 
@@ -24,7 +24,7 @@ public abstract class ThreadPoolJob<T> implements Executable {
     public ListenableFuture<T> onFinish = new ListenableFuture<T>();
 
     /**
-     * This Event will be fired at Thread start and it will have the executing java.lang.Thread as argument
+     * This AsyncTask will be fired at Thread start and it will have the executing java.lang.Thread as argument
      */
     public ListenableFuture<Void> onStart = new ListenableFuture<Void>();
 
@@ -59,9 +59,7 @@ public abstract class ThreadPoolJob<T> implements Executable {
 
         set_finished(true);
 
-        if(AsyncService.isWaiting()) {
-            AsyncService.post(()->{});
-        }
+        AsyncService.iterate_loop_if_waiting();
 
         ThreadPool.thread_log.info("ThreadPoolJob finished, id: " + handle.getId());
 
