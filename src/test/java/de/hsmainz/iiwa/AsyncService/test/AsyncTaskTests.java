@@ -1,9 +1,11 @@
 package de.hsmainz.iiwa.AsyncService.test;
 
 import de.hsmainz.iiwa.AsyncService.events.*;
+import de.hsmainz.iiwa.AsyncService.except.ExecutionRejectedException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AsyncTaskTests {
 
@@ -117,6 +119,95 @@ public class AsyncTaskTests {
         AsyncService.exit();
 
         assertEquals(throwie.toString(), (new ClassCircularityError()).toString());
+
+    }
+
+    private boolean catched_redundant_exec_1 = false;
+    private boolean catched_redundant_exec_2 = false;
+    private boolean legal_exec_1 = false;
+    private boolean legal_exec_2 = false;
+
+    @Test
+    public void strand_test() {
+
+        AsyncService.init();
+
+        StrandExecutor executor = new StrandExecutor();
+
+        try{
+            executor.post(Async.makeAsync(() -> {
+
+                legal_exec_1 = true;
+
+                try {
+
+                    executor.post(Async.makeAsync(() -> { legal_exec_2 = true; }));
+
+
+                } catch(ExecutionRejectedException ex) {
+
+                }
+
+                try {
+
+                    executor.post(Async.makeAsync(() -> {}));
+
+
+                } catch(ExecutionRejectedException ex) {
+                    catched_redundant_exec_2 = true;
+                }
+
+
+            }));
+
+        } catch (ExecutionRejectedException ex){
+        }
+
+        try{
+            executor.post(Async.makeAsync(() -> { System.out.println("hello"); }));
+        } catch (ExecutionRejectedException ex){
+            catched_redundant_exec_1 = true;
+        }
+
+        AsyncService.run();
+        AsyncService.exit();
+
+        assertTrue(legal_exec_1);
+        assertTrue(legal_exec_2);
+        assertTrue(catched_redundant_exec_1);
+        assertTrue(catched_redundant_exec_2);
+
+    }
+
+    @Test
+    public void strand_queue() {
+
+        AsyncService.init();
+
+        StrandExecutorQueue strand = new StrandExecutorQueue();
+
+        for(int i = 0; i < 3; i++){
+            boolean res = strand.post(Async.makeAsync(() -> {
+
+                System.out.println("Something happened! ");
+
+                strand.post(Async.makeAsync(() -> {
+
+                    System.out.println("something happened on the inside");
+
+                    strand.post(Async.makeAsync(() -> {
+
+                        System.out.println("something happened even further inside");
+
+                    }));
+                }));
+            }));
+        }
+
+        AsyncService.post(() -> System.out.println("something else happened"));
+
+        AsyncService.run();
+        AsyncService.exit();
 
     }
 }
