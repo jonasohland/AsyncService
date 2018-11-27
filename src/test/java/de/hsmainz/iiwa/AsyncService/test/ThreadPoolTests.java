@@ -195,6 +195,8 @@ public class ThreadPoolTests {
         WaitJob w = new WaitJob(100);
         w.start();
 
+        w.onFinish.addListener((i) -> { System.out.println(i); });
+
         AsyncService.init();
 
 
@@ -289,8 +291,11 @@ public class ThreadPoolTests {
         job.start();
 
         AsyncService.schedule(Async.makeAsync(() -> {
+
             System.out.println("posting update");
+
             job.getUppi().triggerUpdate(44);
+
         }), 500);
 
         AsyncService.run();

@@ -27,7 +27,7 @@ public class AsyncTaskExamples {
 
 		assertTrue(success);
 
-		System.out.println("basic post ran");
+		System.out.println("basic postTask ran");
 		
 	}
 	

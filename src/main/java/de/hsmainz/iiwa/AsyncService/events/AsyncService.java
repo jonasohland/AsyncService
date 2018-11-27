@@ -12,18 +12,18 @@ import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
 /**
  * <p>
  * The AsyncService is the central executor for any asynchronous operation in the program. Asynchronous operations can be
- * queued by calling the post() method with a lambda or an AsyncTask. The async service will execute the given operation some
+ * queued by calling the postTask() method with a lambda or an AsyncTask. The async service will execute the given operation some
  * time in the future inside the AsyncService.run() method.
  *</p><p>
  * The AsyncService.run() method must be used to perform the async operations and should be used to execute almost all parts of the program.
  * Its perfectly legal and good practice to trigger async operations inside async operations.
  *</p>
  * <pre>{@code
- *     AsyncService.post(() -> {
+ *     AsyncService.postTask(() -> {
  *
  *     		System.out.println("triggering operation");
  *
- *     		AsyncService.post(() -> {
+ *     		AsyncService.postTask(() -> {
  *     			System.out.println("operation triggered");
  *     		});
  *     })
@@ -151,12 +151,9 @@ public class AsyncService {
 				}
 
 				if(Thread.interrupted()){
-					System.out.println("cleared interrupt state");
 				}
 
 			} catch(InterruptedException e) {
-
-				System.out.println(" ---  event loop interrupted --- ");
 
 			}
 
@@ -221,7 +218,7 @@ public class AsyncService {
 	}
 
 	/**
-	 * Generate a AsyncRunnable and post it to the Queue
+	 * Generate a AsyncRunnable and postTask it to the Queue
 	 * @param runnable the runnable to perform inside the EventLoop
 	 * @see AsyncRunnable
 	 */
@@ -231,7 +228,7 @@ public class AsyncService {
 	}
 
 	/**
-	 * Generate a AsyncSupplier and post it to the Queue
+	 * Generate a AsyncSupplier and postTask it to the Queue
 	 * @param supplier the Supplier to perform inside the EventLoop
 	 * @see AsyncSupplier
 	 * @param <T> supplier return type
@@ -242,7 +239,7 @@ public class AsyncService {
 	}
 
 	/**
-	 * Generate a AsyncConsumer and post it to the Queue
+	 * Generate a AsyncConsumer and postTask it to the Queue
 	 * @param consumer the Consumer to perform inside the EventLoop
 	 * @see AsyncSupplier
 	 */
@@ -253,7 +250,7 @@ public class AsyncService {
 
 
 	/**
-	 * Generate a AsyncConsumer and post it to the Queue
+	 * Generate a AsyncConsumer and postTask it to the Queue
 	 * @param biconsumer the BiConsumer to perform inside the EventLoop
 	 * @see AsyncSupplier
 	 */
@@ -263,7 +260,7 @@ public class AsyncService {
 	}
 
 	/**
-	 * Generate a AsyncFunction and post it to the Queue
+	 * Generate a AsyncFunction and postTask it to the Queue
 	 * @param function the Function to perform inside the EventLoop
 	 * @param <T> function input type
 	 * @param <U> function return type
@@ -275,7 +272,7 @@ public class AsyncService {
 	}
 
 	/**
-	 * Generate a AsyncBiFunction and post it to the Queue
+	 * Generate a AsyncBiFunction and postTask it to the Queue
 	 * @param bifunction the BiFunction to perform inside the EventLoop
 	 * @param <T> function input type
 	 * @param <U> function input type
@@ -337,7 +334,7 @@ public class AsyncService {
 
 	public static void iterate_loop_if_waiting() {
 		/* if(isWaiting()){
-			post(dummyEvent);
+			postTask(dummyEvent);
 		} */
 
 		service_thread.interrupt();

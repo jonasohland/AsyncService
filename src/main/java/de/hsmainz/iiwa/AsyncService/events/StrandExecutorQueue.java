@@ -5,7 +5,7 @@ import de.hsmainz.iiwa.AsyncService.except.ExecutionRejectedException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class StrandExecutorQueue {
+public class StrandExecutorQueue extends AsyncTaskExecutor{
     private LinkedBlockingQueue<AsyncTask> queue = new LinkedBlockingQueue<>();
 
 
@@ -31,7 +31,7 @@ public class StrandExecutorQueue {
 
     }
 
-    public synchronized boolean post(AsyncTask task) {
+    public synchronized boolean postTask(AsyncTask task) {
 
         if(free){
             AsyncService.post(()->{
@@ -46,4 +46,8 @@ public class StrandExecutorQueue {
         }
     }
 
+    @Override
+    protected void handle_task(AsyncTask task) {
+        postTask(task);
+    }
 }

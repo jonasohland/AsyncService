@@ -1,6 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.test;
 
 import de.hsmainz.iiwa.AsyncService.events.*;
+import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJobLite;
 import org.junit.Test;
 
 import de.hsmainz.iiwa.AsyncService.events.AsyncService;
@@ -46,13 +47,13 @@ public class TimersTest {
 
 
 		
-		AsyncService.post(Async.makeAsync(() -> {
+		AsyncService.post(() -> {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}));
+		});
 
 		AsyncService.post(Async.makeAsync(() -> {
 			dual_future.fireListeners("k", 18);
@@ -125,5 +126,37 @@ public class TimersTest {
 
 		assertTrue(!fail_1);
 		
+	}
+
+	private long counter = 0;
+
+	@Test
+	public void high_speed_post(){
+
+		AsyncService.init();
+
+		ThreadPoolJobLite job = ThreadPoolJobLite.makeJob(() -> {
+			while (!Thread.interrupted()){
+				Async.run(()->{ counter++; });
+			}
+		});
+
+		job.start();
+
+		AsyncService.schedule(Async.makeAsync(() -> { job.getThread().interrupt(); }), 1000);
+
+		long start_time = System.nanoTime();
+		AsyncService.run();
+		long end_time = System.nanoTime();
+
+		long duration = (end_time - start_time) / 1000000;
+
+		AsyncService.exit();
+
+
+		System.out.println("counter: " + counter + " time: " + duration);
+
+		System.out.println("" + counter / duration / 1000 + " executions per millisecond");
+
 	}
 }
