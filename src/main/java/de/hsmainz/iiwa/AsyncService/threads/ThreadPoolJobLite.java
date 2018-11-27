@@ -127,6 +127,7 @@ public class ThreadPoolJobLite implements Executable {
      */
     public void join() throws InterruptedException {
         while(isActive()){
+            Thread.yield();
             if(Thread.interrupted()){
                 throw new InterruptedException();
             }

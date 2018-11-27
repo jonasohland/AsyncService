@@ -151,12 +151,12 @@ public class AsyncService {
 				}
 
 				if(Thread.interrupted()){
-					System.out.println("cleared interrupt state");
+					// System.out.println("cleared interrupt state");
 				}
 
 			} catch(InterruptedException e) {
 
-				System.out.println(" ---  event loop interrupted --- ");
+				// System.out.println(" ---  event loop interrupted --- ");
 
 			}
 

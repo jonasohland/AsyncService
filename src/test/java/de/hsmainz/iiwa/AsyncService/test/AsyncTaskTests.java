@@ -65,8 +65,6 @@ public class AsyncTaskTests {
         AsyncService.exit();
 
         assertEquals(6, counter);
-
-
     }
 
     private int assertion_int = 0;
