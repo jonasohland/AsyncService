@@ -44,8 +44,6 @@ public class LazyAllocatedListenableFuture<T> {
     public void alloc() {
         if(future == null) {
 
-            System.out.println("allocation happened");
-
             if (e != null)
                 future = new ListenableFuture<T>(e);
             else

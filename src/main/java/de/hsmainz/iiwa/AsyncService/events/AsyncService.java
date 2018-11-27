@@ -12,18 +12,18 @@ import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
 /**
  * <p>
  * The AsyncService is the central executor for any asynchronous operation in the program. Asynchronous operations can be
- * queued by calling the post() method with a lambda or an AsyncTask. The async service will execute the given operation some
+ * queued by calling the postTask() method with a lambda or an AsyncTask. The async service will execute the given operation some
  * time in the future inside the AsyncService.run() method.
  *</p><p>
  * The AsyncService.run() method must be used to perform the async operations and should be used to execute almost all parts of the program.
  * Its perfectly legal and good practice to trigger async operations inside async operations.
  *</p>
  * <pre>{@code
- *     AsyncService.post(() -> {
+ *     AsyncService.postTask(() -> {
  *
  *     		System.out.println("triggering operation");
  *
- *     		AsyncService.post(() -> {
+ *     		AsyncService.postTask(() -> {
  *     			System.out.println("operation triggered");
  *     		});
  *     })
@@ -337,7 +337,7 @@ public class AsyncService {
 
 	public static void iterate_loop_if_waiting() {
 		/* if(isWaiting()){
-			post(dummyEvent);
+			postTask(dummyEvent);
 		} */
 
 		service_thread.interrupt();

@@ -83,6 +83,18 @@ public class Async {
 	}
 
 	/**
+	 * Make an AsyncTask from an Function Object
+	 * @param <T> Function input type
+	 * @param <U> Function return type
+	 * @param function function to perform with the event
+	 * @return new AsyncFunction
+	 */
+	public static <T, U> AsyncTask makeAsync(Function<T,U> function)
+	{
+		return new AsyncFunction<T, U>(function);
+	}
+
+	/**
 	 * make an AsyncTask from a BiFunction Object
 	 * @param function BiFunction to perform with the AsyncTask
 	 * @param <T> function input 1 type
@@ -108,6 +120,48 @@ public class Async {
 	public static <T,U,R> AsyncTask makeAsync(T in1, U in2, BiFunction<T,U,R> function)
 	{
 		return new AsyncBiFunction<T,U,R>(in1, in2, function);
-		
 	}
+
+
+
+	public static void run(AsyncTask task){
+		AsyncService.post(task);
+	}
+
+	public static void run(Runnable runnable){
+		AsyncService.post(makeAsync(runnable));
+	}
+
+	public static <T> void run(Consumer<T> consumer){
+		AsyncService.post(makeAsync(consumer));
+	}
+
+	public static <T> void run(T in, Consumer<T> consumer){
+		AsyncService.post(makeAsync(in, consumer));
+	}
+
+	public static <T> void run(Supplier<T> supplier){
+		AsyncService.post(makeAsync(supplier));
+	}
+
+	public static <T, R> void run(T in, Function<T, R> function){
+		AsyncService.post(makeAsync(in, function));
+	}
+
+	public static <T, U> void run(BiConsumer<T, U> biconsumer){
+		AsyncService.post(makeAsync(biconsumer));
+	}
+
+	public static <T, U> void run(T in1, U in2, BiConsumer<T, U> biconsumer){
+		AsyncService.post(makeAsync(in1, in2, biconsumer));
+	}
+
+	public static <T, U, R> void run(BiFunction<T, U, R> bifunction){
+		AsyncService.post(makeAsync(bifunction));
+	}
+
+	public static <T, U, R> void run(T in1, U in2, BiFunction<T, U, R> bifunction){
+		AsyncService.post(makeAsync(in1, in2, bifunction));
+	}
+
 }

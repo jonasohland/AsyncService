@@ -9,7 +9,10 @@ public class AsyncFunction<T, R> implements AsyncTask {
 	private LazyAllocatedListenableFuture<R> future = new LazyAllocatedListenableFuture<>();
 	
 	private AsyncTimer timer;
-	
+
+	public Function<T,R> function;
+
+
 	public AsyncFunction(T __arg1, Function<T,R> __func)
 	{
 		arg1 = __arg1;
@@ -30,7 +33,6 @@ public class AsyncFunction<T, R> implements AsyncTask {
 		future.prepare(this);
 	}
 
-	public Function<T,R> function;
 
 	@Override
 	public void execute() {
