@@ -1,7 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import de.hsmainz.iiwa.AsyncService.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.events.Async;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.Async;
 import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 
 /**

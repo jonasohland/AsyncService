@@ -1,8 +1,9 @@
 package de.hsmainz.iiwa.AsyncService.threads;
 
-import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.functional.Function;
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
-import de.hsmainz.iiwa.AsyncService.events.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.ListenableFuture;
 
 public abstract class ThreadPoolJob<T> implements Executable {
 
@@ -31,9 +32,7 @@ public abstract class ThreadPoolJob<T> implements Executable {
     public ListenableFuture<Void> onShouldExit = new ListenableFuture<Void>();
 
     public ThreadPoolJob() {
-
         handle = new ThreadPoolHandle(this);
-
     }
 
     /**
@@ -144,7 +143,7 @@ public abstract class ThreadPoolJob<T> implements Executable {
      * Wait for a Jobs execution to finish.
      */
     public void join() throws InterruptedException{
-        while(isActive()){
+        while(!isFinished()){
             if(Thread.interrupted()){
                 throw new InterruptedException();
             }
@@ -152,7 +151,7 @@ public abstract class ThreadPoolJob<T> implements Executable {
     }
 
     public T get() throws InterruptedException{
-        while(isActive()){
+        while(!isFinished()){
             if(Thread.interrupted()){
                 throw new InterruptedException();
             }
@@ -182,6 +181,16 @@ public abstract class ThreadPoolJob<T> implements Executable {
             @Override
             public T perform() {
                 return s.get();
+            }
+        };
+    }
+
+
+    public static <T, R> ThreadPoolJob<R> makeJob(T input, Function<T, R> f){
+        return new ThreadPoolJob<R>() {
+            @Override
+            public R perform() {
+                return f.apply(input);
             }
         };
     }

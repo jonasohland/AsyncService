@@ -9,6 +9,8 @@ plugins {
     id 'java-library'
     id "me.tatarka.retrolambda" version "3.7.0"
     id 'maven-publish'
+    // id 'org.ajoberstar.git-publish' version '1.7.2'
+
 }
 
 repositories {
@@ -56,8 +58,8 @@ publishing {
                 description = 'Async execution for iiwa robots'
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
                     }
                 }
                 developers {
@@ -73,8 +75,8 @@ publishing {
 
     repositories {
         maven {
-            name = "gitlab-maven"
-            url = "https://gitlab.rlp.net/api/v4/projects/2220/packages/maven"
+            name = "apache-archiva"
+            url = "http://jonasohland.ddns.net:8080/repository/asyncservice"
         }
     }
 }

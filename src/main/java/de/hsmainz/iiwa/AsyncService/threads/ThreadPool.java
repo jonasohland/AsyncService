@@ -109,6 +109,16 @@ public class ThreadPool {
     }
 
     /**
+     * Create an Executable from a runnable. Start the Executable with Executable.start().
+     * @param runnable the runnable to run inside the executable
+     * @return the Executable
+     * @see Executable::start();
+     */
+    public static Executable fromRunnable(Runnable runnable){
+        return new ThreadPoolJobLite(runnable);
+    }
+
+    /**
      * Start the ThreadPool Executor. This must be called before submitting any Jobs to the ThreadPool
      */
     public static void startPool() {

@@ -1,13 +1,12 @@
 package de.hsmainz.iiwa.AsyncService.net;
 
-import de.hsmainz.iiwa.AsyncService.events.DualListenableFuture;
-import de.hsmainz.iiwa.AsyncService.events.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJob;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.DualListenableFuture;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
 import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJobLite;
-import de.hsmainz.iiwa.AsyncService.utils.Result;
+import de.hsmainz.iiwa.AsyncService.utils.Completion;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.*;
 
 public class AsyncDatagramSocket {
@@ -15,12 +14,12 @@ public class AsyncDatagramSocket {
     private DatagramSocket socket;
 
     public DualListenableFuture<String, InetAddress> onMessage = new DualListenableFuture<String, InetAddress>();
-    public ListenableFuture<Result<SocketException>> onConnect = new ListenableFuture<>();
-    public ListenableFuture<Result<SocketException>> onBind = new ListenableFuture<>();
+    public ListenableFuture<Completion<SocketException>> onConnect = new ListenableFuture<>();
+    public ListenableFuture<Completion<SocketException>> onBind = new ListenableFuture<>();
 
     public void bind(SocketAddress addr) {
 
-        ThreadPoolJobLite binding_job = ThreadPoolJobLite.makeJob(() -> {
+        ThreadPool.fromRunnable(() -> {
 
             System.out.println("binding to socketaddr: " + addr.toString());
 
@@ -31,17 +30,15 @@ public class AsyncDatagramSocket {
                     socket.bind(addr);
                 }
 
-                onBind.fire(new Result<>());
+                onBind.fire(new Completion<>());
 
             } catch (SocketException ex){
 
-                onBind.fire(new Result<>(ex));
+                onBind.fire(new Completion<>(ex));
             }
 
             System.out.println("binding job end");
-        });
-
-        binding_job.start();
+        }).start();
     }
 
     public void connect(SocketAddress addr){
@@ -50,10 +47,10 @@ public class AsyncDatagramSocket {
 
             try {
                 socket.connect(addr);
-                onConnect.fire(new Result<>());
+                onConnect.fire(new Completion<>());
 
             } catch (SocketException ex){
-                onConnect.fire(new Result<>(ex));
+                onConnect.fire(new Completion<>(ex));
             }
         });
 

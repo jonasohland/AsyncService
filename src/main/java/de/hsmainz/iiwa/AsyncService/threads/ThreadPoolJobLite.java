@@ -1,6 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.threads;
 
-import de.hsmainz.iiwa.AsyncService.events.AsyncService;
+import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
 
 public class ThreadPoolJobLite implements Executable {
 
