@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class EventLoopExecutor implements ExecutionContext {
+public class EventLoopContext implements ExecutionContext {
 
     /**
      * Count of ExecutorWorkGuards associated with this ctx
@@ -65,6 +65,8 @@ public class EventLoopExecutor implements ExecutionContext {
                 AsyncTask t = queue.take();
                 busy.set(true);
 
+                System.out.println("_____________");
+
                 t.execute();
 
             } catch (InterruptedException ex) {
@@ -112,7 +114,7 @@ public class EventLoopExecutor implements ExecutionContext {
     @Override
     public void removeWork(ExecutorWorkGuard wrk) {
         Objects.requireNonNull(wrk);
-        if(work_count.decrementAndGet() == 0 && queue.peek() == null && !runningInThisContext()){
+        if(work_count.decrementAndGet() == 0 && !queue.isEmpty() && !runningInThisContext()){
             if(!isBusy()){
                 for(Thread thread : this_threads){
                     System.out.println("interrupting: " + thread.getId());

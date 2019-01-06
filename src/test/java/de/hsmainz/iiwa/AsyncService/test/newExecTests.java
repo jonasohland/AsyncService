@@ -27,36 +27,36 @@ public class newExecTests {
     @Test
     public void basic_test(){
 
-        EventLoopExecutor exec = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
-        exec.post(Async.makeAsync(() -> {
+        ctx.post(Async.makeAsync(() -> {
 
             test = test + "a";
 
-            exec.post(Async.makeAsync(() -> {
+            ctx.post(Async.makeAsync(() -> {
                 test = test + "d";
             }));
 
 
-            exec.post(Async.makeAsync(() -> {
-                th_c_inside = exec.threadCount();
+            ctx.post(Async.makeAsync(() -> {
+                th_c_inside = ctx.threadCount();
             }));
 
-            exec.dispatch(Async.makeAsync(() -> {
+            ctx.dispatch(Async.makeAsync(() -> {
                 test = test + "b";
             }));
 
         }));
 
-        exec.dispatch(Async.makeAsync(() -> {
+        ctx.dispatch(Async.makeAsync(() -> {
             test = test + "c";
         }));
 
 
 
-        exec.run();
+        ctx.run();
 
-        th_c_outside = exec.threadCount();
+        th_c_outside = ctx.threadCount();
 
         Assert.assertEquals("abcd", test);
         Assert.assertEquals(0, th_c_outside);
@@ -67,31 +67,31 @@ public class newExecTests {
     @Test
     public void bind_ctx_test(){
 
-        EventLoopExecutor exec = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
-        AsyncRunnable runnable = new AsyncRunnable(exec, () -> System.out.println("1"));
+        AsyncRunnable runnable = new AsyncRunnable(ctx, () -> System.out.println("1"));
 
         AsyncRunnable runnable1 = new AsyncRunnable(() -> System.out.println("2"));
 
-        runnable1.bindContext(exec);
+        runnable1.bindContext(ctx);
 
         runnable.fire();
         runnable1.fire();
 
-        Async.invoke(exec, () -> System.out.println("3"));
+        Async.invoke(ctx, () -> System.out.println("3"));
 
-        exec.runOne();
+        ctx.runOne();
 
         System.out.println("next");
 
-        exec.run();
+        ctx.run();
 
 
     }
 
     @Test
     public void future_test(){
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
         AsyncFunction<Integer, Integer> func = Async.makeAsync((Integer i) -> {
             System.out.println("stuff");
@@ -117,7 +117,7 @@ public class newExecTests {
     @Test
     public void timer_test(){
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
         AsyncTimer timer = new AsyncTimer(ctx);
         AsyncTimer timer2 = new AsyncTimer(ctx);
 
@@ -142,7 +142,7 @@ public class newExecTests {
 
         Timer timer = new Timer();
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
         AsyncTimer at = new AsyncTimer(ctx);
 
@@ -186,7 +186,7 @@ public class newExecTests {
     @Test
     public void timer_cancel_test(){
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
         AsyncTimer t = new AsyncTimer(ctx);
 
         Timer jt = new Timer();
@@ -220,8 +220,8 @@ public class newExecTests {
     @Test
     public void multi_exec_test(){
 
-        EventLoopExecutor ctx_1 = new EventLoopExecutor();
-        EventLoopExecutor ctx_2 = new EventLoopExecutor();
+        EventLoopContext ctx_1 = new EventLoopContext();
+        EventLoopContext ctx_2 = new EventLoopContext();
 
 
         AsyncFunction<Integer, Integer> starter = Async.makeAsync(ctx_1, (Integer i) -> {
@@ -248,8 +248,8 @@ public class newExecTests {
     @Test
     public void timer_multi_ctx(){
 
-        EventLoopExecutor ctx_1 = new EventLoopExecutor();
-        EventLoopExecutor ctx_2 = new EventLoopExecutor();
+        EventLoopContext ctx_1 = new EventLoopContext();
+        EventLoopContext ctx_2 = new EventLoopContext();
 
         AsyncTimer timer = new AsyncTimer(ctx_1);
 
@@ -271,7 +271,7 @@ public class newExecTests {
     @Test
     public void interrupt_to_exit_test(){
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
         Timer timer = new Timer();
 
         ExecutorWorkGuard guard = new ExecutorWorkGuard(ctx);
@@ -289,7 +289,7 @@ public class newExecTests {
 
     @Test
     public void invoke_and_test(){
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
         Async.deferAnd(ctx, () -> {  System.out.println("999"); return 1000; })
                 .addListenerThen((Integer i) -> { System.out.println(i); return ++i; } )
@@ -302,7 +302,7 @@ public class newExecTests {
     @Test
     public void filesystem_example(){
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
         Async.invokeAnd(ctx, () -> {
             System.out.println("creating file object");
@@ -353,7 +353,7 @@ public class newExecTests {
     @Test
     public void event_test(){
 
-        EventLoopExecutor ctx = new EventLoopExecutor();
+        EventLoopContext ctx = new EventLoopContext();
 
         Event<String> onThing = new Event<>(ctx);
 
@@ -369,4 +369,34 @@ public class newExecTests {
         ctx.run();
     }
 
+    @Test
+    public void event2_test(){
+        EventLoopContext ctx = new EventLoopContext();
+
+        Event2<String, String> event = new Event2<>(ctx);
+
+        event.addListenerThen((String str1, String str2) -> {System.out.println("got: " + str1 + str2); return str2;})
+                .addListenerThen((String str) -> { System.out.println("Second str: " + str); return str; })
+                .addListener((String stra) -> { System.out.println("3rd Method: " + stra); });
+
+        event.post("Hello ", "World!");
+
+        ctx.run();
+    }
+
+    @Test
+    public void rate_limiter_test(){
+
+        EventLoopContext ctx = new EventLoopContext();
+        RateLimitedExecutor rateLimitedExecutor = new RateLimitedExecutor(ctx, 100);
+
+        rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 1") ));
+        rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 2") ));
+        rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 3") ));
+        rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 4") ));
+
+        ctx.run();
+
+
+    }
 }

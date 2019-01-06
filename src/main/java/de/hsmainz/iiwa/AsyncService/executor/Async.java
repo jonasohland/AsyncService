@@ -1,9 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.executor;
 
-import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
-import de.hsmainz.iiwa.AsyncService.functional.Consumer;
-import de.hsmainz.iiwa.AsyncService.functional.Function;
-import de.hsmainz.iiwa.AsyncService.functional.Supplier;
+import de.hsmainz.iiwa.AsyncService.functional.*;
 import de.hsmainz.iiwa.AsyncService.utils.Completion;
 
 public class Async {
@@ -113,6 +110,17 @@ public class Async {
         return new AsyncBiConsumer<T, U>(ctx, biConsumer);
     }
 
+    // ------------ bifunction
+
+
+    public static <T, U, R> AsyncBiFunction<T, U, R> makeAsync(BiFunction<T, U, R> biFunction){
+        return new AsyncBiFunction<T, U, R>(biFunction);
+    }
+
+    public static <T, U, R> AsyncBiFunction<T, U, R> makeAsync(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
+        return new AsyncBiFunction<T, U, R>(ctx, biFunction);
+    }
+
 
     /* -------------------------------------------------------------------------------------------------------- */
     /*                                             Async.invoke()                                               */
@@ -145,6 +153,29 @@ public class Async {
         ctx.post(makeAsync(supplier));
     }
 
+    public static <T, R> void invoke(ExecutionContext ctx, Function<T, R> function) {
+        ctx.post(makeAsync(function));
+    }
+
+    public static <T, U> void invoke(ExecutionContext ctx, BiConsumer<T, U> biConsumer){
+        ctx.post(makeAsync(biConsumer));
+    }
+
+    public static <T, U, R> void invoke(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
+        ctx.post(makeAsync(biFunction));
+    }
+
+    /* -------------------------------------------------------------------------------------------------------- */
+    /*                                             Async.invokeAnd()                                            */
+    /* -------------------------------------------------------------------------------------------------------- */
+
+
+
+    public static <T>  ListenableFuture<T> invokeAnd(ExecutionContext ctx, Supplier<T> sup){
+        AsyncSupplier<T> supplier = new AsyncSupplier<T>(ctx, sup);
+        ctx.post(supplier);
+        return supplier.future();
+    }
 
     public static <T, R>  ListenableFuture<R> invokeAnd(ExecutionContext ctx, Function<T, R> func){
         AsyncFunction<T, R> function = new AsyncFunction<>(ctx, func);
@@ -152,9 +183,15 @@ public class Async {
         return function.future();
     }
 
-    public static <T>  ListenableFuture<T> invokeAnd(ExecutionContext ctx, Supplier<T> sup){
-        AsyncSupplier<T> supplier = new AsyncSupplier<T>(ctx, sup);
-        ctx.post(supplier);
+    public static <T, U, R>  ListenableFuture<R> invokeAnd(ExecutionContext ctx, BiFunction<T, U, R> func){
+        AsyncBiFunction<T, U, R> function = new AsyncBiFunction<>(ctx, func);
+        ctx.post(function);
+        return function.future();
+    }
+
+    public static <T>  ListenableFuture<T> deferAnd(ExecutionContext ctx, Supplier<T> sup){
+        AsyncSupplier<T> supplier = new AsyncSupplier<T>(sup);
+        ctx.defer(supplier);
         return supplier.future();
     }
 
@@ -164,11 +201,13 @@ public class Async {
         return function.future();
     }
 
-    public static <T>  ListenableFuture<T> deferAnd(ExecutionContext ctx, Supplier<T> sup){
-        AsyncSupplier<T> supplier = new AsyncSupplier<T>(sup);
-        ctx.defer(supplier);
-        return supplier.future();
+    public static <T, U, R>  ListenableFuture<R> deferAnd(ExecutionContext ctx, BiFunction<T, U, R> bifunc){
+        AsyncBiFunction<T, U, R> function = new AsyncBiFunction<>(bifunc);
+        ctx.defer(function);
+        return function.future();
     }
+
+
 
 
     /* -------------------------------------------------------------------------------------------------------- */
