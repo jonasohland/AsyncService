@@ -1,7 +1,5 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import javafx.util.Pair;
-
 public class Triplet<T, U, V> {
     private T argT;
     private U argU;

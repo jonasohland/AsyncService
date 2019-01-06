@@ -1,7 +1,5 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import javafx.util.Pair;
-
 public class Quad<T, U, V, K> {
 
     private T argT;
