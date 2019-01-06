@@ -51,18 +51,18 @@ public class Event2<T, U> extends ListenableBase<T> {
         get_queue().add(Async.makeAsync(ctx, biFunction));
     }
 
-    public <R> ListenableFuture<R> addListenerAnd(AsyncBiFunction<T, U, R> asyncBiFunction){
+    public <R> ListenableFuture<R> addListenerThen(AsyncBiFunction<T, U, R> asyncBiFunction){
         get_queue().add(asyncBiFunction);
         return asyncBiFunction.future();
     }
 
-    public <R> ListenableFuture<R> addListenerAnd(BiFunction<T, U, R> biFunction){
+    public <R> ListenableFuture<R> addListenerThen(BiFunction<T, U, R> biFunction){
         AsyncTask bi = Async.makeAsync(biFunction);
         get_queue().add(bi);
         return bi.future();
     }
 
-    public <R> ListenableFuture<R> addListenerAnd(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
+    public <R> ListenableFuture<R> addListenerThen(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
         AsyncTask bi = Async.makeAsync(ctx, biFunction);
         get_queue().add(bi);
         return bi.future();
