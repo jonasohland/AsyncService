@@ -375,7 +375,7 @@ public class newExecTests {
 
         Event2<String, String> event = new Event2<>(ctx);
 
-        event.addListenerThen((String str1, String str2) -> {System.out.println("got: " + str1 + str2); return str2;})
+        event.addListenerAnd((String str1, String str2) -> {System.out.println("got: " + str1 + str2); return str2;})
                 .addListenerThen((String str) -> { System.out.println("Second str: " + str); return str; })
                 .addListener((String stra) -> { System.out.println("3rd Method: " + stra); });
 
