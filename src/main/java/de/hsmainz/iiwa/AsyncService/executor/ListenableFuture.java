@@ -27,18 +27,6 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 		return tsk;
 	}
 
-	public <R> ListenableFuture<R> addListenerAnd(Function<T, R> function) {
-		AsyncFunction<T, R> async_func = Async.makeAsync(function);
-		get_queue().add(async_func);
-		return async_func.future();
-	}
-
-	public <R> ListenableFuture<R> addListenerAnd(ExecutionContext ctx, Function<T, R> function) {
-		AsyncFunction<T, R> async_func = Async.makeAsync(ctx, function);
-		get_queue().add(async_func);
-		return async_func.future();
-	}
-
 	/**
 	 * Set this Futures Resource and fire all listeners associated to this Future.
 	 * @param value the result object which is fired.

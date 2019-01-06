@@ -307,7 +307,7 @@ public class newExecTests {
         Async.invokeAnd(ctx, () -> {
             System.out.println("creating file object");
             return new File(System.getProperty("user.dir") + "/test.txt");
-        }).addListenerAnd((File f) -> {
+        }).addListenerThen((File f) -> {
             System.out.println("creating: " + f.toString());
             try {
                 if (f.createNewFile()) {
@@ -318,7 +318,7 @@ public class newExecTests {
             } catch (IOException e) {
                 return new Result<File, IOException>(e);
             }
-        }).addListenerAnd((Result<File, IOException> res) -> {
+        }).addListenerThen((Result<File, IOException> res) -> {
             if (res.failed()) {
                 System.out.println("creation failed: " + res.getException().getMessage());
                 if (res.hasResult()) {
@@ -375,7 +375,7 @@ public class newExecTests {
 
         Event2<String, String> event = new Event2<>(ctx);
 
-        event.addListenerAnd((String str1, String str2) -> {System.out.println("got: " + str1 + str2); return str2;})
+        event.addListenerThen((String str1, String str2) -> {System.out.println("got: " + str1 + str2); return str2;})
                 .addListenerThen((String str) -> { System.out.println("Second str: " + str); return str; })
                 .addListener((String stra) -> { System.out.println("3rd Method: " + stra); });
 
@@ -388,7 +388,7 @@ public class newExecTests {
     public void rate_limiter_test(){
 
         EventLoopContext ctx = new EventLoopContext();
-        RateLimitedExecutor rateLimitedExecutor = new RateLimitedExecutor(ctx, 100);
+        RateLimitedExecutor rateLimitedExecutor = new RateLimitedExecutor(ctx, 1000);
 
         rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 1") ));
         rateLimitedExecutor.post(Async.makeAsync(() -> System.out.println("stuff 2") ));

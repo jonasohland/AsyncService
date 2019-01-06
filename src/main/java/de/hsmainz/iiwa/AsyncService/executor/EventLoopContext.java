@@ -114,7 +114,7 @@ public class EventLoopContext implements ExecutionContext {
     @Override
     public void removeWork(ExecutorWorkGuard wrk) {
         Objects.requireNonNull(wrk);
-        if(work_count.decrementAndGet() == 0 && !queue.isEmpty() && !runningInThisContext()){
+        if(work_count.decrementAndGet() == 0 && queue.isEmpty() && !runningInThisContext()){
             if(!isBusy()){
                 for(Thread thread : this_threads){
                     System.out.println("interrupting: " + thread.getId());
