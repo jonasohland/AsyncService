@@ -7,6 +7,7 @@ import de.hsmainz.iiwa.AsyncService.functional.BiFunction;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 import de.hsmainz.iiwa.AsyncService.functional.Function;
 
+
 /**
  * 
  * @author jonas.ohland
@@ -14,6 +15,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Function;
  * @param <T> Type of resource 1 to be available in the future
  * @param <U> Type of resource 2 to be available in the future
  */
+@Deprecated
 public class DualListenableFuture<T,U> {
 	private LinkedBlockingQueue<AsyncTask> listeners = new LinkedBlockingQueue<AsyncTask>();
 	

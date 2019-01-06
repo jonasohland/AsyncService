@@ -7,6 +7,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Function;
 
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
 
+@Deprecated
 public class Async {
 	
 	public static AsyncTask makeAsync(Runnable r)

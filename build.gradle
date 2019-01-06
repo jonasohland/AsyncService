@@ -10,7 +10,6 @@ plugins {
     id "me.tatarka.retrolambda" version "3.7.0"
     id 'maven-publish'
     // id 'org.ajoberstar.git-publish' version '1.7.2'
-
 }
 
 repositories {
@@ -20,18 +19,10 @@ repositories {
 
 
 group = 'de.hsmainz.iiwa'
-// artifactId is taken by default, from folder name
 version = '0.1-SNAPSHOT'
 
 dependencies {
     testImplementation  'junit:junit:4.12'
-
-
-    //Dependencies for Logging
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 }
 
 
@@ -75,7 +66,7 @@ publishing {
 
     repositories {
         maven {
-            name = "apache-archiva"
+            name = "archiva"
             url = "http://jonasohland.ddns.net:8080/repository/asyncservice"
             credentials {
                 username System.getenv("archiva_publish_username")

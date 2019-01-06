@@ -3,6 +3,7 @@ package de.hsmainz.iiwa.AsyncService.threads;
 import java.util.UUID;
 import java.nio.ByteBuffer;
 
+@Deprecated
 public class ThreadPoolHandle {
 
     private long timeout;

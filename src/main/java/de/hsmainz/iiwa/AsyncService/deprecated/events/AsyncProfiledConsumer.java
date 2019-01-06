@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
+@Deprecated
 public class AsyncProfiledConsumer<T> implements AsyncTask {
 
 	private AsyncTimer tm;

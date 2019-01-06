@@ -1,6 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.threads;
 
-
+@Deprecated
 public interface Executable {
     public ThreadPoolHandle getHandle();
     public Runnable getRunnable();

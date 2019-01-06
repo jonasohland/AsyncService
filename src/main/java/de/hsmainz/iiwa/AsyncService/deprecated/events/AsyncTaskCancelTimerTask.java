@@ -10,6 +10,7 @@ import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJob;
  * @author jonas.ohland
  *
  */
+@Deprecated
 public class AsyncTaskCancelTimerTask extends TimerTask {
 
 	private AsyncTask asyncTask;

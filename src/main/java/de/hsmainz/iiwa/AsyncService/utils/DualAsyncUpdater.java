@@ -11,6 +11,7 @@ import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
  * @param <T> Type of the first input to update with.
  * @param <U> Type of the first input to update with.
  */
+@Deprecated
 public abstract class DualAsyncUpdater<T, U> {
 	
 	

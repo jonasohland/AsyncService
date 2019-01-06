@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.threads;
 
 import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
 
+@Deprecated
 public class ThreadPoolJobLite implements Executable {
 
     private ThreadPoolHandle handle;
@@ -35,8 +36,6 @@ public class ThreadPoolJobLite implements Executable {
     public Runnable getRunnable() {
         return () -> {
 
-            ThreadPool.thread_log.info("ThreadPoolJob started, id: " + handle.getId());
-
             th = Thread.currentThread();
 
             set_active(true);
@@ -50,8 +49,6 @@ public class ThreadPoolJobLite implements Executable {
             set_finished(true);
 
             AsyncService.iterate_loop_if_waiting();
-
-            ThreadPool.thread_log.info("ThreadPoolJob finished, id: " + handle.getId());
         };
     }
 

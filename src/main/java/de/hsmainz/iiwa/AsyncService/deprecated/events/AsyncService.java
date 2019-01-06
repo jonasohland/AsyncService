@@ -29,6 +29,7 @@ import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
  *     })
  * }</pre>
  */
+@Deprecated
 public class AsyncService {
 
 	/**

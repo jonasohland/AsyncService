@@ -1,17 +1,14 @@
 package de.hsmainz.iiwa.AsyncService.threads;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 public class ThreadPool {
 
-    static Logger thread_log = LoggerFactory.getLogger(ThreadPool.class);
 
     static ArrayList<Executable> init_list;
 
@@ -61,7 +58,6 @@ public class ThreadPool {
      */
     static synchronized long registerNewThread() {
         total_num_jobs++;
-        ThreadPool.thread_log.debug("New Thread registered, num: " + total_num_jobs);
         return total_num_jobs;
     }
 

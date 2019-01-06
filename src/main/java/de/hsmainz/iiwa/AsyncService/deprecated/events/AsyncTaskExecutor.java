@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.*;
 
+@Deprecated
 public abstract class AsyncTaskExecutor {
 
     protected abstract void handle_task(AsyncTask task);

@@ -3,6 +3,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 import java.util.TimerTask;
 import java.util.UUID;
 
+@Deprecated
 public class AsyncTimer extends TimerTask
 {
 	private AsyncTask asyncTaskToRun;

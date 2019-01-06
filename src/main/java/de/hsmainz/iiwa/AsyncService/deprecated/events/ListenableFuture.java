@@ -11,6 +11,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Function;
  *
  * @param <T> Type of Object which will be available in the future.
  */
+@Deprecated
 public class ListenableFuture<T>{
 	
 	private AsyncTask asyncTask;

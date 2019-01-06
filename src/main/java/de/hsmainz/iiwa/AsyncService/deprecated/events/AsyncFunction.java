@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.Function;
 
+@Deprecated
 public class AsyncFunction<T, R> implements AsyncTask {
 
 	private T arg1;

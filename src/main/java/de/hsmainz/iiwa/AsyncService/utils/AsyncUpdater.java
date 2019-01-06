@@ -9,6 +9,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Consumer;
  * @author Jonas Ohland
  * @param <T> the Type of data to send with the update
  */
+@Deprecated
 public abstract class AsyncUpdater<T> {
 	
 	/**

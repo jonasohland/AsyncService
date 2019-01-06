@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 
+@Deprecated
 public class AsyncBiConsumer<Tin1, Tin2> implements AsyncTask {
 
 	private BiConsumer<Tin1, Tin2> function;

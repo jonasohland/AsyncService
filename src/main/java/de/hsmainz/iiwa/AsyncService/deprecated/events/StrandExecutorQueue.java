@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Deprecated
 public class StrandExecutorQueue extends AsyncTaskExecutor{
     private LinkedBlockingQueue<AsyncTask> queue = new LinkedBlockingQueue<>();
 

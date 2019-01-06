@@ -4,6 +4,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
 
+@Deprecated
 public class AsyncSupplier<T> implements AsyncTask {
 
 	T result;

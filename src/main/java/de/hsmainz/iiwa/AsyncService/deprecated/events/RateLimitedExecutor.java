@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import java.util.TimerTask;
 
+@Deprecated
 class ResetLimiterTask extends TimerTask {
 
     private RateLimitedExecutor rate_limiter;
@@ -16,6 +17,7 @@ class ResetLimiterTask extends TimerTask {
     }
 }
 
+@Deprecated
 public class RateLimitedExecutor extends AsyncTaskExecutor {
 
     private RateLimitedExecutor(){}

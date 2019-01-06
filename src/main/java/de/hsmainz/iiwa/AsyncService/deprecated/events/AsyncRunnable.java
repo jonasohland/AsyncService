@@ -2,6 +2,7 @@ package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
 import de.hsmainz.iiwa.AsyncService.executor.ExecutionContext;
 
+@Deprecated
 public class AsyncRunnable implements AsyncTask {
 	
 	public AsyncRunnable(Runnable __function)

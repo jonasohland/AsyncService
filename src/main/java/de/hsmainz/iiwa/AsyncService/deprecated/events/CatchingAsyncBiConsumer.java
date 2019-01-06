@@ -1,5 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
+@Deprecated
 public abstract class CatchingAsyncBiConsumer<T, U> implements AsyncTask {
 
     private Throwable throwie;

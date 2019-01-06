@@ -5,6 +5,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Function;
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
 import de.hsmainz.iiwa.AsyncService.deprecated.events.ListenableFuture;
 
+@Deprecated
 public abstract class ThreadPoolJob<T> implements Executable {
 
     private ThreadPoolHandle handle;
@@ -40,8 +41,6 @@ public abstract class ThreadPoolJob<T> implements Executable {
      */
     private void execute() {
 
-        ThreadPool.thread_log.info("ThreadPoolJob started, id: " + handle.getId());
-
         th = Thread.currentThread();
 
         set_active(true);
@@ -59,8 +58,6 @@ public abstract class ThreadPoolJob<T> implements Executable {
         set_finished(true);
 
         AsyncService.iterate_loop_if_waiting();
-
-        ThreadPool.thread_log.info("ThreadPoolJob finished, id: " + handle.getId());
 
     }
 

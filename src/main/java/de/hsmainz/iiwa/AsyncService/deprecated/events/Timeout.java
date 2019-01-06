@@ -1,5 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.deprecated.events;
 
+@Deprecated
 public class Timeout implements AsyncTask {
 	
 	LazyAllocatedListenableFuture<?> future;
