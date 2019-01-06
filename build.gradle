@@ -77,6 +77,10 @@ publishing {
         maven {
             name = "apache-archiva"
             url = "http://jonasohland.ddns.net:8080/repository/asyncservice"
+            credentials {
+                username System.getenv("archiva_publish_username")
+                password System.getenv("archiva_publish_password")
+            }
         }
     }
 }

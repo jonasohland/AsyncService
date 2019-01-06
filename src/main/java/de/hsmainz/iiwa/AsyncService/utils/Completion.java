@@ -23,4 +23,17 @@ public class Completion<E extends Exception> {
     public E getException(){
         return exception;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        else {
+            if(obj instanceof Completion){
+                Completion other = (Completion) obj;
+
+                return exception != null ? exception.equals(other.getException()) : other.getException() == null;
+
+            } else return false;
+        }
+    }
 }

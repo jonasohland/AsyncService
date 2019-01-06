@@ -1,5 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.executor;
 
+import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 import de.hsmainz.iiwa.AsyncService.functional.Function;
 import de.hsmainz.iiwa.AsyncService.functional.Supplier;
@@ -98,6 +99,18 @@ public class Async {
      */
     public static <T, R> AsyncFunction<T, R> makeAsync(ExecutionContext ctx, Function<T, R> func){
         return new AsyncFunction<T, R>(ctx, func);
+    }
+
+
+    // ------------ biconsumer
+
+
+    public static <T, U> AsyncBiConsumer<T, U> makeAsync(BiConsumer<T, U> biConsumer){
+        return new AsyncBiConsumer<T, U>(biConsumer);
+    }
+
+    public static <T, U> AsyncBiConsumer<T, U> makeAsync(ExecutionContext ctx, BiConsumer<T, U> biConsumer){
+        return new AsyncBiConsumer<T, U>(ctx, biConsumer);
     }
 
 

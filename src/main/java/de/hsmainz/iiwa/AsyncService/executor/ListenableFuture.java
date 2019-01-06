@@ -57,17 +57,11 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 
 					element.__set__arg_(value);
 
-					element.fire();
+					element.context().post(element);
 
 				}
 			} else {
-				for (AsyncTask element : get_queue()) {
-
-					element.__set__arg_(value);
-
-					element.fire();
-
-				}
+				execute_listeners(value);
 			}
 		}
 	}
@@ -87,16 +81,19 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 						element.bindContext(tsk.context());
 					}
 
-					element.fire();
+					element.context().post(element);
 
 				}
 			} else {
-				for (AsyncTask element : get_queue()) {
-
-					element.fire();
-
-				}
+				execute_listeners(null);
 			}
+		}
+	}
+
+	private void execute_listeners(T value){
+		for (AsyncTask element : get_queue()) {
+			element.__set__arg_(value);
+			element.fire();
 		}
 	}
 

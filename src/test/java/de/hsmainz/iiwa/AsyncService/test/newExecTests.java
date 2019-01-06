@@ -310,7 +310,7 @@ public class newExecTests {
         }).addListenerAnd((File f) -> {
             System.out.println("creating: " + f.toString());
             try {
-                if(f.createNewFile()){
+                if (f.createNewFile()) {
                     return new Result<File, IOException>(f);
                 } else {
                     return new Result<File, IOException>(new FileAlreadyExistsException("File already exists"), f);
@@ -319,11 +319,11 @@ public class newExecTests {
                 return new Result<File, IOException>(e);
             }
         }).addListenerAnd((Result<File, IOException> res) -> {
-            if(res.failed()){
+            if (res.failed()) {
                 System.out.println("creation failed: " + res.getException().getMessage());
-                if(res.hasResult()){
+                if (res.hasResult()) {
                     System.out.println("but file could be opened");
-                    if(res.get().delete()){
+                    if (res.get().delete()) {
                         return new Completion<IOException>();
                     } else {
                         return new Completion<>(new IOException("could not be deleted"));
@@ -334,13 +334,13 @@ public class newExecTests {
                 }
             }
             System.out.println("File created!");
-            if(res.get().delete()){
+            if (res.get().delete()) {
                 return new Completion<IOException>();
             } else {
                 return new Completion<>(new IOException("could not be deleted"));
             }
         }).addListener((Completion<IOException> res) -> {
-            if(res.failed()){
+            if (res.failed()) {
                 System.out.println("operation not completed: " + res.getException().getMessage());
             } else {
                 System.out.println("File deleted.");

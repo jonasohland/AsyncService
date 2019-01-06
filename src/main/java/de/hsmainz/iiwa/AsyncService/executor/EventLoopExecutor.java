@@ -57,16 +57,13 @@ public class EventLoopExecutor implements ExecutionContext {
 
         this_threads.add(Thread.currentThread());
 
-        while(work_count.get() != 0 || queue.peek() != null) {
-
+        while(work_count.get() != 0 || !queue.isEmpty()) {
 
             try {
 
                 busy.set(false);
                 AsyncTask t = queue.take();
                 busy.set(true);
-
-                System.out.println("--------------");
 
                 t.execute();
 
