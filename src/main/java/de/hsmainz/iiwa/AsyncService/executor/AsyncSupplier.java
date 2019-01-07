@@ -4,7 +4,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Supplier;
 
 public class AsyncSupplier <T> implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private T input;
     private Supplier<T> func;
     private ListenableFuture<T> future;
@@ -13,7 +13,7 @@ public class AsyncSupplier <T> implements AsyncTask {
         func = function;
     }
 
-    public AsyncSupplier(ExecutionContext ctx, Supplier<T> function){
+    public AsyncSupplier(ExecutionLayer ctx, Supplier<T> function){
         func = function;
         exec = ctx;
     }
@@ -23,7 +23,7 @@ public class AsyncSupplier <T> implements AsyncTask {
         func = function;
     }
 
-    public AsyncSupplier(T in, Supplier<T> function, ExecutionContext ctx){
+    public AsyncSupplier(T in, Supplier<T> function, ExecutionLayer ctx){
         input = in;
         func = function;
         exec = ctx;
@@ -38,12 +38,12 @@ public class AsyncSupplier <T> implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
-        exec = ctx;
+    public void bindLayer(ExecutionLayer layer) {
+        exec = layer;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer() {
         return exec;
     }
 

@@ -5,7 +5,7 @@ import de.hsmainz.iiwa.AsyncService.functional.BiFunction;
 
 public class AsyncBiFunction <T, U, R> implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private T inputT;
     private U inputU;
     private BiFunction<T, U, R> biFunction;
@@ -15,7 +15,7 @@ public class AsyncBiFunction <T, U, R> implements AsyncTask {
         this.biFunction = biFunction;
     }
 
-    public AsyncBiFunction(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
+    public AsyncBiFunction(ExecutionLayer ctx, BiFunction<T, U, R> biFunction){
         this.biFunction = biFunction;
         exec = ctx;
     }
@@ -31,13 +31,13 @@ public class AsyncBiFunction <T, U, R> implements AsyncTask {
         this.biFunction = biFunction;
     }
 
-    public AsyncBiFunction(T in, BiFunction<T, U, R> biFunction, ExecutionContext ctx){
+    public AsyncBiFunction(T in, BiFunction<T, U, R> biFunction, ExecutionLayer ctx){
         inputT = in;
         this.biFunction = biFunction;
         exec = ctx;
     }
 
-    public AsyncBiFunction(T inT, U inU, BiFunction<T, U, R> biFunction, ExecutionContext ctx){
+    public AsyncBiFunction(T inT, U inU, BiFunction<T, U, R> biFunction, ExecutionLayer ctx){
         inputT = inT;
         inputU = inU;
         this.biFunction = biFunction;
@@ -53,14 +53,15 @@ public class AsyncBiFunction <T, U, R> implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
-        exec = ctx;
+    public void bindLayer(ExecutionLayer layer) {
+        exec = layer;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer() {
         return exec;
     }
+
 
     @Override
     public void fire() {

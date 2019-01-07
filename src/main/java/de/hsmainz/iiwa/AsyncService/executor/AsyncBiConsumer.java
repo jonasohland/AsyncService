@@ -5,7 +5,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
 public class AsyncBiConsumer <T, U> implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private T inputT;
     private U inputU;
     private BiConsumer<T, U> biConsumer;
@@ -15,7 +15,7 @@ public class AsyncBiConsumer <T, U> implements AsyncTask {
         biConsumer = biconsumer;
     }
 
-    public AsyncBiConsumer(ExecutionContext ctx, BiConsumer<T, U> biconsumer){
+    public AsyncBiConsumer(ExecutionLayer ctx, BiConsumer<T, U> biconsumer){
         biConsumer = biconsumer;
         exec = ctx;
     }
@@ -31,13 +31,13 @@ public class AsyncBiConsumer <T, U> implements AsyncTask {
         biConsumer = biConsumer;
     }
 
-    public AsyncBiConsumer(T in, BiConsumer<T, U> biconsumer, ExecutionContext ctx){
+    public AsyncBiConsumer(T in, BiConsumer<T, U> biconsumer, ExecutionLayer ctx){
         inputT = in;
         biConsumer = biconsumer;
         exec = ctx;
     }
 
-    public AsyncBiConsumer(T inT, U inU, BiConsumer<T, U> biconsumer, ExecutionContext ctx){
+    public AsyncBiConsumer(T inT, U inU, BiConsumer<T, U> biconsumer, ExecutionLayer ctx){
         inputT = inT;
         inputU = inU;
         biConsumer = biconsumer;
@@ -53,12 +53,12 @@ public class AsyncBiConsumer <T, U> implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
-        exec = ctx;
+    public void bindLayer(ExecutionLayer layer) {
+        exec = layer;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer() {
         return exec;
     }
 

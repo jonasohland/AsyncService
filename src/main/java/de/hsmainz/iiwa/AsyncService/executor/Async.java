@@ -22,13 +22,13 @@ public class Async {
     }
 
     /**
-     * Make an AsyncRunnable from a Runnable object and bind it to a Context
-     * @param ctx A context to bind the AsyncRunnable to
+     * Make an AsyncRunnable from a Runnable object and bind it to a layer
+     * @param layer A layer to bind the AsyncRunnable to
      * @param runnable A Runnable to make the AsyncRunnable from
      * @return the newly created AsyncRunnable
      */
-    public static AsyncRunnable makeAsync(ExecutionContext ctx, Runnable runnable){
-        return new AsyncRunnable(ctx, runnable);
+    public static AsyncRunnable makeAsync(ExecutionLayer layer, Runnable runnable){
+        return new AsyncRunnable(layer, runnable);
     }
 
     // ------------ supplier
@@ -43,13 +43,13 @@ public class Async {
     }
 
     /**
-     * Make an AsyncSupplier from a Supplier object and bind it to a Context
-     * @param ctx A context to bind the AsyncSupplier to
+     * Make an AsyncSupplier from a Supplier object and bind it to a layer
+     * @param layer A layer to bind the AsyncSupplier to
      * @param supplier A Supplier to make the AsyncRunnable from
      * @return the newly created AsyncSupplier
      */
-    public static <T> AsyncSupplier<T> makeAsync(ExecutionContext ctx, Supplier<T> supplier){
-        return new AsyncSupplier<T>(ctx, supplier);
+    public static <T> AsyncSupplier<T> makeAsync(ExecutionLayer layer, Supplier<T> supplier){
+        return new AsyncSupplier<T>(layer, supplier);
     }
 
     // ------------ consumer
@@ -64,13 +64,13 @@ public class Async {
     }
 
     /**
-     * Make an AsyncConsumer from a Runnable object and bind it to a Context
-     * @param ctx A context to bind the AsyncConsumer to
+     * Make an AsyncConsumer from a Runnable object and bind it to a layer
+     * @param layer A layer to bind the AsyncConsumer to
      * @param consumer A Consumer to make the AsyncRunnable from
      * @return the newly created AsyncConsumer
      */
-    public static <T> AsyncConsumer<T> makeAsync(ExecutionContext ctx, Consumer<T> consumer){
-        return new AsyncConsumer<T>(ctx, consumer);
+    public static <T> AsyncConsumer<T> makeAsync(ExecutionLayer layer, Consumer<T> consumer){
+        return new AsyncConsumer<T>(layer, consumer);
     }
 
     // ------------ function
@@ -88,14 +88,14 @@ public class Async {
 
     /**
      *
-     * @param ctx
+     * @param layer
      * @param func
      * @param <T>
      * @param <R>
      * @return
      */
-    public static <T, R> AsyncFunction<T, R> makeAsync(ExecutionContext ctx, Function<T, R> func){
-        return new AsyncFunction<T, R>(ctx, func);
+    public static <T, R> AsyncFunction<T, R> makeAsync(ExecutionLayer layer, Function<T, R> func){
+        return new AsyncFunction<T, R>(layer, func);
     }
 
 
@@ -106,8 +106,8 @@ public class Async {
         return new AsyncBiConsumer<T, U>(biConsumer);
     }
 
-    public static <T, U> AsyncBiConsumer<T, U> makeAsync(ExecutionContext ctx, BiConsumer<T, U> biConsumer){
-        return new AsyncBiConsumer<T, U>(ctx, biConsumer);
+    public static <T, U> AsyncBiConsumer<T, U> makeAsync(ExecutionLayer layer, BiConsumer<T, U> biConsumer){
+        return new AsyncBiConsumer<T, U>(layer, biConsumer);
     }
 
     // ------------ bifunction
@@ -117,8 +117,8 @@ public class Async {
         return new AsyncBiFunction<T, U, R>(biFunction);
     }
 
-    public static <T, U, R> AsyncBiFunction<T, U, R> makeAsync(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
-        return new AsyncBiFunction<T, U, R>(ctx, biFunction);
+    public static <T, U, R> AsyncBiFunction<T, U, R> makeAsync(ExecutionLayer layer, BiFunction<T, U, R> biFunction){
+        return new AsyncBiFunction<T, U, R>(layer, biFunction);
     }
 
 
@@ -127,42 +127,42 @@ public class Async {
     /* -------------------------------------------------------------------------------------------------------- */
 
     /**
-     * Request an ExecutionContext to invoke the given Runnable object
-     * @param ctx An ExecutionContext to request an invocation
+     * Request an ExecutionLayer to invoke the given Runnable object
+     * @param layer An ExecutionLayer to request an invocation
      * @param runnable A Runnable object request to be invoked
      */
-    public static void invoke(ExecutionContext ctx, Runnable runnable){
-        ctx.post(makeAsync(runnable));
+    public static void invoke(ExecutionLayer layer, Runnable runnable){
+        layer.post(makeAsync(runnable));
     }
 
     /**
-     * Request an ExecutionContext to invoke the given Consumer object
-     * @param ctx An ExecutionContext to request an invocation
+     * Request an ExecutionLayer to invoke the given Consumer object
+     * @param layer An ExecutionLayer to request an invocation
      * @param consumer A Consumer object request to be invoked
      */
-    public static <T> void invoke(ExecutionContext ctx, Consumer<T> consumer){
-        ctx.post(makeAsync(consumer));
+    public static <T> void invoke(ExecutionLayer layer, Consumer<T> consumer){
+        layer.post(makeAsync(consumer));
     }
 
     /**
-     * Request an ExecutionContext to invoke the given Runnable object
-     * @param ctx An ExecutionContext to request an invocation
+     * Request an ExecutionLayer to invoke the given Runnable object
+     * @param layer An ExecutionLayer to request an invocation
      * @param supplier A Runnable object request to be invoked
      */
-    public static <T> void invoke(ExecutionContext ctx, Supplier<T> supplier){
-        ctx.post(makeAsync(supplier));
+    public static <T> void invoke(ExecutionLayer layer, Supplier<T> supplier){
+        layer.post(makeAsync(supplier));
     }
 
-    public static <T, R> void invoke(ExecutionContext ctx, Function<T, R> function) {
-        ctx.post(makeAsync(function));
+    public static <T, R> void invoke(ExecutionLayer layer, Function<T, R> function) {
+        layer.post(makeAsync(function));
     }
 
-    public static <T, U> void invoke(ExecutionContext ctx, BiConsumer<T, U> biConsumer){
-        ctx.post(makeAsync(biConsumer));
+    public static <T, U> void invoke(ExecutionLayer layer, BiConsumer<T, U> biConsumer){
+        layer.post(makeAsync(biConsumer));
     }
 
-    public static <T, U, R> void invoke(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
-        ctx.post(makeAsync(biFunction));
+    public static <T, U, R> void invoke(ExecutionLayer layer, BiFunction<T, U, R> biFunction){
+        layer.post(makeAsync(biFunction));
     }
 
     /* -------------------------------------------------------------------------------------------------------- */
@@ -171,39 +171,39 @@ public class Async {
 
 
 
-    public static <T>  ListenableFuture<T> invokeAnd(ExecutionContext ctx, Supplier<T> sup){
-        AsyncSupplier<T> supplier = new AsyncSupplier<T>(ctx, sup);
-        ctx.post(supplier);
+    public static <T>  ListenableFuture<T> invokeAnd(ExecutionLayer layer, Supplier<T> sup){
+        AsyncSupplier<T> supplier = new AsyncSupplier<T>(layer, sup);
+        layer.post(supplier);
         return supplier.future();
     }
 
-    public static <T, R>  ListenableFuture<R> invokeAnd(ExecutionContext ctx, Function<T, R> func){
-        AsyncFunction<T, R> function = new AsyncFunction<>(ctx, func);
-        ctx.post(function);
+    public static <T, R>  ListenableFuture<R> invokeAnd(ExecutionLayer layer, Function<T, R> func){
+        AsyncFunction<T, R> function = new AsyncFunction<>(layer, func);
+        layer.post(function);
         return function.future();
     }
 
-    public static <T, U, R>  ListenableFuture<R> invokeAnd(ExecutionContext ctx, BiFunction<T, U, R> func){
-        AsyncBiFunction<T, U, R> function = new AsyncBiFunction<>(ctx, func);
-        ctx.post(function);
+    public static <T, U, R>  ListenableFuture<R> invokeAnd(ExecutionLayer layer, BiFunction<T, U, R> func){
+        AsyncBiFunction<T, U, R> function = new AsyncBiFunction<>(layer, func);
+        layer.post(function);
         return function.future();
     }
 
-    public static <T>  ListenableFuture<T> deferAnd(ExecutionContext ctx, Supplier<T> sup){
+    public static <T>  ListenableFuture<T> deferAnd(ExecutionLayer layer, Supplier<T> sup){
         AsyncSupplier<T> supplier = new AsyncSupplier<T>(sup);
-        ctx.defer(supplier);
+        layer.defer(supplier);
         return supplier.future();
     }
 
-    public static <T, R>  ListenableFuture<R> deferAnd(ExecutionContext ctx, Function<T, R> func){
+    public static <T, R>  ListenableFuture<R> deferAnd(ExecutionLayer layer, Function<T, R> func){
         AsyncFunction<T, R> function = new AsyncFunction<>(func);
-        ctx.defer(function);
+        layer.defer(function);
         return function.future();
     }
 
-    public static <T, U, R>  ListenableFuture<R> deferAnd(ExecutionContext ctx, BiFunction<T, U, R> bifunc){
+    public static <T, U, R>  ListenableFuture<R> deferAnd(ExecutionLayer layer, BiFunction<T, U, R> bifunc){
         AsyncBiFunction<T, U, R> function = new AsyncBiFunction<>(bifunc);
-        ctx.defer(function);
+        layer.defer(function);
         return function.future();
     }
 
@@ -211,31 +211,31 @@ public class Async {
 
 
     /* -------------------------------------------------------------------------------------------------------- */
-    /*                                             Async.getContext()                                           */
+    /*                                             Async.getLayer()                                           */
     /* -------------------------------------------------------------------------------------------------------- */
 
     /**
-     * Get the Context from an AsyncTask
-     * @param tsk An AsyncTask to get the Context from
-     * @return the ExecutionContext
+     * Get the layer from an AsyncTask
+     * @param tsk An AsyncTask to get the layer from
+     * @return the ExecutionLayer
      */
-    public static ExecutionContext getContext(AsyncTask tsk){
+    public static ExecutionLayer getLayer(AsyncTask tsk){
         if(tsk != null){
-            return tsk.context();
+            return tsk.layer();
         } else {
             return null;
         }
     }
 
     /**
-     * Get the Context from an ListenableFuture. The Context can only be deduced if
+     * Get the layer from an ListenableFuture. The layer can only be deduced if
      * the future is associated with an AsyncTask.
-     * @param future A ListenableFuture to get the Context from
-     * @return the ExecutionContext
+     * @param future A ListenableFuture to get the layer from
+     * @return the ExecutionLayer
      */
-    public static <T> ExecutionContext getContext(ListenableFuture<T> future){
+    public static <T> ExecutionLayer getLayer(ListenableFuture<T> future){
         if(future.task() != null){
-            return future.task().context();
+            return future.task().layer();
         } else {
             return null;
         }
@@ -246,8 +246,8 @@ public class Async {
      * @param ttsk
      * @return
      */
-    public static ExecutionContext getContext(AsyncTimerTask ttsk){
-        return ttsk.context();
+    public static ExecutionLayer getLayer(AsyncTimerTask ttsk){
+        return ttsk.layer();
     }
 
     /**
@@ -255,7 +255,7 @@ public class Async {
      * @param timer
      * @return
      */
-    public static ExecutionContext getContext(AsyncTimer timer){
+    public static ExecutionLayer getLayer(AsyncTimer timer){
         return timer.context();
     }
 
@@ -264,7 +264,7 @@ public class Async {
      * @param work
      * @return
      */
-    public static ExecutionContext getContext(ExecutorWorkGuard work){
+    public static ExecutionLayer getLayer(ExecutorWorkGuard work){
         return work.context();
     }
 

@@ -6,7 +6,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class EventLoopContext implements ExecutionContext {
+public class EventLoopContext extends ExecutionLayerBase implements ExecutionContext {
+
+    public EventLoopContext(){
+        super(null);
+    }
 
     /**
      * Count of ExecutorWorkGuards associated with this ctx
@@ -30,14 +34,14 @@ public class EventLoopContext implements ExecutionContext {
 
     @Override
     public void post(AsyncTask tsk) {
-        tsk.bindContext(this);
+        tsk.bindLayer(this);
         queue.add(tsk);
     }
 
     @Override
     public void dispatch(AsyncTask tsk) {
 
-        tsk.bindContext(this);
+        tsk.bindLayer(this);
 
         if(runningInThisContext()){
             tsk.execute();
@@ -65,12 +69,9 @@ public class EventLoopContext implements ExecutionContext {
                 AsyncTask t = queue.take();
                 busy.set(true);
 
-                System.out.println("_____________");
-
                 t.execute();
 
             } catch (InterruptedException ex) {
-                System.out.println("event loop interrupted");
                 Thread.currentThread().isInterrupted();
             }
 
@@ -155,5 +156,19 @@ public class EventLoopContext implements ExecutionContext {
 
     public int threadCount(){
         return this_threads.size();
+    }
+
+
+
+    /* override these methods, because we are the lowest layer */
+
+    @Override
+    public ExecutionLayer next_layer() {
+        return null;
+    }
+
+    @Override
+    public ExecutionContext lowest_layer() {
+        return this;
     }
 }

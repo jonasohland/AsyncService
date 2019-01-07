@@ -1,7 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.deprecated.events.Async;
+import de.hsmainz.iiwa.AsyncService.executor.Async;
+import de.hsmainz.iiwa.AsyncService.executor.ExecutionLayer;
 import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
 
 /**
@@ -11,9 +11,13 @@ import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
  * @param <T> Type of the first input to update with.
  * @param <U> Type of the first input to update with.
  */
-@Deprecated
 public abstract class DualAsyncUpdater<T, U> {
-	
+
+	private ExecutionLayer layer;
+
+	protected DualAsyncUpdater(ExecutionLayer _layer){
+		layer = _layer;
+	}
 	
 	/**
 	 * implemented to handle the incoming update
@@ -27,12 +31,7 @@ public abstract class DualAsyncUpdater<T, U> {
 	 * @param __input0 first input to update with
 	 * @param __input1 second input to update with
 	 */
-	public void triggerUpdate(T __input0, U __input1)
-	{
-		AsyncService.post(Async.makeAsync(__input0, __input1, new BiConsumer<T, U>() {
-			public void accept(T __input0, U __input1) {
-				DualAsyncUpdater.this.handleUpdate(__input0, __input1);
-			}
-		}));
+	public void triggerUpdate(T __input0, U __input1) {
+		layer.post(Async.makeAsync(() -> handleUpdate(__input0, __input1)));
 	}
 }

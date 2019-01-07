@@ -1,23 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.executor;
 
-public interface ExecutionContext {
-
-    /**
-     *
-     * @param tsk
-     */
-    public void post(AsyncTask tsk);
-
-    /**
-     *
-     * @param tsk
-     */
-    public void dispatch(AsyncTask tsk);
-
-    /**
-     *
-     */
-    public void defer(AsyncTask tsk);
+public interface ExecutionContext extends ExecutionLayer {
 
     /**
      *
@@ -37,7 +20,5 @@ public interface ExecutionContext {
     void registerWork(ExecutorWorkGuard wrk);
     void removeWork(ExecutorWorkGuard wrk);
     int workCount();
-
-
 
 }

@@ -4,7 +4,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Function;
 
 public class AsyncFunction <T, R> implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private T input;
     private Function<T, R> func;
     private ListenableFuture<R> future;
@@ -13,7 +13,7 @@ public class AsyncFunction <T, R> implements AsyncTask {
         func = function;
     }
 
-    public AsyncFunction(ExecutionContext ctx, Function<T, R> function){
+    public AsyncFunction(ExecutionLayer ctx, Function<T, R> function){
         func = function;
         exec = ctx;
     }
@@ -23,7 +23,7 @@ public class AsyncFunction <T, R> implements AsyncTask {
         func = function;
     }
 
-    public AsyncFunction(T in, Function<T, R> function, ExecutionContext ctx){
+    public AsyncFunction(T in, Function<T, R> function, ExecutionLayer ctx){
         input = in;
         func = function;
         exec = ctx;
@@ -38,12 +38,12 @@ public class AsyncFunction <T, R> implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
+    public void bindLayer(ExecutionLayer ctx) {
         exec = ctx;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer(){
         return exec;
     }
 

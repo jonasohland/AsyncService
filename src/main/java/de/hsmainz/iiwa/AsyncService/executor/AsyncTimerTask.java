@@ -8,13 +8,13 @@ import java.util.TimerTask;
 public class AsyncTimerTask extends TimerTask {
 
     private AsyncTask tsk;
-    private ExecutionContext ctx;
+    private ExecutionLayer lay;
     private AsyncTimer tm;
 
-    public AsyncTimerTask(AsyncTask task, AsyncTimer timer, ExecutionContext context){
+    public AsyncTimerTask(AsyncTask task, AsyncTimer timer, ExecutionLayer layer){
         tsk = task;
         tm = timer;
-        ctx = context;
+        lay = layer;
     }
 
     @Override
@@ -22,10 +22,10 @@ public class AsyncTimerTask extends TimerTask {
 
         tsk.__set__arg_(new Completion<TaskCancelledException>());
 
-        if(Async.getContext(tsk) != null){
+        if(Async.getLayer(tsk) != null){
             tsk.fire();
         } else {
-            ctx.dispatch(tsk);
+            lay.dispatch(tsk);
         }
 
         if(tm.running_timers.decrementAndGet() == 0){
@@ -39,10 +39,10 @@ public class AsyncTimerTask extends TimerTask {
 
         tsk.__set__arg_(new Completion<TaskCancelledException>(new TaskCancelledException()));
 
-        if(Async.getContext(tsk) != null){
+        if(Async.getLayer(tsk) != null){
             tsk.fire();
         } else {
-            ctx.dispatch(tsk);
+            lay.dispatch(tsk);
         }
 
         if(tm.running_timers.decrementAndGet() == 0){
@@ -52,8 +52,8 @@ public class AsyncTimerTask extends TimerTask {
         return ret;
     }
 
-    public ExecutionContext context(){
-        return ctx;
+    public ExecutionLayer layer(){
+        return lay;
     }
 
     public AsyncTimer timer(){

@@ -19,9 +19,11 @@ class ResetLimiterTask extends TimerTask {
     }
 }
 
-public class RateLimitedExecutor {
+public class RateLimitedExecutor extends ExecutionLayerBase{
 
-    private RateLimitedExecutor(){}
+    private RateLimitedExecutor(ExecutionLayer nextlayer){
+        super(nextlayer);
+    }
 
     private long rate;
 
@@ -32,13 +34,11 @@ public class RateLimitedExecutor {
 
     private ExecutorWorkGuard work;
 
-    private ExecutionContext ctx;
-
     private final Timer timer = new Timer();
 
 
-    public RateLimitedExecutor(ExecutionContext context, long exec_rate){
-        ctx = context;
+    public RateLimitedExecutor(ExecutionLayer layer, long exec_rate){
+        super(layer);
         rate = exec_rate;
     }
 
@@ -48,7 +48,7 @@ public class RateLimitedExecutor {
             current = last;
             last = null;
 
-            ctx.defer(current);
+            next_layer().defer(current);
             schedule_timeout();
         } else {
             blocked = false;
@@ -57,6 +57,22 @@ public class RateLimitedExecutor {
     }
 
     public void post(AsyncTask t){
+        if(t.layer() == null){
+            t.bindLayer(this);
+        }
+        postTask(t);
+    }
+
+    @Override
+    public void defer(AsyncTask t) {
+        deferTask(t);
+    }
+
+    @Override
+    public void dispatch(AsyncTask t) {
+        if(t.layer() == null){
+            t.bindLayer(this);
+        }
         postTask(t);
     }
 
@@ -64,16 +80,23 @@ public class RateLimitedExecutor {
         timer.schedule(new ResetLimiterTask(this), rate);
     }
 
-    protected void handle_task(AsyncTask task) {
-        postTask(task);
-    }
-
     private synchronized void postTask(AsyncTask task) {
         if(!blocked){
-            ctx.post(task);
+            next_layer().post(task);
             schedule_timeout();
             blocked = true;
-            work = new ExecutorWorkGuard(ctx);
+            work = new ExecutorWorkGuard(lowest_layer());
+        } else {
+            last = task;
+        }
+    }
+
+    private synchronized void deferTask(AsyncTask task) {
+        if(!blocked){
+            next_layer().defer(task);
+            schedule_timeout();
+            blocked = true;
+            work = new ExecutorWorkGuard(lowest_layer());
         } else {
             last = task;
         }

@@ -26,7 +26,7 @@ public abstract class ListenableBase<T> implements Listenable<T> {
     }
 
     @Override
-    public void addListener(ExecutionContext ctx, Runnable runnable) {
+    public void addListener(ExecutionLayer ctx, Runnable runnable) {
         queue.add(Async.makeAsync(ctx, runnable));
     }
 
@@ -36,7 +36,7 @@ public abstract class ListenableBase<T> implements Listenable<T> {
     }
 
     @Override
-    public void addListener(ExecutionContext ctx, Consumer<T> consumer) {
+    public void addListener(ExecutionLayer ctx, Consumer<T> consumer) {
         queue.add(Async.makeAsync(ctx, consumer));
     }
 
@@ -46,7 +46,7 @@ public abstract class ListenableBase<T> implements Listenable<T> {
     }
 
     @Override
-    public <R> void addListener(ExecutionContext ctx, Function<T, R> function) {
+    public <R> void addListener(ExecutionLayer ctx, Function<T, R> function) {
         queue.add(Async.makeAsync(ctx, function));
     }
 

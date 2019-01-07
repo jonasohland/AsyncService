@@ -11,21 +11,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AsyncTimer {
 
-    public AsyncTimer(ExecutionContext context){
-        ctx = context;
+    public AsyncTimer(ExecutionLayer layer){
+        lay = layer;
     }
 
     public AsyncTimerTask schedule(AsyncTask tsk, long time){
 
         if(work == null){
-            work = new ExecutorWorkGuard(ctx);
+            work = new ExecutorWorkGuard((ExecutionContext) lay.lowest_layer());
         }
 
         if(!work.hasWork()){
-            work = new ExecutorWorkGuard(ctx);
+            work = new ExecutorWorkGuard((ExecutionContext) lay.lowest_layer());
         }
 
-        AsyncTimerTask ttsk = new AsyncTimerTask(tsk, this,  ctx);
+        AsyncTimerTask ttsk = new AsyncTimerTask(tsk, this,  lay);
 
         timer.schedule(ttsk, time);
         running_timers.getAndIncrement();
@@ -42,10 +42,12 @@ public class AsyncTimer {
     ExecutorWorkGuard work;
 
     private final Timer timer = new Timer();
-    private ExecutionContext ctx;
+    private ExecutionLayer lay;
 
     public ExecutionContext context(){
-        return ctx;
+        return (ExecutionContext) lay.lowest_layer();
     }
+
+    public ExecutionLayer layer() { return lay; }
 
 }

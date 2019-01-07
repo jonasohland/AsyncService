@@ -73,7 +73,7 @@ public class newExecTests {
 
         AsyncRunnable runnable1 = new AsyncRunnable(() -> System.out.println("2"));
 
-        runnable1.bindContext(ctx);
+        runnable1.bindLayer(ctx);
 
         runnable.fire();
         runnable1.fire();
@@ -206,12 +206,12 @@ public class newExecTests {
         // t.schedule(Async.makeAsync(task::cancel), 500);
 
 
-        /* jt.schedule(new TimerTask() {
+         /* jt.schedule(new TimerTask() {
             @Override
             public void run() {
                 task.cancel();
             }
-        }, 1000);*/
+        }, 1000); */
 
         ctx.run();
 
@@ -291,7 +291,15 @@ public class newExecTests {
     public void invoke_and_test(){
         EventLoopContext ctx = new EventLoopContext();
 
-        Async.deferAnd(ctx, () -> {  System.out.println("999"); return 1000; })
+        RateLimitedExecutor ratelim = new RateLimitedExecutor(ctx, 200);
+
+        StrandExecutorQueue queue = new StrandExecutorQueue(ratelim);
+
+        RateLimitedExecutor ratelim2 = new RateLimitedExecutor(queue, 1000);
+
+        StrandExecutorQueue queue2 = new StrandExecutorQueue(ratelim2);
+
+        Async.invokeAnd(queue2, () -> {  System.out.println("999"); return 1000; })
                 .addListenerThen((Integer i) -> { System.out.println(i); return ++i; } )
                 .addListenerThen((Integer k) -> { System.out.println(k); return ++k; })
                 .addListener((Integer f) -> { System.out.println(f); return f; });
@@ -304,7 +312,10 @@ public class newExecTests {
 
         EventLoopContext ctx = new EventLoopContext();
 
-        Async.invokeAnd(ctx, () -> {
+        RateLimitedExecutor limiter = new RateLimitedExecutor(ctx, 1000);
+        StrandExecutorQueue queue = new StrandExecutorQueue(limiter);
+
+        Async.invokeAnd(queue, () -> {
             System.out.println("creating file object");
             return new File(System.getProperty("user.dir") + "/test.txt");
         }).addListenerThen((File f) -> {
@@ -398,5 +409,43 @@ public class newExecTests {
         ctx.run();
 
 
+    }
+
+    @Test
+    public void multi_layer_test(){
+
+        EventLoopContext ctx = new EventLoopContext();
+        RateLimitedExecutor rate_limiter = new RateLimitedExecutor(ctx, 220);
+        AsyncTimer tm = new AsyncTimer(rate_limiter);
+
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 1")), 100);
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 2")), 200);
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 3")), 300);
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 4")), 400);
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 5")), 500);
+        tm.schedule(Async.makeAsync(() -> System.out.println("hellloo!!!! 6")), 1200);
+
+        ctx.run();
+
+    }
+
+    @Test
+    public void multi_layer_test_2(){
+
+        EventLoopContext ctx = new EventLoopContext();
+
+        RateLimitedExecutor ratelim = new RateLimitedExecutor(ctx, 1000);
+
+        StrandExecutorDeque queue = new StrandExecutorDeque(ratelim);
+
+        queue.back().dispatch(() -> System.out.println("Hello! 1"));
+        queue.back().dispatchThen(() -> {System.out.println("Hello! 2"); return 44; })
+                .addListener(queue.front(), (Integer i) -> {
+                    System.out.println("got: " + i);
+                });
+        queue.back().dispatch(() -> System.out.println("Hello! 3"));
+        queue.back().dispatch(() -> System.out.println("Hello! 4"));
+
+        ctx.run();
     }
 }

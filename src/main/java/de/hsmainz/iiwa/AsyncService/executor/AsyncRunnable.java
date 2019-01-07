@@ -3,7 +3,7 @@ package de.hsmainz.iiwa.AsyncService.executor;
 
 public class AsyncRunnable implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private Runnable func;
     private ListenableFuture<Object> future;
 
@@ -11,7 +11,7 @@ public class AsyncRunnable implements AsyncTask {
         func = function;
     }
 
-    public AsyncRunnable(ExecutionContext ctx, Runnable runnable){
+    public AsyncRunnable(ExecutionLayer ctx, Runnable runnable){
         func = runnable;
         exec = ctx;
     }
@@ -25,12 +25,12 @@ public class AsyncRunnable implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
+    public void bindLayer(ExecutionLayer ctx) {
         exec = ctx;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer(){
         return exec;
     }
 

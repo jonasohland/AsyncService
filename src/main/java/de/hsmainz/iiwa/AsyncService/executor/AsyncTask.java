@@ -9,14 +9,14 @@ public interface AsyncTask {
 
 	/**
 	 *
-	 * @param ctx
+	 * @param layer
 	 */
-	public void bindContext(ExecutionContext ctx);
+	public void bindLayer(ExecutionLayer layer);
 
 	/**
 	 *
 	 */
-	public ExecutionContext context();
+	public ExecutionLayer layer();
 
 	/**
 	 *

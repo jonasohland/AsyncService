@@ -4,7 +4,7 @@ import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
 public class AsyncConsumer <T> implements AsyncTask {
 
-    private ExecutionContext exec;
+    private ExecutionLayer exec;
     private T input;
     private Consumer<T> func;
     private ListenableFuture<Object> future;
@@ -13,7 +13,7 @@ public class AsyncConsumer <T> implements AsyncTask {
         func = function;
     }
 
-    public AsyncConsumer(ExecutionContext ctx, Consumer<T> function){
+    public AsyncConsumer(ExecutionLayer ctx, Consumer<T> function){
         func = function;
         exec = ctx;
     }
@@ -23,7 +23,7 @@ public class AsyncConsumer <T> implements AsyncTask {
         func = function;
     }
 
-    public AsyncConsumer(T in, Consumer<T> function, ExecutionContext ctx){
+    public AsyncConsumer(T in, Consumer<T> function, ExecutionLayer ctx){
         input = in;
         func = function;
         exec = ctx;
@@ -38,12 +38,12 @@ public class AsyncConsumer <T> implements AsyncTask {
     }
 
     @Override
-    public void bindContext(ExecutionContext ctx) {
+    public void bindLayer(ExecutionLayer ctx) {
         exec = ctx;
     }
 
     @Override
-    public ExecutionContext context(){
+    public ExecutionLayer layer(){
         return exec;
     }
 

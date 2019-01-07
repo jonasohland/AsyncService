@@ -1,9 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.net;
-
-import de.hsmainz.iiwa.AsyncService.deprecated.events.DualListenableFuture;
-import de.hsmainz.iiwa.AsyncService.deprecated.events.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.threads.ThreadPool;
-import de.hsmainz.iiwa.AsyncService.threads.ThreadPoolJobLite;
+/*
+import de.hsmainz.iiwa.AsyncService.executor.DualListenableFuture;
+import de.hsmainz.iiwa.AsyncService.executor.ListenableFuture;
 import de.hsmainz.iiwa.AsyncService.utils.Completion;
 
 import java.io.IOException;
@@ -99,3 +97,4 @@ public class AsyncDatagramSocket {
 
 
 }
+*/

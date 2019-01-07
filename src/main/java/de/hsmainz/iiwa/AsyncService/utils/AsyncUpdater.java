@@ -1,7 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import de.hsmainz.iiwa.AsyncService.deprecated.events.AsyncService;
-import de.hsmainz.iiwa.AsyncService.deprecated.events.Async;
+import de.hsmainz.iiwa.AsyncService.executor.Async;
+import de.hsmainz.iiwa.AsyncService.executor.ExecutionLayer;
 import de.hsmainz.iiwa.AsyncService.functional.Consumer;
 
 /**
@@ -9,8 +9,13 @@ import de.hsmainz.iiwa.AsyncService.functional.Consumer;
  * @author Jonas Ohland
  * @param <T> the Type of data to send with the update
  */
-@Deprecated
 public abstract class AsyncUpdater<T> {
+
+	private ExecutionLayer layer;
+
+	protected AsyncUpdater(ExecutionLayer _layer){
+		layer = _layer;
+	}
 	
 	/**
 	 * implemented to handle the incoming update
@@ -27,11 +32,6 @@ public abstract class AsyncUpdater<T> {
 	 */
 	public void triggerUpdate(T input)
 	{
-		AsyncService.post(Async.makeAsync(input, new Consumer<T>() {
-			@Override
-			public void accept(T __input) {
-				AsyncUpdater.this.handleUpdate(__input);
-			}
-		}));
+		layer.post(Async.makeAsync(() -> handleUpdate(input)));
 	}
 }

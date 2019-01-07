@@ -2,30 +2,30 @@ package de.hsmainz.iiwa.AsyncService.executor;
 
 public class Event<T> extends ListenableBase<T> {
 
-    private ExecutionContext ctx;
+    private ExecutionLayer lay;
 
-    public Event(ExecutionContext context){
-        ctx = context;
+    public Event(ExecutionLayer layer){
+        lay = layer;
     }
 
     public void defer(T value){
         for(AsyncTask element : get_queue()){
             element.__set__arg_(value);
-            ctx.defer(element);
+            lay.defer(element);
         }
     }
 
     public void post(T value){
         for(AsyncTask element : get_queue()){
             element.__set__arg_(value);
-            ctx.post(element);
+            lay.post(element);
         }
     }
 
     public void dispatch(T value){
         for(AsyncTask element : get_queue()){
             element.__set__arg_(value);
-            ctx.dispatch(element);
+            lay.dispatch(element);
         }
     }
 

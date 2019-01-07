@@ -1,11 +1,5 @@
 package de.hsmainz.iiwa.AsyncService.executor;
 
-import de.hsmainz.iiwa.AsyncService.functional.Consumer;
-import de.hsmainz.iiwa.AsyncService.functional.Function;
-import de.hsmainz.iiwa.AsyncService.functional.Supplier;
-
-import java.util.concurrent.LinkedBlockingQueue;
-
 /**
  *  
  * @author jonas.ohland
@@ -35,17 +29,17 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 
 		if(!get_queue().isEmpty()) {
 
-			if(tsk != null && tsk.context() != null) {
+			if(tsk != null && tsk.layer() != null) {
 
 				for (AsyncTask element : get_queue()) {
 
-					if(element.context() == null){
-						element.bindContext(tsk.context());
+					if(element.layer() == null){
+						element.bindLayer(tsk.layer());
 					}
 
 					element.__set__arg_(value);
 
-					element.context().post(element);
+					element.layer().post(element);
 
 				}
 			} else {
@@ -61,15 +55,15 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 
 		if(!get_queue().isEmpty()) {
 
-			if(Async.getContext(tsk) != null) {
+			if(Async.getLayer(tsk) != null) {
 
 				for (AsyncTask element : get_queue()) {
 
-					if(element.context() == null){
-						element.bindContext(tsk.context());
+					if(element.layer() == null){
+						element.bindLayer(tsk.layer());
 					}
 
-					element.context().post(element);
+					element.layer().post(element);
 
 				}
 			} else {

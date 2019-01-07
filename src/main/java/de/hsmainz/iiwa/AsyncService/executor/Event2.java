@@ -5,17 +5,17 @@ import de.hsmainz.iiwa.AsyncService.functional.BiFunction;
 
 public class Event2<T, U> extends ListenableBase<T> {
 
-    private ExecutionContext ctx;
+    private ExecutionLayer layer;
 
-    public Event2(ExecutionContext context){
-        ctx = context;
+    public Event2(ExecutionLayer context){
+        layer = context;
     }
 
     public void defer(T valueT, U valueU){
         for(AsyncTask element : get_queue()){
             element.__set__arg_(valueT);
             element.__set__sec__arg_(valueU);
-            ctx.defer(element);
+            layer.defer(element);
         }
     }
 
@@ -23,7 +23,7 @@ public class Event2<T, U> extends ListenableBase<T> {
         for(AsyncTask element : get_queue()){
             element.__set__arg_(valueT);
             element.__set__sec__arg_(valueU);
-            ctx.post(element);
+            layer.post(element);
         }
     }
 
@@ -31,7 +31,7 @@ public class Event2<T, U> extends ListenableBase<T> {
         for(AsyncTask element : get_queue()){
             element.__set__arg_(valueT);
             element.__set__sec__arg_(valueU);
-            ctx.dispatch(element);
+            layer.dispatch(element);
         }
     }
 
@@ -39,16 +39,16 @@ public class Event2<T, U> extends ListenableBase<T> {
         get_queue().add(Async.makeAsync(biConsumer));
     }
 
-    public void addListener(ExecutionContext ctx, BiConsumer<T, U> biConsumer){
-        get_queue().add(Async.makeAsync(ctx, biConsumer));
+    public void addListener(ExecutionLayer layer, BiConsumer<T, U> biConsumer){
+        get_queue().add(Async.makeAsync(layer, biConsumer));
     }
 
     public <R> void addListener(BiFunction<T, U, R> biFunction){
         get_queue().add(Async.makeAsync(biFunction));
     }
 
-    public <R> void addListener(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
-        get_queue().add(Async.makeAsync(ctx, biFunction));
+    public <R> void addListener(ExecutionLayer layer, BiFunction<T, U, R> biFunction){
+        get_queue().add(Async.makeAsync(layer, biFunction));
     }
 
     public <R> ListenableFuture<R> addListenerThen(AsyncBiFunction<T, U, R> asyncBiFunction){
@@ -62,8 +62,8 @@ public class Event2<T, U> extends ListenableBase<T> {
         return bi.future();
     }
 
-    public <R> ListenableFuture<R> addListenerThen(ExecutionContext ctx, BiFunction<T, U, R> biFunction){
-        AsyncTask bi = Async.makeAsync(ctx, biFunction);
+    public <R> ListenableFuture<R> addListenerThen(ExecutionLayer layer, BiFunction<T, U, R> biFunction){
+        AsyncTask bi = Async.makeAsync(layer, biFunction);
         get_queue().add(bi);
         return bi.future();
     }
