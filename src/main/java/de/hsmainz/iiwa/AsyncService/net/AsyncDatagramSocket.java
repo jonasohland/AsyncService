@@ -1,7 +1,8 @@
 package de.hsmainz.iiwa.AsyncService.net;
-/*
-import de.hsmainz.iiwa.AsyncService.executor.DualListenableFuture;
-import de.hsmainz.iiwa.AsyncService.executor.ListenableFuture;
+
+import de.hsmainz.iiwa.AsyncService.future.DualListenableFuture;
+import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.listenable.Event2;
 import de.hsmainz.iiwa.AsyncService.utils.Completion;
 
 import java.io.IOException;
@@ -15,9 +16,9 @@ public class AsyncDatagramSocket {
     public ListenableFuture<Completion<SocketException>> onConnect = new ListenableFuture<>();
     public ListenableFuture<Completion<SocketException>> onBind = new ListenableFuture<>();
 
-    public void bind(SocketAddress addr) {
+    public void asyncBind(SocketAddress addr) {
 
-        ThreadPool.fromRunnable(() -> {
+        new Thread(() -> {
 
             System.out.println("binding to socketaddr: " + addr.toString());
 
@@ -39,9 +40,9 @@ public class AsyncDatagramSocket {
         }).start();
     }
 
-    public void connect(SocketAddress addr){
+    public void asyncConnect(SocketAddress addr){
 
-        ThreadPoolJobLite connection_job = ThreadPoolJobLite.makeJob(() -> {
+        new Thread(() -> {
 
             try {
                 socket.connect(addr);
@@ -50,9 +51,7 @@ public class AsyncDatagramSocket {
             } catch (SocketException ex){
                 onConnect.fire(new Completion<>(ex));
             }
-        });
-
-        connection_job.start();
+        }).start();
 
     }
 
@@ -69,15 +68,14 @@ public class AsyncDatagramSocket {
         socket.disconnect();
     }
 
-    public AsyncDatagramSocket(){
-        super();
+    public void beginRead(){
+        new Thread(() -> {
+        }).start();
     }
 
-    public Void perform() {
+    public void perform() {
 
-        byte[] buf = new byte[1024];
-
-        DatagramPacket packet = new DatagramPacket(buf, 1024);
+        DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
 
         try {
 
@@ -89,12 +87,6 @@ public class AsyncDatagramSocket {
             e.printStackTrace();
 
         }
-
-        return null;
     }
 
-
-
-
 }
-*/

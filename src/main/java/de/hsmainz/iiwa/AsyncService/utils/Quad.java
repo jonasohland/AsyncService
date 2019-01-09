@@ -1,5 +1,12 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
+/**
+ * Hold 4 objects of different types
+ * @param <T> type of the first object
+ * @param <U> type of the second object
+ * @param <V> type of the third object
+ * @param <K> type of the fourth object
+ */
 public class Quad<T, U, V, K> {
 
     private T argT;
@@ -9,6 +16,13 @@ public class Quad<T, U, V, K> {
 
     private Quad(){};
 
+    /**
+     * Construct the Quad with its resources
+     * @param first first object
+     * @param second second object
+     * @param third third object
+     * @param fourth fourth object
+     */
     public Quad(T first, U second, V third, K fourth){
         argT = first;
         argU = second;
@@ -16,18 +30,34 @@ public class Quad<T, U, V, K> {
         argK = fourth;
     }
 
+    /**
+     * access the first object
+     * @return the first object
+     */
     public T first(){
         return argT;
     }
 
+    /**
+     * access the second object
+     * @return the second object
+     */
     public U second(){
         return argU;
     }
 
+    /**
+     * access the third object
+     * @return the third object
+     */
     public V third(){
         return argV;
     }
 
+    /**
+     * access the fourth object
+     * @return the fourth object
+     */
     public K fourth(){
         return argK;
     }

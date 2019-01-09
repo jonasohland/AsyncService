@@ -1,5 +1,11 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
+/**
+ * Holds 3 objects of different types
+ * @param <T> first element type
+ * @param <U> second element type
+ * @param <V> third element type
+ */
 public class Triplet<T, U, V> {
     private T argT;
     private U argU;
@@ -7,20 +13,38 @@ public class Triplet<T, U, V> {
 
     private Triplet(){}
 
+    /**
+     * construct the triplet with with its contents
+     * @param first first element
+     * @param second second element
+     * @param third third element
+     */
     public Triplet(T first, U second, V third){
         argT = first;
         argU = second;
         argV = third;
     }
 
+    /**
+     * access the first element
+     * @return
+     */
     public T first(){
         return argT;
     }
 
+    /**
+     * access the second element
+     * @return
+     */
     public U second(){
         return argU;
     }
 
+    /**
+     * access the third element
+     * @return
+     */
     public V third(){
         return argV;
     }

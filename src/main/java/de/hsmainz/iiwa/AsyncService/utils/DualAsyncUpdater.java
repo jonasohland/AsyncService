@@ -1,8 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.utils;
 
-import de.hsmainz.iiwa.AsyncService.executor.Async;
-import de.hsmainz.iiwa.AsyncService.executor.ExecutionLayer;
-import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
+import de.hsmainz.iiwa.AsyncService.async.Async;
+import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayer;
 
 /**
  * Classes that need to be updated by other Classes that don't have time to execute longer update-Methods, can derive from this
@@ -13,9 +12,9 @@ import de.hsmainz.iiwa.AsyncService.functional.BiConsumer;
  */
 public abstract class DualAsyncUpdater<T, U> {
 
-	private ExecutionLayer layer;
+	private ExecutorLayer layer;
 
-	protected DualAsyncUpdater(ExecutionLayer _layer){
+	protected DualAsyncUpdater(ExecutorLayer _layer){
 		layer = _layer;
 	}
 	

@@ -1,10 +1,16 @@
 package de.hsmainz.iiwa.AsyncService.test;
 
+import de.hsmainz.iiwa.AsyncService.async.Async;
+import de.hsmainz.iiwa.AsyncService.async.AsyncFunction;
+import de.hsmainz.iiwa.AsyncService.async.AsyncRunnable;
 import de.hsmainz.iiwa.AsyncService.except.ExecutionRejectedException;
 import de.hsmainz.iiwa.AsyncService.except.TaskCancelledException;
-import de.hsmainz.iiwa.AsyncService.executor.*;
-import de.hsmainz.iiwa.AsyncService.utils.Completion;
-import de.hsmainz.iiwa.AsyncService.utils.Result;
+import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
+import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
+import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorWorkGuard;
+import de.hsmainz.iiwa.AsyncService.listenable.Event;
+import de.hsmainz.iiwa.AsyncService.listenable.Event2;
+import de.hsmainz.iiwa.AsyncService.utils.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -305,6 +311,8 @@ public class newExecTests {
                 .addListener((Integer f) -> { System.out.println(f); return f; });
 
         ctx.run();
+
+        Async.printLayerTrace(queue2);
     }
 
     @Test
@@ -427,6 +435,8 @@ public class newExecTests {
 
         ctx.run();
 
+        Assert.assertEquals(ctx, rate_limiter.lowest_layer());
+
     }
 
     @Test
@@ -445,6 +455,134 @@ public class newExecTests {
                 });
         queue.back().dispatch(() -> System.out.println("Hello! 3"));
         queue.back().dispatch(() -> System.out.println("Hello! 4"));
+
+        ctx.run();
+
+
+        Assert.assertEquals(ctx, queue.back().lowest_layer());
+        Assert.assertEquals(ctx, queue.front().lowest_layer());
+    }
+
+    @Test
+    public void counter_test(){
+
+        EventLoopContext ctx = new EventLoopContext();
+        CountingExecutor counter = new CountingExecutor(ctx);
+
+
+        AsyncTimer timer = new AsyncTimer(counter);
+        AsyncTimer timer2 = new AsyncTimer(counter);
+
+        timer.schedule(Async.makeAsync(() -> {}), 1000);
+        timer.schedule(Async.makeAsync(() -> {}), 1000);
+        timer.schedule(Async.makeAsync(() -> {}), 0);
+        timer.schedule(Async.makeAsync(() -> {}), 0);
+        timer.schedule(Async.makeAsync(() -> {}), 0);
+        timer2.schedule(Async.makeAsync(() -> {}), 1000);
+        timer2.schedule(Async.makeAsync(() -> {}), 1000);
+        timer2.schedule(Async.makeAsync(() -> {}), 0);
+        timer2.schedule(Async.makeAsync(() -> {}), 0);
+        timer2.schedule(Async.makeAsync(() -> {}), 0);
+
+        ctx.run();
+
+        System.out.println("counted: " + counter.count());
+
+        Assert.assertEquals(ctx, counter.lowest_layer());
+        Assert.assertEquals(10, (long) counter.count());
+
+    }
+
+    @Test
+    public void profiler_test(){
+        EventLoopContext ctx = new EventLoopContext();
+        Profiler profiler = new Profiler();
+
+        ProfilerChannel c = profiler.newChannel("Test1", ctx);
+        ProfilerChannel a = profiler.newChannel("Test2", ctx);
+
+        for(int i = 0; i < 100; i++){
+            c.post(() -> {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        for(int i = 0; i < 100; i++){
+            a.post(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        ctx.run();
+
+        profiler.printStats();
+
+
+    }
+
+    @Test
+    public void trace_test(){
+
+        Profiler profiler = new Profiler();
+
+        ExecutorContext ctx = new EventLoopContext();
+
+        ProfilerChannel channel = profiler.newChannel("TestChannel", ctx);
+
+        CountingExecutor counter = new CountingExecutor(channel);
+        RateLimitedExecutor rate_limiter = new RateLimitedExecutor(counter, 1000);
+        StrandExecutorDeque deque = new StrandExecutorDeque(rate_limiter);
+
+        AsyncTimer t = new AsyncTimer(deque.back());
+
+        t.schedule(Async.makeAsync(() -> { System.out.println("Hello!");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }), 3);
+        t.schedule(Async.makeAsync(() -> { System.out.println("Hello!"); }), 5);
+        t.schedule(Async.makeAsync(() -> { System.out.println("Hello!"); }), 10);
+        t.schedule(Async.makeAsync(() -> { System.out.println("Hello!"); }), 20);
+        t.schedule(Async.makeAsync(() -> { System.out.println("Hello!"); }), 30);
+
+        t.schedule(Async.makeAsync(() -> {
+            System.out.println("Hello!");
+        }), 3);
+
+        ctx.run();
+
+        // profiler.printStats();
+
+        Async.printLayerTrace(deque.front());
+
+        Assert.assertEquals(4, Async.traceLayers(deque.front()));
+
+    }
+
+    @Test
+    public void schedule_fixed_rate_test(){
+        ExecutorContext ctx = new EventLoopContext();
+        AsyncTimer timer = new AsyncTimer(ctx);
+
+        AsyncTimerTask blub = timer.scheduleAtFixedRate((Completion<TaskCancelledException> com) -> {
+            if(!com.failed()){
+                System.out.println("blub");
+            } else {
+                System.out.println("end");
+            }
+        }, 1000);
+
+        timer.schedule(blub::cancel, 3200);
 
         ctx.run();
     }
