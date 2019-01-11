@@ -4,7 +4,6 @@ stages:
   - build
   - test
   - deploy
-  - docpage
 
 before_script:
 #  - echo `pwd` # debug
@@ -21,11 +20,6 @@ build:
   stage: build
   script:
     - ./gradlew assemble
-    - ./gradlew javadoc
-  artifacts:
-    paths:
-     - cp -R build/docs/* ./public
-    expire_in: 1 year
 
 test:
   stage: test
@@ -43,7 +37,7 @@ deploy:
     - master
 
 pages:
-  stage: docpage
+  stage: deploy
   script:
     - ./gradlew javadoc
     - cp -R build/docs/* ./public
