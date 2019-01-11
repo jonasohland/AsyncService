@@ -561,7 +561,7 @@ public class newExecTests {
 
         ctx.run();
 
-        // profiler.printStats();
+        profiler.printStats();
 
         Async.printLayerTrace(deque.front());
 
