@@ -8,6 +8,7 @@ import de.hsmainz.iiwa.AsyncService.except.TaskCancelledException;
 import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorWorkGuard;
+import de.hsmainz.iiwa.AsyncService.executor.context.InstantExectorContext;
 import de.hsmainz.iiwa.AsyncService.listenable.Event;
 import de.hsmainz.iiwa.AsyncService.listenable.Event2;
 import de.hsmainz.iiwa.AsyncService.utils.*;
@@ -585,5 +586,11 @@ public class newExecTests {
         timer.schedule(blub::cancel, 3200);
 
         ctx.run();
+    }
+
+    @Test
+    public void instant_test(){
+        ExecutorContext instant_exec = new InstantExectorContext();
+        Async.invoke(instant_exec, () -> System.out.println("hey!"));
     }
 }

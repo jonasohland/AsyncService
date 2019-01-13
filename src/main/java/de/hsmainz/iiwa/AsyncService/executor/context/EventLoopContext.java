@@ -63,7 +63,9 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
     @Override
     public synchronized void run() {
 
-        this_threads.add(Thread.currentThread());
+        synchronized (this_threads){
+            this_threads.add(Thread.currentThread());
+        }
 
         while(work_count.get() != 0 || !queue.isEmpty()) {
 
@@ -79,12 +81,14 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
                 Thread.currentThread().isInterrupted();
             }
 
-
         }
 
         busy.set(false);
 
-        this_threads.remove(Thread.currentThread());
+        synchronized (this_threads){
+            this_threads.remove(Thread.currentThread());
+        }
+
     }
 
     public void runOne(){
@@ -129,7 +133,6 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
                 }
             }
         }
-
     }
 
     @Override
