@@ -170,6 +170,10 @@ public class Async {
         layer.post(makeAsync(biFunction));
     }
 
+    public static void invoke(ExecutorLayer layer, AsyncTask t){
+        layer.post(t);
+    }
+
     /* -------------------------------------------------------------------------------------------------------- */
     /*                                             Async.invokeAnd()                                            */
     /* -------------------------------------------------------------------------------------------------------- */

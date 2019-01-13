@@ -3,7 +3,7 @@ package de.hsmainz.iiwa.AsyncService.executor.context;
 import de.hsmainz.iiwa.AsyncService.async.AsyncTask;
 import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayer;
 
-public class InstantExectorContext implements ExecutorContext {
+public class InPlaceExecutorContext implements ExecutorContext {
     @Override
     public void run() {
 

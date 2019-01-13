@@ -9,6 +9,7 @@ plugins {
     id 'java-library'
     id "me.tatarka.retrolambda" version "3.7.0"
     id 'maven-publish'
+    id 'jacoco'
     // id 'org.ajoberstar.git-publish' version '1.7.2'
 }
 
@@ -32,6 +33,19 @@ test {
 
     minHeapSize = "128m"
     maxHeapSize = "512m"
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
 }
 
 javadoc {

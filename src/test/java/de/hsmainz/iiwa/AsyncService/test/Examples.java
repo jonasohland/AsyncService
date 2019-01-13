@@ -8,7 +8,7 @@ import de.hsmainz.iiwa.AsyncService.except.TaskCancelledException;
 import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorWorkGuard;
-import de.hsmainz.iiwa.AsyncService.executor.context.InstantExectorContext;
+import de.hsmainz.iiwa.AsyncService.executor.context.InPlaceExecutorContext;
 import de.hsmainz.iiwa.AsyncService.listenable.Event;
 import de.hsmainz.iiwa.AsyncService.listenable.Event2;
 import de.hsmainz.iiwa.AsyncService.utils.*;
@@ -21,7 +21,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class newExecTests {
+public class Examples {
 
     private long thread_id(){
         return Thread.currentThread().getId();
@@ -208,9 +208,9 @@ public class newExecTests {
         }, 2000);
 
 
-        // Async.invoke(ctx, task::cancel);
+        // AsyncBase.invoke(ctx, task::cancel);
 
-        // t.schedule(Async.makeAsync(task::cancel), 500);
+        // t.schedule(AsyncBase.makeAsync(task::cancel), 500);
 
 
          /* jt.schedule(new TimerTask() {
@@ -590,7 +590,7 @@ public class newExecTests {
 
     @Test
     public void instant_test(){
-        ExecutorContext instant_exec = new InstantExectorContext();
+        ExecutorContext instant_exec = new InPlaceExecutorContext();
         Async.invoke(instant_exec, () -> System.out.println("hey!"));
     }
 }
