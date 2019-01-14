@@ -62,7 +62,9 @@ update_mirror:
     - chmod 400 ~/.ssh/id_rsa_custom
     - git remote remove mirror
     - git remote add mirror git@custom:jonasohland/AsyncService.git
-    - git push --mirror mirror
+    - git checkout origin/master
+    - git fetch mirror
+    - git push mirror HEAD:master --force
   only:
     - master
 
