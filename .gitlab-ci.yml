@@ -49,6 +49,23 @@ pages:
   only:
     - master
 
+update_mirror:
+  stage: deploy
+  script:
+    - echo "$SSH_IDENT_SETUP"
+    - mkdir ~/.ssh 
+    - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    - touch ~/.ssh/config
+    - echo "$SSH_IDENT_SETUP" >> ~/.ssh/config
+    - touch ~/.ssh/id_rsa_custom
+    - echo "$GITHUB_SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa_custom
+    - chmod 400 ~/.ssh/id_rsa_custom
+    - git remote remove mirror
+    - git remote add mirror git@custom:jonasohland/AsyncService.git
+    - git push --mirror mirror
+  only:
+    - master
+
 
 
 after_script:
