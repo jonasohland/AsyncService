@@ -5,10 +5,7 @@ import de.hsmainz.iiwa.AsyncService.async.AsyncFunction;
 import de.hsmainz.iiwa.AsyncService.async.AsyncRunnable;
 import de.hsmainz.iiwa.AsyncService.except.ExecutionRejectedException;
 import de.hsmainz.iiwa.AsyncService.except.TaskCancelledException;
-import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
-import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
-import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorWorkGuard;
-import de.hsmainz.iiwa.AsyncService.executor.context.InPlaceExecutorContext;
+import de.hsmainz.iiwa.AsyncService.executor.context.*;
 import de.hsmainz.iiwa.AsyncService.listenable.Event;
 import de.hsmainz.iiwa.AsyncService.listenable.Event2;
 import de.hsmainz.iiwa.AsyncService.utils.*;
@@ -18,6 +15,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,12 +31,13 @@ public class Examples {
     int th_c_outside = 4;
 
     @Test
-    public void basic_test(){
+    public void basic_test() throws InterruptedException {
 
-        EventLoopContext ctx = new EventLoopContext();
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
 
         ctx.post(Async.makeAsync(() -> {
 
+            System.out.println("Hello!");
             test = test + "a";
 
             ctx.post(Async.makeAsync(() -> {
@@ -46,7 +46,6 @@ public class Examples {
 
 
             ctx.post(Async.makeAsync(() -> {
-                th_c_inside = ctx.threadCount();
             }));
 
             ctx.dispatch(Async.makeAsync(() -> {
@@ -62,12 +61,9 @@ public class Examples {
 
 
         ctx.run();
-
-        th_c_outside = ctx.threadCount();
+        // ctx.joinThreads();
 
         Assert.assertEquals("abcd", test);
-        Assert.assertEquals(0, th_c_outside);
-        Assert.assertEquals(1, th_c_inside);
 
     }
 
@@ -140,7 +136,14 @@ public class Examples {
         timer2.schedule(Async.makeAsync(() -> System.out.println("got")), 350);
         timer2.schedule(Async.makeAsync(() -> System.out.println("got")), 450);
 
-        ctx.run();
+        try {
+            ctx.runMultiThread(4);
+            ctx.joinThreads();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("exit");
 
     }
 
@@ -149,7 +152,7 @@ public class Examples {
 
         Timer timer = new Timer();
 
-        EventLoopContext ctx = new EventLoopContext();
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
 
         AsyncTimer at = new AsyncTimer(ctx);
 
@@ -220,7 +223,15 @@ public class Examples {
             }
         }, 1000); */
 
-        ctx.run();
+         for(int i = 0; i < 3; i++){
+
+             new Thread(() -> {
+                 ctx.run();
+                 System.out.println("exit");
+             }).start();
+         }
+         ctx.run();
+         System.out.println("exit");
 
     }
 
@@ -290,7 +301,15 @@ public class Examples {
             }
         }, 1000);
 
+        for(int i = 0; i < 3; i++){
+            new Thread(() -> {
+                ctx.run();
+                System.out.println("exit");
+            }).start();
+
+        }
         ctx.run();
+        System.out.println("exit");
 
     }
 
@@ -311,9 +330,10 @@ public class Examples {
                 .addListenerThen((Integer k) -> { System.out.println(k); return ++k; })
                 .addListener((Integer f) -> { System.out.println(f); return f; });
 
+        for(int i = 0; i < 3; i++){
+            new Thread(ctx::run).start();
+        }
         ctx.run();
-
-        Async.printLayerTrace(queue2);
     }
 
     @Test
@@ -367,6 +387,9 @@ public class Examples {
             }
         });
 
+        for(int i = 0; i < 3; i++){
+            new Thread(ctx::run).start();
+        }
         ctx.run();
     }
 
@@ -495,7 +518,7 @@ public class Examples {
     }
 
     @Test
-    public void profiler_test(){
+    public void profiler_test() {
         EventLoopContext ctx = new EventLoopContext();
         Profiler profiler = new Profiler();
 
@@ -522,11 +545,18 @@ public class Examples {
             });
         }
 
-        ctx.run();
+        ArrayList<Thread> waitforme = new ArrayList<>();
+
+        try{
+            ctx.runMultiThread(8);
+            ctx.joinThreads();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
 
         profiler.printStats();
-
-
+        Assert.assertEquals(100, c.count());
+        Assert.assertEquals(100, a.count());
     }
 
     @Test
@@ -572,7 +602,8 @@ public class Examples {
 
     @Test
     public void schedule_fixed_rate_test(){
-        ExecutorContext ctx = new EventLoopContext();
+
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
         AsyncTimer timer = new AsyncTimer(ctx);
 
         AsyncTimerTask blub = timer.scheduleAtFixedRate((Completion<TaskCancelledException> com) -> {

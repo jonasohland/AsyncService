@@ -1,6 +1,7 @@
 package de.hsmainz.iiwa.AsyncService.test.unit;
 
 import de.hsmainz.iiwa.AsyncService.async.*;
+import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
 import de.hsmainz.iiwa.AsyncService.executor.context.InPlaceExecutorContext;
 import org.junit.Assert;
@@ -88,6 +89,31 @@ public class AsyncBase {
         Async.invoke(in_place, async_bifunction);
 
         assert_invokations();
+    }
+
+
+    @Test
+    public void test_thread_exit(){
+
+        EventLoopContext ctx = new EventLoopContext();
+
+        /* Async.invoke(ctx, () -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }); */
+
+        for(int i = 0; i < 3; i++){
+            new Thread(() -> {
+                ctx.run();
+                System.out.println("exit");
+            }).start();
+
+        }
+        ctx.run();
+        System.out.println("exit");
     }
 
 }
