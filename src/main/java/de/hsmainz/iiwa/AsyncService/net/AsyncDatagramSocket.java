@@ -2,7 +2,6 @@ package de.hsmainz.iiwa.AsyncService.net;
 
 import de.hsmainz.iiwa.AsyncService.future.DualListenableFuture;
 import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
-import de.hsmainz.iiwa.AsyncService.listenable.Event2;
 import de.hsmainz.iiwa.AsyncService.utils.Completion;
 
 import java.io.IOException;
