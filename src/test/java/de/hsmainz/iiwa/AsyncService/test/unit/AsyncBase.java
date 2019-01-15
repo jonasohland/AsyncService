@@ -1,13 +1,22 @@
 package de.hsmainz.iiwa.AsyncService.test.unit;
 
 import de.hsmainz.iiwa.AsyncService.async.*;
-import de.hsmainz.iiwa.AsyncService.executor.context.EventLoopContext;
-import de.hsmainz.iiwa.AsyncService.executor.context.ExecutorContext;
-import de.hsmainz.iiwa.AsyncService.executor.context.InPlaceExecutorContext;
+import de.hsmainz.iiwa.AsyncService.executor.context.*;
+import de.hsmainz.iiwa.AsyncService.future.ListenableFuture;
+import de.hsmainz.iiwa.AsyncService.utils.AsyncTimer;
+import de.hsmainz.iiwa.AsyncService.utils.AsyncTimerTask;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Objects;
+
 public class AsyncBase {
+
+    @Test
+    public void new_async_test(){
+        Async a = new Async();
+        Assert.assertTrue(a instanceof Async);
+    }
 
     private boolean runnable_invoked;
     private boolean consumer_invoked;
@@ -58,12 +67,28 @@ public class AsyncBase {
     @Test
     public void asyncs_from_functional(){
 
+        EventLoopContextSingleThread c = new EventLoopContextSingleThread();
+
         AsyncTask as_runnable = Async.makeAsync(() -> { });
         AsyncTask as_consumer = Async.makeAsync((Integer i) -> { });
         AsyncTask as_supplier = Async.makeAsync(() -> {return 0;});
         AsyncTask as_function = Async.makeAsync((Integer k) ->{ return k; });
         AsyncTask as_biconsumer = Async.makeAsync((Integer g, Integer b) -> {});
         AsyncTask as_bifunction = Async.makeAsync((Integer y, Integer x) -> { return x + y; });
+
+        Assert.assertTrue(as_runnable instanceof AsyncRunnable);
+        Assert.assertTrue(as_consumer instanceof AsyncConsumer);
+        Assert.assertTrue(as_supplier instanceof AsyncSupplier);
+        Assert.assertTrue(as_function instanceof AsyncFunction);
+        Assert.assertTrue(as_biconsumer instanceof AsyncBiConsumer);
+        Assert.assertTrue(as_bifunction instanceof AsyncBiFunction);
+
+        as_runnable = Async.makeAsync(c, () -> { });
+        as_consumer = Async.makeAsync(c, (Integer i) -> { });
+        as_supplier = Async.makeAsync(c, () -> {return 0;});
+        as_function = Async.makeAsync(c, (Integer k) ->{ return k; });
+        as_biconsumer = Async.makeAsync(c, (Integer g, Integer b) -> {});
+        as_bifunction = Async.makeAsync(c, (Integer y, Integer x) -> { return x + y; });
 
         Assert.assertTrue(as_runnable instanceof AsyncRunnable);
         Assert.assertTrue(as_consumer instanceof AsyncConsumer);
@@ -91,6 +116,38 @@ public class AsyncBase {
         assert_invokations();
     }
 
+    private boolean invk = false;
+
+    @Test
+    public void async_invoke_lambda(){
+        ExecutorContext in_place = new InPlaceExecutorContext();
+
+        Async.invoke(in_place, () -> { invk = true; });
+        Assert.assertTrue(invk);
+        invk = false;
+
+        Async.invoke(in_place, (Integer i) -> { invk = true; });
+        Assert.assertTrue(invk);
+        invk = false;
+
+        Async.invoke(in_place, () -> { invk = true; return 0; });
+        Assert.assertTrue(invk);
+        invk = false;
+
+        Async.invoke(in_place, (Integer i) -> { invk = true; return i;});
+        Assert.assertTrue(invk);
+        invk = false;
+
+        Async.invoke(in_place, (Integer i, Integer k) -> { invk = true; });
+        Assert.assertTrue(invk);
+        invk = false;
+
+        Async.invoke(in_place, (Integer i, Integer k) -> { invk = true; return 0; });
+        Assert.assertTrue(invk);
+        invk = false;
+
+    }
+
 
     @Test
     public void test_thread_exit(){
@@ -114,6 +171,65 @@ public class AsyncBase {
         }
         ctx.run();
         System.out.println("exit");
+    }
+
+    @Test
+    public void async_get_layer_test(){
+
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
+        ExecutorWorkGuard work = new ExecutorWorkGuard(ctx);
+        AsyncTimer timer = new AsyncTimer(ctx);
+        AsyncTimerTask timer_t = timer.schedule(Async.makeAsync(() -> {}), 0);
+
+        AsyncTask task = Async.makeAsync(ctx, () -> {});
+
+        ListenableFuture<Object> future = task.future();
+
+        Assert.assertNotNull(Async.getLayer(task));
+        Assert.assertNotNull(Async.getLayer(future));
+        Assert.assertNotNull(Async.getLayer(work));
+        Assert.assertNotNull(Async.getLayer(timer));
+        Assert.assertNotNull(Async.getLayer(timer_t));
+
+        Assert.assertTrue(Async.getLayer(task) instanceof EventLoopContextSingleThread);
+        Assert.assertTrue(Async.getLayer(future) instanceof EventLoopContextSingleThread);
+        Assert.assertTrue(Async.getLayer(work) instanceof EventLoopContextSingleThread);
+        Assert.assertTrue(Async.getLayer(timer) instanceof EventLoopContextSingleThread);
+        Assert.assertTrue(Async.getLayer(timer_t) instanceof EventLoopContextSingleThread);
+
+
+    }
+
+    int int_return_1, int_return_2, int_return_3;
+
+    @Test
+    public void async_invokeAnd_test(){
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
+
+        Assert.assertTrue(Async.invokeAnd(ctx, () -> { return 0; }) instanceof ListenableFuture);
+        Assert.assertTrue(Async.invokeAnd(ctx, (Integer i) -> { return 0; }) instanceof ListenableFuture);
+        Assert.assertTrue(Async.invokeAnd(ctx, (Integer i, Integer k) -> { return 0; }) instanceof ListenableFuture);
+
+        Async.invokeAnd(ctx, () -> { return 100; } ).addListener((Integer i) -> { int_return_1 = i; });
+        Async.invokeAnd(ctx, (Integer i) -> { return 100; } ).addListener((Integer i) -> { int_return_2 = i; });
+        Async.invokeAnd(ctx, (Integer i, Integer k) -> { return 100; } ).addListener((Integer i) -> { int_return_3 = i; });
+
+        ctx.run();
+
+        Assert.assertEquals(100, int_return_1);
+        Assert.assertEquals(100, int_return_2);
+        Assert.assertEquals(100, int_return_3);
+
+        Async.deferAnd(ctx, () -> { return 101; } ).addListener((Integer i) -> { int_return_1 = i; });
+        Async.deferAnd(ctx, (Integer i) -> { return 101; } ).addListener((Integer i) -> { int_return_2 = i; });
+        Async.deferAnd(ctx, (Integer i, Integer k) -> { return 101; } ).addListener((Integer i) -> { int_return_3 = i; });
+
+        ctx.run();
+
+        Assert.assertEquals(101, int_return_1);
+        Assert.assertEquals(101, int_return_2);
+        Assert.assertEquals(101, int_return_3);
+
     }
 
 }
