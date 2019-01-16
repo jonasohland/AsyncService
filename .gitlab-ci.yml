@@ -20,6 +20,8 @@ build:
   stage: build
   script:
     - ./gradlew assemble
+  only:
+    - master
 
 test:
   stage: test
@@ -30,6 +32,8 @@ test:
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
+  only:
+    - master
 
 deploy:
   stage: deploy
@@ -60,13 +64,12 @@ update_mirror:
     - touch ~/.ssh/id_rsa_custom
     - echo "$GITHUB_SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa_custom
     - chmod 400 ~/.ssh/id_rsa_custom
-    - git remote remove mirror
+    - git remote rm mirror
     - git remote add mirror git@custom:jonasohland/AsyncService.git
     - git checkout origin/master
     - git fetch mirror
     - git push mirror HEAD:master --force
-  only:
-    - master
+
 
 
 
