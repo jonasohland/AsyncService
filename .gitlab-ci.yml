@@ -64,7 +64,6 @@ update_mirror:
     - touch ~/.ssh/id_rsa_custom
     - echo "$GITHUB_SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa_custom
     - chmod 400 ~/.ssh/id_rsa_custom
-    - git remote rm mirror
     - git remote add mirror git@custom:jonasohland/AsyncService.git
     - git checkout origin/master
     - git fetch mirror
