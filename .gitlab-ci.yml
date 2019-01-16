@@ -20,8 +20,6 @@ build:
   stage: build
   script:
     - ./gradlew assemble
-  only:
-    - master
 
 test:
   stage: test
@@ -32,8 +30,6 @@ test:
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
-  only:
-    - master
 
 deploy:
   stage: deploy
