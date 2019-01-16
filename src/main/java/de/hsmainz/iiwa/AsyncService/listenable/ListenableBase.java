@@ -59,4 +59,10 @@ public abstract class ListenableBase<T> implements Listenable<T> {
         queue.add(async_function);
         return get_next_listenable(async_function);
     }
+
+    public <R> Listenable<R> addListenerThen(ExecutorLayer ctx, Function<T, R> function){
+        AsyncFunction<T, R> async_function = Async.makeAsync(ctx, function);
+        queue.add(async_function);
+        return get_next_listenable(async_function);
+    }
 }

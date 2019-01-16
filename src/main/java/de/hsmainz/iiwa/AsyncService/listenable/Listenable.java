@@ -19,5 +19,6 @@ public interface Listenable<T> {
     public <R> void addListener(ExecutorLayer ctx, Function<T, R> function);
 
     public <R> Listenable<R> addListenerThen(Function<T, R> function);
+    public <R> Listenable<R> addListenerThen(ExecutorLayer ctx, Function<T, R> function);
 
 }
