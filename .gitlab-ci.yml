@@ -65,6 +65,8 @@ update_mirror:
     - git fetch __mirror__
     - git push __mirror__ HEAD:master --force
     - git remote remove __mirror__
+  only:
+    - master
 
 
 
