@@ -34,7 +34,7 @@ test:
 deploy:
   stage: deploy
   script:
-  - ./gradlew publish
+    - ./gradlew publish
   only:
     - master
 
