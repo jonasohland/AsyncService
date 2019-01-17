@@ -34,8 +34,8 @@ public class UtilTest {
         Assert.assertEquals(int_quad.third(), int_quad_2.third());
         Assert.assertEquals(int_quad.fourth(), int_quad_2.fourth());
 
-        // Assert.assertEquals(int_pair, int_pair_2);
-        // Assert.assertEquals(int_triplet, int_triplet_2);
+        Assert.assertEquals(int_pair, int_pair_2);
+        Assert.assertEquals(int_triplet, int_triplet_2);
         Assert.assertEquals(int_quad, int_quad_2);
 
     }
