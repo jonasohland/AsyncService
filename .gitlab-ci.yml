@@ -35,8 +35,6 @@ deploy:
   stage: deploy
   script:
   - ./gradlew publish
-  only:
-    - master
 
 pages:
   stage: deploy
