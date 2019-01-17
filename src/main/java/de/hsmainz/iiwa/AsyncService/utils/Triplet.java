@@ -53,8 +53,8 @@ public class Triplet<T, U, V> {
     public boolean equals(Object obj) {
         if(obj == this) return true;
         else {
-            if(obj instanceof Quad){
-                Quad q = (Quad) obj;
+            if(obj instanceof Pair){
+                Triplet q = (Triplet) obj;
 
                 if (argT != null ? !argT.equals(q.first()) : q.first() != null) return false;
                 if (argU != null ? !argU.equals(q.second()) : q.second() != null) return false;

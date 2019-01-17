@@ -24,8 +24,8 @@ public class Pair<T, U> {
     public boolean equals(Object obj) {
         if(obj == this) return true;
         else {
-            if(obj instanceof Quad){
-                Quad q = (Quad) obj;
+            if(obj instanceof Pair){
+                Pair q = (Pair) obj;
 
                 if (argT != null ? !argT.equals(q.first()) : q.first() != null) return false;
                 if (argU != null ? !argU.equals(q.second()) : q.second() != null) return false;
