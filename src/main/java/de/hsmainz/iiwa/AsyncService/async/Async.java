@@ -178,8 +178,6 @@ public class Async {
     /*                                             Async.invokeAnd()                                            */
     /* -------------------------------------------------------------------------------------------------------- */
 
-
-
     public static <T> ListenableFuture<T> invokeAnd(ExecutorLayer layer, Supplier<T> sup){
         AsyncSupplier<T> supplier = new AsyncSupplier<T>(layer, sup);
         layer.post(supplier);
