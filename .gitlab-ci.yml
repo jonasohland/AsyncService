@@ -43,11 +43,13 @@ pages:
   script:
     - ./gradlew javadoc
     - cp -R build/docs/* ./public
+    - "curl -X POST -F token=$TRIGGER_PAGES_TOKEN -F ref=master https://gitlab.rlp.net/api/v4/projects/2644/trigger/pipeline"
   artifacts:
     paths:
       - public
   only:
     - master
+    - 16-trigger-pages-deployment-from-pipline
 
 update_mirror:
   stage: deploy
