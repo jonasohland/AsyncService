@@ -114,7 +114,7 @@ publishing {
 
         maven {
             name = "gitlab"
-            url "https://gitlab.rlp.net/api/v4/projects/" + System.getenv("CI_PROJECT_ID") + "/packages/maven"
+            url "https://gitlab.rlp.net/api/v4/projects/2644/packages/maven"
             credentials(HttpHeaderCredentials) {
                 name = "Job-Token"
                 value = System.getenv("CI_JOB_TOKEN")

@@ -49,7 +49,6 @@ trigger_pages:
       - asyncservice
   only:
     - master
-    - 16-trigger-pages-deployment-from-pipline
 
 update_mirror:
   stage: deploy
