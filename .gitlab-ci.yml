@@ -37,7 +37,6 @@ deploy:
     - ./gradlew publish
   only:
     - master
-    - 17-deploy-to-zmb-robo-public
 
 trigger_pages:
   stage: deploy
@@ -50,7 +49,6 @@ trigger_pages:
       - asyncservice
   only:
     - master
-    - 16-trigger-pages-deployment-from-pipline
 
 update_mirror:
   stage: deploy
