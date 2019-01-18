@@ -37,6 +37,7 @@ deploy:
     - ./gradlew publish
   only:
     - master
+    - 17-deploy-to-zmb-robo-public
 
 trigger_pages:
   stage: deploy
