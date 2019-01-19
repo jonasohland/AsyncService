@@ -1,5 +1,6 @@
 package de.hsmainz.iiwa.AsyncService.test;
 
+import com.sun.webkit.EventLoop;
 import de.hsmainz.iiwa.AsyncService.async.Async;
 import de.hsmainz.iiwa.AsyncService.async.AsyncFunction;
 import de.hsmainz.iiwa.AsyncService.async.AsyncRunnable;
@@ -623,5 +624,34 @@ public class Examples {
     public void instant_test(){
         ExecutorContext instant_exec = new InPlaceExecutorContext();
         Async.invoke(instant_exec, () -> System.out.println("hey!"));
+    }
+
+    @Test
+    public void waiting_test(){
+        EventLoopContext ctx = new EventLoopContext();
+
+        Async.invoke(ctx, () -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Async.invoke(ctx, () -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("waiting: " + ctx.waitingThreadCount());
+        });
+
+        try {
+            ctx.runMultiThread(4);
+            ctx.joinThreads();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

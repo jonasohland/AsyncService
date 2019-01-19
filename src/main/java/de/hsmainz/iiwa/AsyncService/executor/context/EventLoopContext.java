@@ -1,11 +1,13 @@
 package de.hsmainz.iiwa.AsyncService.executor.context;
 
 import de.hsmainz.iiwa.AsyncService.async.AsyncTask;
+import de.hsmainz.iiwa.AsyncService.except.NotImplementedException;
 import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayer;
 import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayerBase;
 
 import java.util.ArrayList;
 import de.hsmainz.iiwa.AsyncService.utils.Objects;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,6 +19,10 @@ class EventLoopThreadWrapper {
 
     private EventLoopThreadWrapper(){}
 
+    /**
+     * construct a new wrapper from a thread
+     * @param th the thread
+     */
     public EventLoopThreadWrapper(Thread th){
         Objects.requireNonNull(th, "The Thread object must not be null");
         t = th;
@@ -24,15 +30,26 @@ class EventLoopThreadWrapper {
 
     private final AtomicBoolean busy = new AtomicBoolean(false);
 
-
+    /**
+     * set the threads busy state
+     * @param is_busy busy state
+     */
     public void setBusy(boolean is_busy){
         busy.set(is_busy);
     }
 
+    /**
+     * check if the thread is busy
+     * @return true if busy, false otherwise
+     */
     public boolean isBusy(){
         return busy.get();
     }
 
+    /**
+     * access the wrapped thread object
+     * @return the thread object
+     */
     public Thread thread(){
         synchronized (t){
             return t;
@@ -44,6 +61,9 @@ class EventLoopThreadWrapper {
 
 public class EventLoopContext extends ExecutorLayerBase implements ExecutorContext {
 
+    /**
+     * Create a new EventLoop
+     */
     public EventLoopContext(){
         super(null);
     }
@@ -64,12 +84,18 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
     private final ArrayList<EventLoopThreadWrapper> this_threads = new ArrayList<>();
 
     /**
-     *
+     * stores the Loops busy-state
      */
     private final AtomicBoolean busy = new AtomicBoolean(false);
 
+    /**
+     * stores if the EventLoop is in an orderly exit procedure
+     */
     private volatile AtomicBoolean is_exit_procedure = new AtomicBoolean(false);
 
+    /**
+     * stores if the EventLoop is in a multithreaded initialisation procedure
+     */
     private final AtomicBoolean multithread_init = new AtomicBoolean(false);
 
     @Override
@@ -96,6 +122,11 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         queue.add(tsk);
     }
 
+    /**
+     * Run this EventLoop. This method returns when the EventLoop runs out of work.
+     * This method may be called from different threads at the same time. Calling this method will
+     * add the current Thread to the EventLoops thread pool.
+     */
     @Override
     public void run() {
 
@@ -176,6 +207,9 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         }
     }
 
+    /**
+     * Iterate the event loop once.
+     */
     public void runOne(){
 
         this_threads.add(new EventLoopThreadWrapper(Thread.currentThread()));
@@ -189,11 +223,16 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         this_threads.remove(new EventLoopThreadWrapper(Thread.currentThread()));
     }
 
+    /**
+     * Run the event loop on multiple threads. This method will wait for all Threads to spin up and
+     * return after starting is completed.
+     * @param threads the number of threads to run the EventLoop on
+     * @throws InterruptedException will be thrown if the current thread is interrupted while
+     * waiting for the event loop to be ready
+     */
     public void runMultiThread(int threads) throws InterruptedException {
 
-
         multithread_init.set(true);
-
 
         for(int i = 0; i < threads; i++){
             new Thread(this::run).start();
@@ -205,7 +244,6 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
             }
         }
 
-
         synchronized (multithread_init){
             multithread_init.set(false);
             multithread_init.notifyAll();
@@ -213,6 +251,10 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
 
     }
 
+    /**
+     * Join all threads that are currently running the event loop.
+     * @throws InterruptedException will throw if interrupted while joining
+     */
     public void joinThreads() throws InterruptedException {
 
         if(multithread_init.get()){
@@ -234,15 +276,17 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         }
     }
 
+
     @Override
     public void stop() {
-
+        throw new NotImplementedException("rant to: jonas.ohland@gmail.com");
     }
 
     @Override
     public void reset() {
-
+        throw new NotImplementedException("rant to: jonas.ohland@gmail.com");
     }
+
 
     @Override
     public void registerWork(ExecutorWorkGuard wrk) {
@@ -272,6 +316,10 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         }
     }
 
+    /**
+     * get the number of threads in a waiting state
+     * @return the number of threads in a waiting state
+     */
     public int waitingThreadCount(){
         int ret_v = 0;
         for(EventLoopThreadWrapper thread : this_threads){
@@ -282,17 +330,29 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         return ret_v;
     }
 
+    /**
+     * determine of all threads are currently in a waiting state
+     * @return true if all threads are waiting, false otherwise
+     */
     private boolean allThreadsWaiting(){
         synchronized (this_threads){
             return waitingThreadCount() == this_threads.size();
         }
     }
 
+    /**
+     * get the number of work objects registered with at this context
+     * @return the number of work objects
+     */
     @Override
     public int workCount() {
         return work_count.get();
     }
 
+    /**
+     * determine if the caller is inside a thread that is running this contexts run() method
+     * @return true if the caller is, false otherwise
+     */
     public boolean runningInThisContext(){
 
         synchronized (this_threads){
@@ -306,16 +366,20 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
 
     }
 
+    /**
+     * determine if the context is running on at least one thread
+     * @return true if running, false otherwise
+     */
     public boolean isRunning(){
         synchronized (this_threads){
             return !this_threads.isEmpty();
         }
     }
 
-    public boolean isBusy(){
-        return busy.get();
-    }
-
+    /**
+     * get the number of threads this context is running on
+     * @return
+     */
     public int threadCount(){
         return this_threads.size();
     }
