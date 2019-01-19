@@ -44,7 +44,6 @@ test:
       junit: build/test-results/test/TEST-*.xml
     paths:
       - build
-      - build/jacocoHtml
     
 
 deploy:
