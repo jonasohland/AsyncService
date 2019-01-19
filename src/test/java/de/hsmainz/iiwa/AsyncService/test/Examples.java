@@ -1,6 +1,5 @@
 package de.hsmainz.iiwa.AsyncService.test;
 
-import com.sun.webkit.EventLoop;
 import de.hsmainz.iiwa.AsyncService.async.Async;
 import de.hsmainz.iiwa.AsyncService.async.AsyncFunction;
 import de.hsmainz.iiwa.AsyncService.async.AsyncRunnable;
