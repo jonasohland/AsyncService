@@ -20,6 +20,18 @@ build:
   stage: build
   script:
     - ./gradlew assemble
+  artifacts:
+    paths:
+      - build
+
+build_javadoc:
+  stage: build
+  script:
+    - ./gradlew javadoc
+    - cp -R build/docs/* ./asyncservice
+  artifacts:
+    paths:
+      - asyncservice
 
 test:
   stage: test
@@ -30,6 +42,9 @@ test:
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
+    paths:
+      - build
+    
 
 deploy:
   stage: deploy
@@ -41,12 +56,7 @@ deploy:
 trigger_pages:
   stage: deploy
   script:
-    - ./gradlew javadoc
-    - cp -R build/docs/* ./asyncservice
     - "curl -X POST -F token=$TRIGGER_PAGES_TOKEN -F ref=master https://gitlab.rlp.net/api/v4/projects/2644/trigger/pipeline"
-  artifacts:
-    paths:
-      - asyncservice
   only:
     - master
 
