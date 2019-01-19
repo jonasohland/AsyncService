@@ -86,13 +86,12 @@ public class Result<T, E extends Exception> {
         if(obj == this) return true;
         else {
             if (obj instanceof Result) {
+
                 Result other = (Result) obj;
 
                 if (exception != null ? !exception.equals(other.getException()) : other.getException() != null)
                     return false;
-                if (res != null ? !res.equals(other.get()) : other.get() != null) return false;
-
-                return true;
+                return res != null ? res.equals(other.get()) : other.get() == null;
 
             } else return false;
         }
