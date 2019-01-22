@@ -89,5 +89,23 @@ public class UtilTest {
 
     }
 
+    @Test
+    public void duration_test() {
+        Duration d1 = Duration.ofNanos(1000000);
+        Duration d2 = Duration.ofMicros(1000);
+        Duration d3 = Duration.ofMillis(1);
+        Duration d4 = Duration.ofSeconds(60);
+        Duration d5 = Duration.ofMins(1);
+
+        Assert.assertEquals(d1.toMicros(), d2.toMicros());
+        Assert.assertEquals(d3.toMillis(), d2.toMillis());
+        Assert.assertEquals(d1.toNanos(), d2.toNanos());
+
+        Assert.assertEquals(d5.toSecs(), d4.toSecs());
+
+        Assert.assertEquals(d5.toMins(), d4.toMins());
+
+        Assert.assertNotEquals(d5.toNanos(), d1.toNanos());
+    }
 
 }
