@@ -5,8 +5,6 @@ import de.hsmainz.iiwa.AsyncService.async.AsyncTask;
 import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayer;
 import de.hsmainz.iiwa.AsyncService.executor.layer.ExecutorLayerBase;
 
-import java.time.Duration;
-
 public class ProfilerChannel extends ExecutorLayerBase {
 
     private final Object mutex = new Object();
