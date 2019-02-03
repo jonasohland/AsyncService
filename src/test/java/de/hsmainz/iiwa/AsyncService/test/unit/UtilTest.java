@@ -108,4 +108,17 @@ public class UtilTest {
         Assert.assertNotEquals(d5.toNanos(), d1.toNanos());
     }
 
+    @Test
+    public void makeTupleTest(){
+
+        Assert.assertEquals(new Pair<Integer, Integer>(1, 1), Tuple.makeTuple(1, 1));
+
+        Assert.assertEquals(new Triplet<Integer, Integer, Integer>(1, 1, 3),
+                Tuple.makeTuple(1, 1, 3));
+
+        Assert.assertEquals(new Quad<Integer, Integer, Integer, Integer>(1, 1, 3, 3),
+                Tuple.makeTuple(1, 1, 3, 3));
+
+    }
+
 }
