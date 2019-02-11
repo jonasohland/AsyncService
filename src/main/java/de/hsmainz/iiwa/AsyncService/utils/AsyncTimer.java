@@ -95,6 +95,8 @@ public class AsyncTimer {
         return scheduleAtFixedRate(Async.makeAsync(function), delay, rate);
     }
 
+    Timer getTimer(){ return timer; }
+
     final AtomicInteger running_timers = new AtomicInteger(0);
     ExecutorWorkGuard work;
 
