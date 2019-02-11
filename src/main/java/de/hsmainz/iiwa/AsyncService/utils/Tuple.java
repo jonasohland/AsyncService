@@ -42,4 +42,9 @@ public class Tuple {
     public static <T, U, V, K> Quad<T, U, V, K> makeTuple(T first, U second, V third, K fourth){
         return new Quad<T, U, V, K>(first, second, third, fourth);
     }
+
+    public static <T, U> void tie(Pair<T, U> pair, T first, U second){
+        first = pair.first();
+        second = pair.second();
+    }
 }

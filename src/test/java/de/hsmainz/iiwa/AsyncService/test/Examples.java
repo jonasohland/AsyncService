@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -652,5 +651,32 @@ public class Examples {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    AsyncTimerTask tsk;
+
+    @Test
+    public void rescheduleTimersTest(){
+
+        EventLoopContextSingleThread ctx = new EventLoopContextSingleThread();
+        AsyncTimer timer = new AsyncTimer(ctx);
+
+        tsk = timer.scheduleAtFixedRate((Completion<TaskCancelledException> c) -> {
+
+            if(!c.failed())
+                System.out.println("Hello!");
+
+        }, 1000, 1000);
+
+        AsyncTimerTask newTask;
+
+        timer.schedule(() -> { tsk = tsk.newRepeatTime(500); }, 3000);
+        timer.schedule(() -> {
+            tsk.stop();
+            System.out.println("die!");
+        }, 4000);
+
+        ctx.run();
+
     }
 }
