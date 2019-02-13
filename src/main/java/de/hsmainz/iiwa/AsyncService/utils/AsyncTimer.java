@@ -23,16 +23,16 @@ public class AsyncTimer {
     public AsyncTimerTask schedule(AsyncTask tsk, long time){
 
         if(work == null){
-            work = new ExecutorWorkGuard(lay.lowest_layer());
+            work = new ExecutorWorkGuard(lay.context());
         }
 
         if(!work.hasWork()){
-            work = new ExecutorWorkGuard(lay.lowest_layer());
+            work = new ExecutorWorkGuard(lay.context());
         }
 
         AsyncTimerTask ttsk = new AsyncTimerTask(tsk, this,  lay, false);
 
-        timer.schedule(ttsk, time);
+        internal_timer.schedule(ttsk, time);
         running_timers.getAndIncrement();
 
         return ttsk;
@@ -42,16 +42,16 @@ public class AsyncTimer {
     public AsyncTimerTask scheduleAtFixedRate(AsyncTask tsk, long delay, long rate){
 
         if(work == null){
-            work = new ExecutorWorkGuard(lay.lowest_layer());
+            work = new ExecutorWorkGuard(lay.context());
         }
 
         if(!work.hasWork()){
-            work = new ExecutorWorkGuard(lay.lowest_layer());
+            work = new ExecutorWorkGuard(lay.context());
         }
 
         AsyncTimerTask ttsk = new AsyncTimerTask(tsk, this,  lay, true);
 
-        timer.scheduleAtFixedRate(ttsk, 0, rate);
+        internal_timer.scheduleAtFixedRate(ttsk, 0, rate);
 
         running_timers.getAndIncrement();
 
@@ -95,16 +95,16 @@ public class AsyncTimer {
         return scheduleAtFixedRate(Async.makeAsync(function), delay, rate);
     }
 
-    Timer getTimer(){ return timer; }
+    Timer timer(){ return internal_timer; }
 
     final AtomicInteger running_timers = new AtomicInteger(0);
     ExecutorWorkGuard work;
 
-    private final Timer timer = new Timer();
+    private final Timer internal_timer = new Timer();
     private ExecutorLayer lay;
 
     public ExecutorContext context(){
-        return (ExecutorContext) lay.lowest_layer();
+        return (ExecutorContext) lay.context();
     }
 
     public ExecutorLayer layer() { return lay; }

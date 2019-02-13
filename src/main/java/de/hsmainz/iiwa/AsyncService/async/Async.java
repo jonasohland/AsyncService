@@ -289,7 +289,7 @@ public class Async {
         ExecutorLayer l = layer;
         int tracer = 0;
 
-        while(!l.equals(l.lowest_layer())){
+        while(!l.equals(l.context())){
             tracer++;
             l = l.next_layer();
 
@@ -310,7 +310,7 @@ public class Async {
 
         System.out.println("Layer " + tracer + ": " + l.getClass());
 
-        while(!l.equals(l.lowest_layer())){
+        while(!l.equals(l.context())){
             tracer++;
             l = l.next_layer();
 

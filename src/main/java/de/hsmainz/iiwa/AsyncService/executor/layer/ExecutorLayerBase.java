@@ -153,7 +153,7 @@ public abstract class ExecutorLayerBase implements ExecutorLayer {
         return nextLayer;
     }
 
-    public ExecutorContext lowest_layer(){
-        return next_layer().lowest_layer();
+    public ExecutorContext context(){
+        return next_layer().context();
     }
 }

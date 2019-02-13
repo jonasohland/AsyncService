@@ -22,7 +22,7 @@ public class StrandExecutorDequeFront extends ExecutorLayerBase {
     @Override
     public void post(AsyncTask t) {
         if(t.layer() != null){
-            t.bindLayer(this);
+            t.bind(this);
         }
         post_task(t);
     }
@@ -35,7 +35,7 @@ public class StrandExecutorDequeFront extends ExecutorLayerBase {
     @Override
     public void dispatch(AsyncTask t) {
         if(t.layer() != null){
-            t.bindLayer(this);
+            t.bind(this);
         }
         post_task(t);
     }

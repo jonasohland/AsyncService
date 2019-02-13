@@ -40,7 +40,7 @@ public class AsyncSupplier <T> implements AsyncTask {
     }
 
     @Override
-    public void bindLayer(ExecutorLayer layer) {
+    public void bind(ExecutorLayer layer) {
         exec = layer;
     }
 

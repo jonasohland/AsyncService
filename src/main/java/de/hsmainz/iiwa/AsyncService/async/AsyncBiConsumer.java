@@ -54,7 +54,7 @@ public class AsyncBiConsumer <T, U> implements AsyncTask {
     }
 
     @Override
-    public void bindLayer(ExecutorLayer layer) {
+    public void bind(ExecutorLayer layer) {
         exec = layer;
     }
 

@@ -60,7 +60,7 @@ public class UtilTest {
 
         Assert.assertEquals(comp_1, comp_2);
         Assert.assertNotEquals(comp_1, comp_3);
-        Assert.assertNotNull(comp_3.getException());
+        Assert.assertNotNull(comp_3.exception());
     }
 
     @Test

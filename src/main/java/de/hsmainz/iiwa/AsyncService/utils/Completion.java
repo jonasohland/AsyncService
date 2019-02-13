@@ -20,7 +20,7 @@ public class Completion<E extends Exception> {
         return is_failed;
     }
 
-    public E getException(){
+    public E exception(){
         return exception;
     }
 
@@ -31,7 +31,7 @@ public class Completion<E extends Exception> {
             if(obj instanceof Completion){
                 Completion other = (Completion) obj;
 
-                return exception != null ? exception.equals(other.getException()) : other.getException() == null;
+                return exception != null ? exception.equals(other.exception()) : other.exception() == null;
 
             } else return false;
         }

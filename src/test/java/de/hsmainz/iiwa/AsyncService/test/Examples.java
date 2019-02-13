@@ -75,7 +75,7 @@ public class Examples {
 
         AsyncRunnable runnable1 = new AsyncRunnable(() -> System.out.println("2"));
 
-        runnable1.bindLayer(ctx);
+        runnable1.bind(ctx);
 
         runnable.fire();
         runnable1.fire();
@@ -180,7 +180,7 @@ public class Examples {
         at.schedule((Completion<TaskCancelledException> result) -> {
 
             if(result.failed()){
-                result.getException().printStackTrace();
+                result.exception().printStackTrace();
                 return 0;
             }
             System.out.println("exit...");
@@ -359,7 +359,7 @@ public class Examples {
             }
         }).addListenerThen((Result<File, IOException> res) -> {
             if (res.failed()) {
-                System.out.println("creation failed: " + res.getException().getMessage());
+                System.out.println("creation failed: " + res.exception().getMessage());
                 if (res.hasResult()) {
                     System.out.println("but file could be opened");
                     if (res.get().delete()) {
@@ -380,7 +380,7 @@ public class Examples {
             }
         }).addListener((Completion<IOException> res) -> {
             if (res.failed()) {
-                System.out.println("operation not completed: " + res.getException().getMessage());
+                System.out.println("operation not completed: " + res.exception().getMessage());
             } else {
                 System.out.println("File deleted.");
             }
@@ -458,7 +458,7 @@ public class Examples {
 
         ctx.run();
 
-        Assert.assertEquals(ctx, rate_limiter.lowest_layer());
+        Assert.assertEquals(ctx, rate_limiter.context());
 
     }
 
@@ -482,8 +482,8 @@ public class Examples {
         ctx.run();
 
 
-        Assert.assertEquals(ctx, queue.back().lowest_layer());
-        Assert.assertEquals(ctx, queue.front().lowest_layer());
+        Assert.assertEquals(ctx, queue.back().context());
+        Assert.assertEquals(ctx, queue.front().context());
     }
 
     @Test
@@ -511,7 +511,7 @@ public class Examples {
 
         System.out.println("counted: " + counter.count());
 
-        Assert.assertEquals(ctx, counter.lowest_layer());
+        Assert.assertEquals(ctx, counter.context());
         Assert.assertEquals(10, (long) counter.count());
 
     }

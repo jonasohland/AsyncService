@@ -41,5 +41,5 @@ public interface ExecutorLayer {
      * Get the ExecutorContext that represents the lowest layer in this execution chain
      * @return the lowest layer
      */
-    ExecutorContext lowest_layer();
+    ExecutorContext context();
 }

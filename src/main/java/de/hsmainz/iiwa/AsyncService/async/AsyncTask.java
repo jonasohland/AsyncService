@@ -14,7 +14,7 @@ public interface AsyncTask {
 	 *
 	 * @param layer
 	 */
-	public void bindLayer(ExecutorLayer layer);
+	public void bind(ExecutorLayer layer);
 
 	/**
 	 *

@@ -92,9 +92,7 @@ public class AsyncTimerTask extends TimerTask {
 
         AsyncTimerTask newTask = tm.scheduleAtFixedRate(tsk, newRepeatTime, newRepeatTime);
 
-        if(tm.running_timers.decrementAndGet() == 0){
-            tm.work.reset();
-        }
+        timer().running_timers.decrementAndGet();
 
         return newTask;
 
