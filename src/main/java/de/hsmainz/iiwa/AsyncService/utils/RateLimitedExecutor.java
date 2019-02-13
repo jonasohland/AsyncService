@@ -61,7 +61,7 @@ public class RateLimitedExecutor extends ExecutorLayerBase {
 
     public void post(AsyncTask t){
         if(t.layer() == null){
-            t.bindLayer(this);
+            t.bind(this);
         }
         postTask(t);
     }
@@ -74,7 +74,7 @@ public class RateLimitedExecutor extends ExecutorLayerBase {
     @Override
     public void dispatch(AsyncTask t) {
         if(t.layer() == null){
-            t.bindLayer(this);
+            t.bind(this);
         }
         postTask(t);
     }
@@ -88,7 +88,7 @@ public class RateLimitedExecutor extends ExecutorLayerBase {
             next_layer().post(task);
             schedule_timeout();
             blocked = true;
-            work = new ExecutorWorkGuard(lowest_layer());
+            work = new ExecutorWorkGuard(context());
         } else {
             last = task;
         }
@@ -99,7 +99,7 @@ public class RateLimitedExecutor extends ExecutorLayerBase {
             next_layer().defer(task);
             schedule_timeout();
             blocked = true;
-            work = new ExecutorWorkGuard(lowest_layer());
+            work = new ExecutorWorkGuard(context());
         } else {
             last = task;
         }

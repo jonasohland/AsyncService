@@ -100,14 +100,14 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
 
     @Override
     public void post(AsyncTask tsk) {
-        tsk.bindLayer(this);
+        tsk.bind(this);
         queue.add(tsk);
     }
 
     @Override
     public void dispatch(AsyncTask tsk) {
 
-        tsk.bindLayer(this);
+        tsk.bind(this);
 
         if(runningInThisContext()){
             tsk.execute();
@@ -191,6 +191,7 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
         } while(!allThreadsWaiting());
 
         if(!is_exit_procedure.getAndSet(true)){
+
             synchronized (this_threads){
 
                 this_threads.remove(stack_local_thread);
@@ -394,7 +395,7 @@ public class EventLoopContext extends ExecutorLayerBase implements ExecutorConte
     }
 
     @Override
-    public ExecutorContext lowest_layer() {
+    public ExecutorContext context() {
         return this;
     }
 }

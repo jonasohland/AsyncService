@@ -15,10 +15,10 @@ public class Result<T, E extends Exception> {
      * Construct the result with its resource.
      * A Result constructed this way represents result of an
      * successful operation and Result.failed() will return false
-     * @param result the resource to bind to this result
+     * @param resource the resource to bind to this result
      */
-    public Result(T result){
-        res = result;
+    public Result(T resource){
+        res = resource;
         is_failed = false;
     }
 
@@ -33,15 +33,14 @@ public class Result<T, E extends Exception> {
     }
 
     /**
-     * Construct the Result with an Exception and a Result.
-     * A Result constructed this way will represent and operation that produced an output,
-     * but failed.
+     * Construct the Result with an Exception and a resource.
+     * A Result constructed this way will represent and operation that produced an output but failed.
      * @param e the Exception to bind to this Result
-     * @param result the resource to bind to this Result
+     * @param resource the resource to bind to this Result
      */
-    public Result(E e, T result){
+    public Result(E e, T resource){
         exception = e;
-        res = result;
+        res = resource;
         is_failed = true;
     }
 
@@ -77,7 +76,7 @@ public class Result<T, E extends Exception> {
      * get the Exception bound to this Result
      * @return the Exception bound to this Result
      */
-    public E getException(){
+    public E exception(){
         return exception;
     }
 
@@ -89,7 +88,7 @@ public class Result<T, E extends Exception> {
 
                 Result other = (Result) obj;
 
-                if (exception != null ? !exception.equals(other.getException()) : other.getException() != null)
+                if (exception != null ? !exception.equals(other.exception()) : other.exception() != null)
                     return false;
                 return res != null ? res.equals(other.get()) : other.get() == null;
 

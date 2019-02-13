@@ -40,7 +40,7 @@ public class AsyncConsumer <T> implements AsyncTask {
     }
 
     @Override
-    public void bindLayer(ExecutorLayer ctx) {
+    public void bind(ExecutorLayer ctx) {
         exec = ctx;
     }
 

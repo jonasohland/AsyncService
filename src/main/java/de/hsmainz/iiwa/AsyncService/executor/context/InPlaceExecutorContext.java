@@ -55,7 +55,7 @@ public class InPlaceExecutorContext implements ExecutorContext {
     }
 
     @Override
-    public ExecutorContext lowest_layer() {
+    public ExecutorContext context() {
         return this;
     }
 }

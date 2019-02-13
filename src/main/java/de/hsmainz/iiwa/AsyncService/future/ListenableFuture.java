@@ -39,7 +39,7 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 				for (AsyncTask element : get_queue()) {
 
 					if(element.layer() == null){
-						element.bindLayer(tsk.layer());
+						element.bind(tsk.layer());
 					}
 
 					element.__set__arg_(value);
@@ -65,7 +65,7 @@ public class ListenableFuture<T> extends ListenableBase<T> {
 				for (AsyncTask element : get_queue()) {
 
 					if(element.layer() == null){
-						element.bindLayer(tsk.layer());
+						element.bind(tsk.layer());
 					}
 
 					element.layer().post(element);

@@ -92,7 +92,7 @@ public class EventLoopContextSingleThread extends ExecutorLayerBase implements E
 
     @Override
     public void post(AsyncTask t) {
-        t.bindLayer(this);
+        t.bind(this);
         queue.add(t);
     }
 
@@ -104,7 +104,7 @@ public class EventLoopContextSingleThread extends ExecutorLayerBase implements E
     @Override
     public void dispatch(AsyncTask t) {
 
-        t.bindLayer(this);
+        t.bind(this);
 
         if (runningInThisContext()){
             t.execute();
@@ -114,7 +114,7 @@ public class EventLoopContextSingleThread extends ExecutorLayerBase implements E
     }
 
     @Override
-    public ExecutorContext lowest_layer(){
+    public ExecutorContext context(){
         return this;
     }
 
