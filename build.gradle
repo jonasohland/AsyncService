@@ -104,15 +104,6 @@ publishing {
 
     repositories {
         maven {
-            name = "archiva"
-            url = "http://jonasohland.ddns.net:8080/repository/hsmainz"
-            credentials {
-                username System.getenv("archiva_publish_username")
-                password System.getenv("archiva_publish_password")
-            }
-        }
-
-        maven {
             name = "gitlab"
             url "https://gitlab.rlp.net/api/v4/projects/2644/packages/maven"
             credentials(HttpHeaderCredentials) {
